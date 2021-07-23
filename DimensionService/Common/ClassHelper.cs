@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -241,6 +242,9 @@ namespace DimensionService.Common
                 int width = (int)(bitmap.Width / (Convert.ToDouble(bitmap.Height) / height));
                 Bitmap map = new(width, height);
                 Graphics graphics = Graphics.FromImage(map);
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.DrawImage(bitmap, new Rectangle(0, 0, height, width));
                 graphics.Dispose();
                 bitmap.Dispose();
