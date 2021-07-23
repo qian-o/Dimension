@@ -1,0 +1,60 @@
+﻿<Window x:Class="DimensionClient.Component.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:threading="clr-namespace:DimensionClient.Threading"
+        mc:Ignorable="d" d:DesignHeight="630" d:DesignWidth="1060"
+        x:Name="AppMain" Title="MainWindow" MinHeight="576" MinWidth="1024" Height="630" Width="1060" WindowStartupLocation="CenterScreen" Loaded="AppMain_Loaded" StateChanged="AppMain_StateChanged">
+    <WindowChrome.WindowChrome>
+        <WindowChrome UseAeroCaptionButtons="False" NonClientFrameEdges="None" CaptionHeight="40" />
+    </WindowChrome.WindowChrome>
+    <Grid x:Name="grdMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Background="#F3F3F3">
+                    <Grid Margin="4,15,4,0" ClipToBounds="True">
+                        <StackPanel Orientation="Vertical">
+                            <Border x:Name="brdMessageCenter" Style="{StaticResource BorderSelectPage}" MouseLeftButtonUp="BrdSelectPage_MouseLeftButtonUp" TouchUp="BrdSelectPage_TouchUp">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Tag="13">
+                                    <TextBlock FontFamily="{StaticResource ElementIcon}" Text="&#xe72e;"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="brdContactPerson" Style="{StaticResource BorderSelectPage}" MouseLeftButtonUp="BrdSelectPage_MouseLeftButtonUp" TouchUp="BrdSelectPage_TouchUp">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Tag="66">
+                                    <TextBlock FontFamily="{StaticResource ElementIcon}" Text="&#xe6e3;"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        <Border x:Name="brdSlider" Height="24" Width="4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-24,0,0" Background="#333333" CornerRadius="2" IsHitTestVisible="False"/>
+                    </Grid>
+                </Grid>
+                <Frame x:Name="femRouteMain" Grid.Column="1" Margin="10,20,10,10" NavigationUIVisibility="Hidden" Navigated="FemRouteMain_Navigated"/>
+            </Grid>
+            <StackPanel x:Name="stpHint" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False"/>
+            <StackPanel x:Name="stpNotification" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <Border x:Name="brdMask" Background="#E6FFFFFF" Visibility="Collapsed">
+                <threading:AsyncBox x:Name="thrLoading" Height="50" Width="50"/>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="0">
+            <Border Background="#FFFFFF">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" Direction="270" Color="#C0C4CC" Opacity="0.2" />
+                </Border.Effect>
+            </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True" SnapsToDevicePixels="True">
+                <Button x:Name="btnMin" Style="{StaticResource ButtonMin}" Height="34" Click="BtnMin_Click"/>
+                <Button x:Name="btnState" Style="{StaticResource ButtonState}" Height="34" Click="BtnState_Click"/>
+                <Button x:Name="btnClose" Style="{StaticResource ButtonClose}" Height="34" Click="BtnClose_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,15 @@
+﻿<Application x:Class="DimensionClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Component/Windows/LoginWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Library/Dictionary/StyleLibrary.xaml"/>
+                <ResourceDictionary Source="Library/Dictionary/ColorDictionary.xaml"/>
+                <ResourceDictionary Source="Library/Dictionary/ConverterLibrary.xaml"/>
+                <ResourceDictionary Source="Library/Dictionary/ChineseLibrary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

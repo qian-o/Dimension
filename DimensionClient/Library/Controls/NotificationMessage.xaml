@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.NotificationMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="UserControlMain" MinHeight="96" Width="346" Loaded="UserControlMain_Loaded">
+    <UserControl.LayoutTransform>
+        <ScaleTransform/>
+    </UserControl.LayoutTransform>
+    <UserControl.RenderTransform>
+        <TranslateTransform x:Name="ttfLoaded"/>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="ttfLoaded" Storyboard.TargetProperty="X" From="330" To="0" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                            <SineEase EasingMode="EaseIn"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid Margin="0,16,16,0">
+        <Border Background="#FFFFFF" BorderBrush="#EBEEF5" BorderThickness="1" CornerRadius="8">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#000000" Opacity="0.1"/>
+            </Border.Effect>
+        </Border>
+        <Border Padding="26,14,14,14">
+            <StackPanel Orientation="Vertical">
+                <DockPanel>
+                    <TextBlock x:Name="txbClose" VerticalAlignment="Center" FontSize="16" FontFamily="{StaticResource ElementIcon}" Style="{StaticResource TextBlockIconDanger}" Text="&#xe6db;" DockPanel.Dock="Right" MouseLeftButtonUp="TxbClose_MouseLeftButtonUp" TouchUp="TxbClose_TouchUp"/>
+                    <TextBlock x:Name="txbTitle" FontSize="16" Foreground="#303133" Text="通知"/>
+                </DockPanel>
+                <TextBlock x:Name="txbMessage" Margin="0,6,20,0" TextWrapping="Wrap" FontSize="14" LineHeight="21" Foreground="#606266" Text="这是一条不会自动关闭的消息"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:DimensionClient.Library.Converters">
+    <converters:StrokeDashOffsetConvert x:Key="StrokeDashOffsetConvert"/>
+    <converters:ImageSourceOnlineConvert x:Key="ImageSourceOnlineConvert"/>
+    <converters:PopupMaskConvert x:Key="PopupMaskConvert"/>
+    <converters:FriendItemVisibilityConvert x:Key="FriendItemVisibilityConvert"/>
+    <converters:OnLineStatusConvert x:Key="OnLineStatusConvert"/>
+    <converters:BoolVisibilityConvert x:Key="BoolVisibilityConvert"/>
+    <converters:PersonalDetailsConvert x:Key="PersonalDetailsConvert"/>
+    <converters:InversionVisibilityConvert x:Key="InversionVisibilityConvert"/>
+</ResourceDictionary>

@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+    <ResourceDictionary x:Key="MessageType">
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary x:Name="rsdSuccess">
+                <SolidColorBrush x:Key="scbBorder" Color="#F0F9EB"/>
+                <SolidColorBrush x:Key="scbBackground" Color="#E1F3D8"/>
+                <sys:String x:Key="scbText">&#xe79c;</sys:String>
+                <SolidColorBrush x:Key="scbForeground" Color="#67C23A"/>
+            </ResourceDictionary>
+            <ResourceDictionary x:Name="rsdWarning">
+                <SolidColorBrush x:Key="scbBorder" Color="#FAECD8"/>
+                <SolidColorBrush x:Key="scbBackground" Color="#FDF6EC"/>
+                <sys:String x:Key="scbText">&#xe7a3;</sys:String>
+                <SolidColorBrush x:Key="scbForeground" Color="#E6A23C"/>
+            </ResourceDictionary>
+            <ResourceDictionary x:Name="rsdDefault">
+                <SolidColorBrush x:Key="scbBorder" Color="#EBEEF5"/>
+                <SolidColorBrush x:Key="scbBackground" Color="#EDF2FC"/>
+                <sys:String x:Key="scbText">&#xe7a1;</sys:String>
+                <SolidColorBrush x:Key="scbForeground" Color="#909399"/>
+            </ResourceDictionary>
+            <ResourceDictionary x:Name="rsdError">
+                <SolidColorBrush x:Key="scbBorder" Color="#FDE2E2"/>
+                <SolidColorBrush x:Key="scbBackground" Color="#FEF0F0"/>
+                <sys:String x:Key="scbText">&#xe79d;</sys:String>
+                <SolidColorBrush x:Key="scbForeground" Color="#F56C6C"/>
+            </ResourceDictionary>
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</ResourceDictionary>

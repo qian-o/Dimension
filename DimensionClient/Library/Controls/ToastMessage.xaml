@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.ToastMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="UserControlMain" Height="60" MinWidth="380" HorizontalAlignment="Center" Loaded="UserControlMain_Loaded">
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform x:Name="stfLoaded"/>
+            <TranslateTransform x:Name="ttfLoaded"/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard x:Name="stdLoaded" Duration="0:0:4">
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" From="0" To="1">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="stfLoaded" Storyboard.TargetProperty="ScaleY" Duration="0:0:0.4" From="-0.5" To="1">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="ttfLoaded" Storyboard.TargetProperty="Y" Duration="0:0:0.4" From="-48" To="0">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0:0:3.4" Duration="0:0:0.3" From="1" To="0">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="stfLoaded" Storyboard.TargetProperty="ScaleY" BeginTime="0:0:3.4" Duration="0:0:0.4" From="1" To="-0.5">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetProperty="Height" BeginTime="0:0:3.4" Duration="0:0:0.4" From="48" To="0">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid Margin="0,12,0,0">
+        <Border Background="{DynamicResource scbBackground}" BorderBrush="{DynamicResource scbBorder}" BorderThickness="1" CornerRadius="4"/>
+        <StackPanel Orientation="Horizontal" Margin="20,0,15,0" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{DynamicResource scbText}" Foreground="{DynamicResource scbForeground}" FontSize="16" FontFamily="{StaticResource ElementIcon}"/>
+            <TextBlock x:Name="txbMessage" VerticalAlignment="Center" Foreground="{DynamicResource scbForeground}" FontSize="14" Text="恭喜你，这是一条成功消息"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

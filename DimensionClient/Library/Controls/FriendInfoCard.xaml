@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.FriendInfoCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:resultmodels="clr-namespace:DimensionClient.Models.ResultModels"
+             x:Name="UserControlMain" Height="470" Width="350" Loaded="UserControlMain_Loaded" Unloaded="UserControlMain_Unloaded">
+    <UserControl.DataContext>
+        <resultmodels:FriendDetailsModel/>
+    </UserControl.DataContext>
+    <StackPanel>
+        <Grid Height="120">
+            <Border Background="#FFFFFF" CornerRadius="3">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="#C0C4CC"/>
+                </Border.Effect>
+            </Border>
+            <Grid Margin="20">
+                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Image Height="70" Width="70" Source="{Binding HeadPortrait, Converter={StaticResource ImageSourceOnlineConvert}, ConverterParameter=140}" DockPanel.Dock="Left">
+                        <Image.Clip>
+                            <PathGeometry Figures="M 8,0 L 62,0 A 8,8 0 0 1 70,8 L 70,62 A 8,8 0 0 1 62,70 L 8,70 A 8,8 0 0 1 0,62 L 0,8 A 8,8 0 0 1 8,0 Z"/>
+                        </Image.Clip>
+                    </Image>
+                    <DockPanel Margin="10,3,0,3" DockPanel.Dock="Left">
+                        <TextBlock VerticalAlignment="Top" FontSize="20" Foreground="#303133" Text="{Binding NickName}" DockPanel.Dock="Top"/>
+                        <TextBlock VerticalAlignment="Bottom" Foreground="#909399" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding Personalized}" DockPanel.Dock="Top"/>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+        </Grid>
+        <Grid Height="344" Margin="0,6,0,0">
+            <Border Background="#FFFFFF" CornerRadius="3">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="#C0C4CC"/>
+                </Border.Effect>
+            </Border>
+            <DockPanel Margin="20">
+                <UniformGrid Rows="1" Columns="2" DockPanel.Dock="Bottom">
+                    <Button Style="{StaticResource ButtonElement}" Margin="10,0,10,0" Content="{DynamicResource SendMessage}"/>
+                    <Button Style="{StaticResource ButtonSuccess}" Margin="10,0,10,0" Content="{DynamicResource VoiceCommunication}"/>
+                </UniformGrid>
+                <DockPanel Margin="5,0,5,0" DockPanel.Dock="Bottom">
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource NickNameEmpty}" DockPanel.Dock="Left"/>
+                        <TextBlock FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" Text="{Binding NickName}" DockPanel.Dock="Left"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource RemarkNameEmpty}" DockPanel.Dock="Left"/>
+                        <DockPanel DockPanel.Dock="Left">
+                            <TextBlock x:Name="txbRemarkNameAction" Style="{StaticResource TextBlockWait}" FontSize="14" FontFamily="{StaticResource ElementIcon}" Tag="RemarkName" Text="&#xe78c;" DockPanel.Dock="Right" MouseLeftButtonUp="TxbRemark_MouseLeftButtonUp" TouchUp="TxbRemark_TouchUp"/>
+                            <Grid Margin="0,0,5,0" DockPanel.Dock="Right">
+                                <TextBlock x:Name="txbRemarkName" FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" Text="{Binding RemarkName}"/>
+                                <TextBox x:Name="txtRemarkName" Style="{StaticResource TextBoxEmpty}" FontSize="11" MaxLength="30" Tag="RemarkName" Visibility="Collapsed" LostFocus="TxtRemark_LostFocus"/>
+                            </Grid>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource PhoneNumber}" DockPanel.Dock="Left"/>
+                        <TextBlock FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" Text="{Binding PhoneNumber}" DockPanel.Dock="Left"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource PersonageEmpty}" DockPanel.Dock="Left"/>
+                        <TextBlock FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" DockPanel.Dock="Left">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource PersonalDetailsConvert}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Gender"/>
+                                        <Binding Path="Birthday"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource Location}" DockPanel.Dock="Left"/>
+                        <TextBlock FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" Text="{Binding Location}" DockPanel.Dock="Left"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource ProfessionEmpty}" DockPanel.Dock="Left"/>
+                        <TextBlock FontSize="13" Foreground="#303133" TextTrimming="CharacterEllipsis" Text="{Binding Profession}" DockPanel.Dock="Left"/>
+                    </DockPanel>
+                    <DockPanel Margin="0,5,0,5" DockPanel.Dock="Top">
+                        <TextBlock Width="70" FontSize="13" Foreground="#606266" Text="{DynamicResource RemarkInformation}" DockPanel.Dock="Left"/>
+                        <DockPanel DockPanel.Dock="Left">
+                            <TextBlock x:Name="txbRemarkInformationAction" Style="{StaticResource TextBlockWait}" VerticalAlignment="Top" FontSize="14" FontFamily="{StaticResource ElementIcon}" Tag="RemarkInformation" Text="&#xe78c;" DockPanel.Dock="Right" MouseLeftButtonUp="TxbRemark_MouseLeftButtonUp" TouchUp="TxbRemark_TouchUp"/>
+                            <Grid Margin="0,0,5,0" DockPanel.Dock="Right">
+                                <TextBlock x:Name="txbRemarkInformation" FontSize="13" Foreground="#303133" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding RemarkInformation}"/>
+                                <TextBox x:Name="txtRemarkInformation" Style="{StaticResource TextBoxEmpty}" TextWrapping="Wrap" AcceptsReturn="True" FontSize="11" MaxLength="100" Tag="RemarkInformation" Visibility="Collapsed" LostFocus="TxtRemark_LostFocus"/>
+                            </Grid>
+                        </DockPanel>
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

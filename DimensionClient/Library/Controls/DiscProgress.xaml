@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.DiscProgress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="UserControlMain">
+    <Viewbox>
+        <Grid>
+            <!--StrokeDashArray = 路径长度 / StrokeThickness-->
+            <Path Stroke="#FF6D00" StrokeThickness="4" StrokeDashArray="79" StrokeDashOffset="{Binding Converter={StaticResource StrokeDashOffsetConvert},ConverterParameter=79}" Data="M 50,0 A 50,50 0 1 1 49.99,0"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run x:Name="runProgress"/>
+                <Run Text="%"/>
+            </TextBlock>
+        </Grid>
+    </Viewbox>
+</UserControl>
