@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.DynamicImage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:viewmodels="clr-namespace:DimensionClient.Models.ViewModels"
+             Background="Transparent">
+    <Grid>
+        <Grid.DataContext>
+            <viewmodels:DynamicImageViewModel/>
+        </Grid.DataContext>
+        <Image x:Name="imgPicture1" Style="{StaticResource ImageDisabled}" Source="{Binding Source1}" IsEnabled="{Binding Show1}"/>
+        <Image x:Name="imgPicture2" Style="{StaticResource ImageDisabled}" Source="{Binding Source2}" IsEnabled="{Binding Show2}"/>
+    </Grid>
+</UserControl>
