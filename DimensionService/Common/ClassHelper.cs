@@ -9,12 +9,12 @@ using Microsoft.International.Converters.PinYinConverter;
 using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -230,30 +230,19 @@ namespace DimensionService.Common
         }
 
         /// <summary>
-        /// 压缩Bitmap
+        /// 压缩图片
         /// </summary>
-        /// <param name="bitmap">原图</param>
-        /// <param name="height">新高度</param>
+        /// <param name="filePath">文件路径</param>
+        /// <param name="height">图像高度</param>
         /// <returns></returns>
-        public static Bitmap ResizeImage(Bitmap bitmap, int height)
+        public static Image CompressPictures(string filePath, int height)
         {
-            if (bitmap.Height > height)
+            Image image = Image.Load(filePath);
+            if (height < image.Height)
             {
-                int width = (int)(bitmap.Width / (Convert.ToDouble(bitmap.Height) / height));
-                Bitmap map = new(width, height);
-                Graphics graphics = Graphics.FromImage(map);
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.DrawImage(bitmap, new Rectangle(0, 0, height, width));
-                graphics.Dispose();
-                bitmap.Dispose();
-                return map;
+                image.Mutate(item => item.Resize(0, height));
             }
-            else
-            {
-                return bitmap;
-            }
+            return image;
         }
 
         /// <summary>

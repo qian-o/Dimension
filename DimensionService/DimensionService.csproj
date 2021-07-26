@@ -23,6 +23,7 @@
     <None Remove="Library\Attachments\google-play.png" />
     <None Remove="Library\Attachments\gril.png" />
     <None Remove="Library\Attachments\itunes-app-store.png" />
+    <None Remove="Library\Attachments\壁纸一.png" />
     <None Remove="Library\Attachments\头像.png" />
     <None Remove="Library\Attachments\头像一.png" />
     <None Remove="Library\Attachments\头像三.jpg" />
@@ -50,6 +51,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Library\Attachments\itunes-app-store.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Library\Attachments\壁纸一.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Library\Attachments\头像.png">
@@ -83,11 +87,11 @@
     <PackageReference Include="CHSPinYinConv" Version="1.0.0" />
     <PackageReference Include="CHTCHSConv" Version="1.0.0" />
     <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -95,9 +99,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
   
 </Project>

@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -37,9 +38,9 @@ namespace DimensionService.Service.Attachment
                 if (height > 0)
                 {
                     ms = new MemoryStream();
-                    Bitmap bitmap = ClassHelper.ResizeImage(new Bitmap(filePath), height);
-                    bitmap.Save(ms, ext.Contains("png") ? ImageFormat.Png : ImageFormat.Jpeg);
-                    bitmap.Dispose();
+                    Image image = ClassHelper.CompressPictures(filePath, height);
+                    image.Save(ms, ext.Contains("png") ? new PngEncoder() : new JpegEncoder());
+                    image.Dispose();
                 }
             }
             if (ms == null)
