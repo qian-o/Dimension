@@ -5,6 +5,7 @@ namespace DimensionClient.Models.ViewModels
     public class CommonViewModel : ModelBase
     {
         private string nickName;
+        private string phoneNumber;
         private string headPortrait;
         private bool onLine;
 
@@ -15,6 +16,15 @@ namespace DimensionClient.Models.ViewModels
             {
                 nickName = value;
                 OnPropertyChanged(nameof(NickName));
+            }
+        }
+        public string PhoneNumber
+        {
+            get => phoneNumber;
+            set
+            {
+                phoneNumber = value;
+                OnPropertyChanged(nameof(PhoneNumber));
             }
         }
         public string HeadPortrait

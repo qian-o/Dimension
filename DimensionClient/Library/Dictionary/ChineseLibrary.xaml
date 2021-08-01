@@ -48,4 +48,6 @@
     <system:String x:Key="ProfessionEmpty">职ㅤ业</system:String>
     <system:String x:Key="RemarkInformation">备注信息</system:String>
     <system:String x:Key="SearchPeopleAndChats">搜索人和聊天</system:String>
+    <system:String x:Key="SignOut">登出</system:String>
+    <system:String x:Key="MyProfile">我的资料</system:String>
 </ResourceDictionary>

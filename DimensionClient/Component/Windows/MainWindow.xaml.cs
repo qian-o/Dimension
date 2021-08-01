@@ -26,7 +26,14 @@ namespace DimensionClient.Component.Windows
             ClassHelper.RoutedChanged += ClassHelper_RoutedChanged;
             ClassHelper.AccordingMask += ClassHelper_AccordingMask;
 
-            conHeadImage.SetBinding(DynamicImage.ImagePathProperty, new Binding { Source = ClassHelper.commonView, Path = new PropertyPath("HeadPortrait"), Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = "60" });
+            #region 绑定全局属性
+            grdInformation.DataContext = ClassHelper.commonView;
+            conHeadImage.SetBinding(DynamicImage.ImagePathProperty, new Binding { Path = new PropertyPath("HeadPortrait"), Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = "60" });
+            conInformationHead.SetBinding(DynamicImage.ImagePathProperty, new Binding { Path = new PropertyPath("HeadPortrait"), Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = "60" });
+            brdInformationOnLine.SetBinding(Border.BackgroundProperty, new Binding { Path = new PropertyPath("OnLine"), Converter = ClassHelper.FindResource<IValueConverter>("OnLineStatusConvert") });
+            txbInformatioNickName.SetBinding(TextBlock.TextProperty, new Binding { Path = new PropertyPath("NickName") });
+            txbInformatioPhoneNumber.SetBinding(TextBlock.TextProperty, new Binding { Path = new PropertyPath("PhoneNumber") });
+            #endregion
         }
 
         private void AppMain_Loaded(object sender, RoutedEventArgs e)

@@ -1471,4 +1471,15 @@
         </Style.Triggers>
     </Style>
 
+    <!--ToggleButton自定义内容-->
+    <Style x:Key="ToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <ContentControl Content="{TemplateBinding Content}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

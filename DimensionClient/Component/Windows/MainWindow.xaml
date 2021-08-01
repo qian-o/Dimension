@@ -52,11 +52,52 @@
             </Border>
             <TextBox Style="{StaticResource TextBoxElement}" Height="32" Width="350" FontSize="14" WindowChrome.IsHitTestVisibleInChrome="True" Tag="{DynamicResource SearchPeopleAndChats}"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True" SnapsToDevicePixels="True">
-                <controls:DynamicImage x:Name="conHeadImage" Height="30" Width="30" Margin="0,0,18,0">
-                    <controls:DynamicImage.Clip>
-                        <EllipseGeometry Center="15,15" RadiusX="15" RadiusY="15"/>
-                    </controls:DynamicImage.Clip>
-                </controls:DynamicImage>
+                <Grid x:Name="grdInformation" Height="30" Width="30" Margin="0,0,18,0">
+                    <ToggleButton x:Name="tolHeadImage" Style="{StaticResource ToggleButtonTemplate}">
+                        <controls:DynamicImage x:Name="conHeadImage">
+                            <controls:DynamicImage.Clip>
+                                <EllipseGeometry Center="15,15" RadiusX="15" RadiusY="15"/>
+                            </controls:DynamicImage.Clip>
+                        </controls:DynamicImage>
+                    </ToggleButton>
+                    <Grid Background="Transparent" Visibility="{Binding ElementName=popInformation,Path=IsOpen,Converter={StaticResource PopupMaskConvert}}"/>
+                    <Popup x:Name="popInformation" PlacementTarget="{Binding ElementName=tolHeadImage}" Placement="Bottom" PopupAnimation="Fade"  AllowsTransparency="True" HorizontalOffset="-240" VerticalOffset="-4" StaysOpen="False" IsOpen="{Binding ElementName=tolHeadImage,Path=IsChecked}">
+                        <Border Padding="10">
+                            <Grid Height="100" Width="260">
+                                <Border Background="#FFFFFF" BorderBrush="#E4E7ED" BorderThickness="1" CornerRadius="6">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#000000" Opacity="0.1"/>
+                                    </Border.Effect>
+                                </Border>
+                                <Grid Margin="14,12,14,12">
+                                    <TextBlock HorizontalAlignment="Right" Style="{StaticResource TextBlockIconDanger}" FontSize="14" Text="{DynamicResource SignOut}" DockPanel.Dock="Top"/>
+                                    <DockPanel VerticalAlignment="Bottom">
+                                        <Grid Height="42" Width="42" HorizontalAlignment="Left" DockPanel.Dock="Left">
+                                            <controls:DynamicImage x:Name="conInformationHead">
+                                                <controls:DynamicImage.Clip>
+                                                    <CombinedGeometry GeometryCombineMode="Exclude">
+                                                        <CombinedGeometry.Geometry1>
+                                                            <EllipseGeometry Center="21,21" RadiusX="21" RadiusY="21"/>
+                                                        </CombinedGeometry.Geometry1>
+                                                        <CombinedGeometry.Geometry2>
+                                                            <EllipseGeometry Center="36,35" RadiusX="6" RadiusY="6"/>
+                                                        </CombinedGeometry.Geometry2>
+                                                    </CombinedGeometry>
+                                                </controls:DynamicImage.Clip>
+                                            </controls:DynamicImage>
+                                            <Border x:Name="brdInformationOnLine" Height="8" Width="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,3" CornerRadius="4"/>
+                                        </Grid>
+                                        <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockElement}" Text="{DynamicResource MyProfile}" DockPanel.Dock="Right"/>
+                                        <Grid Margin="7,1,4,1" DockPanel.Dock="Left">
+                                            <TextBlock x:Name="txbInformatioNickName" VerticalAlignment="Top" FontSize="15" Foreground="#303133"/>
+                                            <TextBlock x:Name="txbInformatioPhoneNumber" VerticalAlignment="Bottom" Foreground="#909399" TextTrimming="CharacterEllipsis"/>
+                                        </Grid>
+                                    </DockPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Popup>
+                </Grid>
                 <Button x:Name="btnMin" Style="{StaticResource ButtonMin}" Height="48" Width="50" Click="BtnMin_Click"/>
                 <Button x:Name="btnState" Style="{StaticResource ButtonState}" Height="48" Width="50" Click="BtnState_Click"/>
                 <Button x:Name="btnClose" Style="{StaticResource ButtonClose}" Height="48" Width="50" Click="BtnClose_Click"/>

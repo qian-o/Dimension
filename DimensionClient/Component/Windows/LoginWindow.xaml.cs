@@ -226,6 +226,7 @@ namespace DimensionClient.Component.Windows
         public void LoginSuccess(GetUserInfoModel getUserInfo)
         {
             ClassHelper.commonView.NickName = getUserInfo.NickName;
+            ClassHelper.commonView.PhoneNumber = getUserInfo.PhoneNumber;
             ClassHelper.commonView.HeadPortrait = getUserInfo.HeadPortrait;
             ClassHelper.commonView.OnLine = getUserInfo.OnLine;
             SignalRClientHelper.InitializeConnection();
