@@ -13,8 +13,8 @@ namespace DimensionClient.Library.Controls
     {
         public ImageSource ImagePath
         {
-            get { return (ImageSource)GetValue(ImagePathProperty); }
-            set { SetValue(ImagePathProperty, value); }
+            get => (ImageSource)GetValue(ImagePathProperty);
+            set => SetValue(ImagePathProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for ImagePath.  This enables animation, styling, binding, etc...

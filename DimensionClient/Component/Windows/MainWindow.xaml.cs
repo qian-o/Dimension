@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -24,6 +25,8 @@ namespace DimensionClient.Component.Windows
             ClassHelper.NotificationHint += ClassHelper_NotificationHint;
             ClassHelper.RoutedChanged += ClassHelper_RoutedChanged;
             ClassHelper.AccordingMask += ClassHelper_AccordingMask;
+
+            conHeadImage.SetBinding(DynamicImage.ImagePathProperty, new Binding { Source = ClassHelper.commonView, Path = new PropertyPath("HeadPortrait"), Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = "60" });
         }
 
         private void AppMain_Loaded(object sender, RoutedEventArgs e)

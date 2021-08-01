@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
-      d:DesignHeight="566" d:DesignWidth="970"
+      d:DesignHeight="552" d:DesignWidth="970"
       x:Name="MessageCenterMain" Title="MessageCenterPage" Background="#FFFFFF" Loaded="MessageCenterMain_Loaded" Unloaded="MessageCenterMain_Unloaded">
     <Page.Triggers>
         <EventTrigger RoutedEvent="Loaded">

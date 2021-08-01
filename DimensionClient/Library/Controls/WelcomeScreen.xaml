@@ -11,8 +11,8 @@
                 <Button Height="36" Style="{StaticResource ButtonElement}" VerticalAlignment="Bottom" Padding="15,0,15,0" FontSize="14" Content="{DynamicResource PersonalData}" DockPanel.Dock="Right"/>
                 <DockPanel VerticalAlignment="Center" DockPanel.Dock="Right">
                     <Grid Height="90" Width="90" DockPanel.Dock="Left">
-                        <Border ClipToBounds="True">
-                            <Border.Clip>
+                        <Image x:Name="imgHead">
+                            <Image.Clip>
                                 <CombinedGeometry GeometryCombineMode="Exclude">
                                     <CombinedGeometry.Geometry1>
                                         <EllipseGeometry Center="45,45" RadiusX="45" RadiusY="45"/>
@@ -21,9 +21,8 @@
                                         <EllipseGeometry Center="76,76" RadiusX="8" RadiusY="8"/>
                                     </CombinedGeometry.Geometry2>
                                 </CombinedGeometry>
-                            </Border.Clip>
-                            <Image x:Name="imgHead"/>
-                        </Border>
+                            </Image.Clip>
+                        </Image>
                         <Border x:Name="brdOnLine" Height="12" Width="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8" CornerRadius="6"/>
                     </Grid>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="15,0,0,0" TextBlock.FontSize="30" DockPanel.Dock="Left">

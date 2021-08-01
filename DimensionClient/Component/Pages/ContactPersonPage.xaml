@@ -6,7 +6,7 @@
       xmlns:controls="clr-namespace:DimensionClient.Library.Controls" 
       xmlns:viewmodels="clr-namespace:DimensionClient.Models.ViewModels" xmlns:resultmodels="clr-namespace:DimensionClient.Models.ResultModels"
       mc:Ignorable="d" 
-      d:DesignHeight="566" d:DesignWidth="970"
+      d:DesignHeight="552" d:DesignWidth="970"
       x:Name="ContactPersonMain" Title="ContactPersonPage" Background="#FFFFFF" Loaded="ContactPersonMain_Loaded">
     <Page.Resources>
         <ResourceDictionary>
@@ -63,7 +63,7 @@
             <controls:FriendInfoCard x:Name="conFriendInfoCard" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
         </Grid>
         <Border x:Name="brdAddFriends" DataContext="{StaticResource NewFriendData}" Grid.ColumnSpan="2" Background="Transparent" Style="{StaticResource BorderGradient}" Visibility="Collapsed">
-            <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100">
                 <Border Background="#FFFFFF" CornerRadius="5">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="12" Opacity="0.4"/>

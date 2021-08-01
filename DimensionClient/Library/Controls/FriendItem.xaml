@@ -21,8 +21,8 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" Height="40" Width="40">
-                                <Border ClipToBounds="True">
-                                    <Border.Clip>
+                                <Image Source="{Binding HeadPortrait, Converter={StaticResource ImageSourceOnlineConvert}, ConverterParameter=80}">
+                                    <Image.Clip>
                                         <CombinedGeometry GeometryCombineMode="Exclude">
                                             <CombinedGeometry.Geometry1>
                                                 <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20"/>
@@ -31,9 +31,8 @@
                                                 <EllipseGeometry Center="33,35" RadiusX="6" RadiusY="6"/>
                                             </CombinedGeometry.Geometry2>
                                         </CombinedGeometry>
-                                    </Border.Clip>
-                                    <Image Source="{Binding HeadPortrait, Converter={StaticResource ImageSourceOnlineConvert}, ConverterParameter=80}"/>
-                                </Border>
+                                    </Image.Clip>
+                                </Image>
                                 <Border Height="8" Width="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,1" Background="{Binding OnLine, Converter={StaticResource OnLineStatusConvert}}" CornerRadius="4"/>
                             </Grid>
                             <Grid Grid.Column="1" Margin="8,0,0,0">
