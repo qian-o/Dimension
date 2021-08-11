@@ -1040,6 +1040,7 @@
 
     <!--Border渐变边框-->
     <Style x:Key="BorderGradual" TargetType="{x:Type Border}">
+        <Setter Property="BorderBrush" Value="#DCDFE6"/>
         <Style.Triggers>
             <EventTrigger RoutedEvent="GotFocus">
                 <BeginStoryboard>

@@ -16,6 +16,49 @@
         </EventTrigger>
     </Page.Triggers>
     <Grid x:Name="grdMain">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Text="{DynamicResource Message}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="2" Background="#FFFFFF" CornerRadius="4">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
+                </Border.Effect>
+            </Border>
+            <Grid Grid.Row="0" Margin="10,0,10,0">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="#FF6D00" Text="Chat"/>
+                <Button Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="30" Content="New"/>
+                <Line VerticalAlignment="Bottom" X1="0" Y1="0" X2="240" Y2="0" Stroke="#EBEEF5"/>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,10,0,10">
+                <Border Height="60">
+                    <Grid Margin="10,0,10,0">
+                        <Grid Height="42" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="42"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="34"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Height="42" Width="42" HorizontalAlignment="Left" VerticalAlignment="Center" Background="AliceBlue" CornerRadius="22"/>
+                            <Grid Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="15" Foreground="#303133" Text="王先生"/>
+                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#909399" TextTrimming="CharacterEllipsis" Text="消息消息消息消息消息消息息消息消息消息消息消息息"/>
+                            </Grid>
+                            <Grid Grid.Column="2" Height="40" VerticalAlignment="Top">
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#303133" Text="24:24"/>
+                                <Border Height="16" Width="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="#67C23A" CornerRadius="8">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="11" Text="1"/>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
