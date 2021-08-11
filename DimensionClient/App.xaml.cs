@@ -1,5 +1,6 @@
 ﻿using DimensionClient.Common;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +25,13 @@ namespace DimensionClient
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             };
+
+            if (SystemParameters.MenuDropAlignment)
+            {
+                FieldInfo field = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
+                field.SetValue(null, false);
+            }
+
             FontFamily fontFamily = new(new Uri("pack://application:,,,/"), "/Library/Font/苹方黑体-中粗-简.ttf#.萍方-简");
             Control.FontFamilyProperty.OverrideMetadata(typeof(TextBoxBase), new FrameworkPropertyMetadata(fontFamily));
             Control.FontFamilyProperty.OverrideMetadata(typeof(ContentControl), new FrameworkPropertyMetadata(fontFamily));
