@@ -92,6 +92,15 @@ namespace DimensionService.Common
             Add,
             Verify
         }
+        // 消息类别
+        public enum MessageType
+        {
+            Text,
+            Voice,
+            File,
+            VoiceTalk,
+            VideoTalk
+        }
         #endregion
 
         /// <summary>

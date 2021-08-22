@@ -1,3 +1,5 @@
+using DimensionService.Dao.ChatColumn;
+using DimensionService.Dao.ChatLink;
 using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Dao.UserInfo;
@@ -5,6 +7,7 @@ using DimensionService.Filter;
 using DimensionService.Hubs;
 using DimensionService.Middleware;
 using DimensionService.Service.Attachment;
+using DimensionService.Service.Chat;
 using DimensionService.Service.Hitokoto;
 using DimensionService.Service.UserManager;
 using Microsoft.AspNetCore.Builder;
@@ -99,10 +102,13 @@ namespace DimensionService
             services.AddScoped<IUserManagerService, UserManagerService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IHitokotoService, HitokotoService>();
+            services.AddScoped<IChatService, ChatService>();
 
             services.AddScoped<IUserInfoDAO, UserInfoDAO>();
             services.AddScoped<ILoginInfoDAO, LoginInfoDAO>();
             services.AddScoped<IFriendInfoDAO, FriendInfoDAO>();
+            services.AddScoped<IChatLinkDAO, ChatLinkDAO>();
+            services.AddScoped<IChatColumnDAO, ChatColumnDAO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
+using DimensionClient.Service.Chat;
 using DimensionClient.Service.UserManager;
 using System.Threading;
 using System.Windows;
@@ -45,6 +46,11 @@ namespace DimensionClient.Library.Controls
             TxbRemark_PointerUp(sender);
         }
         #endregion
+
+        private void BtnSendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(SendMessage);
+        }
 
         private void TxtRemark_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -189,6 +195,10 @@ namespace DimensionClient.Library.Controls
                     txbRemarkInformationAction.Text = "\xe78c";
                 }
             });
+        }
+        private void SendMessage(object data)
+        {
+            ChatService.AddChat(friendData.UserID);
         }
         #endregion
     }

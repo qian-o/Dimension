@@ -1,8 +1,10 @@
 ﻿using DimensionService.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DimensionService.Models.DimensionModels
 {
+    [Index(nameof(UserID))]
     public class LoginInfoModel
     {
         // 主键

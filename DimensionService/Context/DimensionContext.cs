@@ -8,6 +8,9 @@ namespace DimensionService.Context
         public DbSet<UserInfoModel> UserInfo { get; set; }
         public DbSet<LoginInfoModel> LoginInfo { get; set; }
         public DbSet<FriendInfoModel> FriendInfo { get; set; }
+        public DbSet<ChatLinkModel> ChatLink { get; set; }
+        public DbSet<ChatColumnModel> ChatColumn { get; set; }
+        public DbSet<ChatMessagesModel> ChatMessages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
