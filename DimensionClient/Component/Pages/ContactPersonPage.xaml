@@ -6,7 +6,7 @@
       xmlns:controls="clr-namespace:DimensionClient.Library.Controls" 
       xmlns:viewmodels="clr-namespace:DimensionClient.Models.ViewModels" xmlns:resultmodels="clr-namespace:DimensionClient.Models.ResultModels"
       mc:Ignorable="d" 
-      d:DesignHeight="552" d:DesignWidth="970"
+      d:DesignHeight="548" d:DesignWidth="962"
       x:Name="ContactPersonMain" Title="ContactPersonPage" Background="#FFFFFF" Loaded="ContactPersonMain_Loaded">
     <Page.Resources>
         <ResourceDictionary>
@@ -33,7 +33,7 @@
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
             <controls:SlidingBlock SlidingBlockState="{Binding SlidingBlockState,Mode=TwoWay}" LeftContent="{DynamicResource Friend}" RightContent="{DynamicResource NewFriend}" DockPanel.Dock="Top"/>
-            <Border Margin="0,10,0,2" DockPanel.Dock="Top" ClipToBounds="True">
+            <Border Margin="0,10,0,0" DockPanel.Dock="Top" ClipToBounds="True">
                 <UniformGrid Style="{StaticResource UniformNavigation}">
                     <Border BorderBrush="#DCDFE6" BorderThickness="0,1,0,0">
                         <ItemsControl x:Name="itcFriends" Style="{StaticResource ItemsControlVirtualization}" ItemsSource="{Binding Friends}" ManipulationBoundaryFeedback="ItemsControl_ManipulationBoundaryFeedback">

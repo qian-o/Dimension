@@ -36,7 +36,7 @@
                         <Border x:Name="brdSlider" Height="24" Width="4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-24,0,0" Background="#333333" CornerRadius="2" IsHitTestVisible="False"/>
                     </Grid>
                 </Grid>
-                <Frame x:Name="femRouteMain" Grid.Column="1" Margin="10,20,10,10" NavigationUIVisibility="Hidden" Navigated="FemRouteMain_Navigated"/>
+                <Frame x:Name="femRouteMain" Grid.Column="1" Margin="14,20,14,14" NavigationUIVisibility="Hidden" Navigated="FemRouteMain_Navigated"/>
             </Grid>
             <StackPanel x:Name="stpHint" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False"/>
             <StackPanel x:Name="stpNotification" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top"/>
