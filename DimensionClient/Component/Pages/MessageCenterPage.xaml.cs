@@ -3,7 +3,6 @@ using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Chat;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -71,7 +70,7 @@ namespace DimensionClient.Component.Pages
                 {
                     Dispatcher.Invoke(delegate
                     {
-                        foreach (var item in chatColumnInfos)
+                        foreach (ChatColumnInfoModel item in chatColumnInfos)
                         {
                             mainData.ChatColumnInfos.Add(item);
                         }
