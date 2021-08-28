@@ -33,27 +33,31 @@
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
             <controls:SlidingBlock SlidingBlockState="{Binding SlidingBlockState,Mode=TwoWay}" LeftContent="{DynamicResource Friend}" RightContent="{DynamicResource NewFriend}" DockPanel.Dock="Top"/>
-            <Border Margin="0,10,0,0" BorderBrush="#EBEEF5" BorderThickness="0,1,0,1" DockPanel.Dock="Top" ClipToBounds="True">
+            <Border Margin="0,10,0,2" DockPanel.Dock="Top" ClipToBounds="True">
                 <UniformGrid Style="{StaticResource UniformNavigation}">
-                    <ItemsControl x:Name="itcFriends" Style="{StaticResource ItemsControlVirtualization}" ItemsSource="{Binding Friends}" ManipulationBoundaryFeedback="ItemsControl_ManipulationBoundaryFeedback">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <controls:FriendItem DataContext="{Binding}" Margin="0,12,0,0" Visibility="{Binding FriendBriefs,Converter={StaticResource FriendItemVisibilityConvert}}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <DockPanel>
-                        <Grid Margin="0,7,0,5" DockPanel.Dock="Top">
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#303133" FontSize="15" Text="{DynamicResource FriendNotification}"/>
-                            <TextBlock x:Name="txbAddFriends" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Right" Margin="0,0,0,0" FontFamily="{StaticResource ElementIcon}" FontSize="19" Text="&#xe6d9;" MouseLeftButtonUp="TxbAddFriends_MouseLeftButtonUp" TouchUp="TxbAddFriends_TouchUp" />
-                        </Grid>
-                        <ItemsControl x:Name="itcNewFriends" Style="{StaticResource ItemsControlVirtualization}" ItemsSource="{Binding NewFriends}" ManipulationBoundaryFeedback="ItemsControl_ManipulationBoundaryFeedback" DockPanel.Dock="Top">
+                    <Border BorderBrush="#DCDFE6" BorderThickness="0,1,0,0">
+                        <ItemsControl x:Name="itcFriends" Style="{StaticResource ItemsControlVirtualization}" ItemsSource="{Binding Friends}" ManipulationBoundaryFeedback="ItemsControl_ManipulationBoundaryFeedback">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:NewFriendItem DataContext="{Binding}"/>
+                                    <controls:FriendItem DataContext="{Binding}" Margin="0,12,0,0" Visibility="{Binding FriendBriefs,Converter={StaticResource FriendItemVisibilityConvert}}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                    </Border>
+                    <DockPanel>
+                        <Grid Margin="0,5,0,8" DockPanel.Dock="Top">
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#303133" FontSize="15" Text="{DynamicResource FriendNotification}"/>
+                            <TextBlock x:Name="txbAddFriends" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Right" Margin="0,0,0,0" FontFamily="{StaticResource ElementIcon}" FontSize="19" Text="&#xe6d9;" MouseLeftButtonUp="TxbAddFriends_MouseLeftButtonUp" TouchUp="TxbAddFriends_TouchUp" />
+                        </Grid>
+                        <Border BorderBrush="#DCDFE6" BorderThickness="0,1,0,0">
+                            <ItemsControl x:Name="itcNewFriends" Style="{StaticResource ItemsControlVirtualization}" ItemsSource="{Binding NewFriends}" ManipulationBoundaryFeedback="ItemsControl_ManipulationBoundaryFeedback" DockPanel.Dock="Top">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <controls:NewFriendItem DataContext="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
                     </DockPanel>
                 </UniformGrid>
             </Border>

@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="DimensionClient.Library.Controls.FriendInfoCard"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:resultmodels="clr-namespace:DimensionClient.Models.ResultModels" xmlns:controls="clr-namespace:DimensionClient.Library.Controls"
-             x:Name="UserControlMain" Height="470" Width="350" Loaded="UserControlMain_Loaded" Unloaded="UserControlMain_Unloaded">
+             x:Name="UserControlMain" Height="473" Width="350" Loaded="UserControlMain_Loaded" Unloaded="UserControlMain_Unloaded">
     <UserControl.DataContext>
         <resultmodels:FriendDetailsModel/>
     </UserControl.DataContext>
@@ -26,7 +26,7 @@
                 </DockPanel>
             </Grid>
         </Grid>
-        <Grid Height="344" Margin="0,6,0,0">
+        <Grid Height="344" Margin="0,9,0,0">
             <Border Background="#FFFFFF" CornerRadius="3">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
