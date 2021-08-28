@@ -85,7 +85,7 @@ namespace DimensionService.Service.UserManager
                     }
                     else
                     {
-                        string aesKey = ClassHelper.GenerateMD5(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
+                        string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
                         if (ClassHelper.AesDecrypt(data.Password, aesKey) != userInfo.Password)
                         {
                             message = "密码错误。";

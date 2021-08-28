@@ -28,7 +28,6 @@ namespace DimensionService
                         {
                             options.AddLog4Net(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "log4net.config"));
                         });
-                        webBuilder.UseDefaultServiceProvider(options => options.ValidateScopes = false);
                         webBuilder.UseStartup<Startup>();
                     });
         }

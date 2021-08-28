@@ -144,7 +144,7 @@ namespace DimensionClient.Library.Controls
             });
             string password = string.Empty;
             DateTime dateTime = DateTime.Now;
-            string aesKey = ClassHelper.GenerateMD5(ClassHelper.TimeStamp(dateTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
+            string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(dateTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
             Dispatcher.Invoke(delegate
             {
                 password = pstPassword.Password;

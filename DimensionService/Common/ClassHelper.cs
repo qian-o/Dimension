@@ -139,11 +139,11 @@ namespace DimensionService.Common
         }
 
         /// <summary>
-        /// MD5转换
+        /// SHA256转换
         /// </summary>
         /// <param name="str">字符串</param>
         /// <returns></returns>
-        public static string GenerateMD5(string str)
+        public static string GenerateSHA256(string str)
         {
             using SHA256 sHA256 = SHA256.Create();
             byte[] buffer = Encoding.UTF8.GetBytes(str);

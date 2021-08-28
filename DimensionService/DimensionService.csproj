@@ -20,8 +20,8 @@
     <None Remove="Library\Attachments\404.png" />
     <None Remove="Library\Attachments\boy.png" />
     <None Remove="Library\Attachments\favicon.ico" />
+    <None Remove="Library\Attachments\girl.png" />
     <None Remove="Library\Attachments\google-play.png" />
-    <None Remove="Library\Attachments\gril.png" />
     <None Remove="Library\Attachments\itunes-app-store.png" />
     <None Remove="Library\Attachments\壁纸一.png" />
     <None Remove="Library\Attachments\头像.png" />
@@ -44,10 +44,10 @@
     <Content Include="Library\Attachments\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Library\Attachments\google-play.png">
+    <Content Include="Library\Attachments\girl.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Library\Attachments\gril.png">
+    <Content Include="Library\Attachments\google-play.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Library\Attachments\itunes-app-store.png">
