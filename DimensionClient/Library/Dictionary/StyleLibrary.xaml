@@ -531,11 +531,12 @@
         <Setter Property="Foreground" Value="#FFFFFF"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="20,0,20,0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="20,0,20,0">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <ContentPresenter VerticalAlignment="Center"/>
                             <TextBlock x:Name="txbWait" VerticalAlignment="Center" Margin="5,0,0,0" FontFamily="{StaticResource ElementIcon}" FontSize="15" Text="&#xe6cf;" Visibility="Collapsed">
@@ -1399,10 +1400,11 @@
     <Style x:Key="TextBoxEmpty" TargetType="{x:Type TextBox}">
         <Setter Property="BorderBrush" Value="#D7DAE2"/>
         <Setter Property="Foreground" Value="#303133"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Top" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                     </Border>
                 </ControlTemplate>

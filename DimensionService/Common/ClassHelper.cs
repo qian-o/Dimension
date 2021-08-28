@@ -84,7 +84,9 @@ namespace DimensionService.Common
             // bool online
             OnlineStatus,
             // string friendID
-            RemarkInfoChanged
+            RemarkInfoChanged,
+            // string friendID
+            ChatColumnChanged
         }
         // 新朋友类别
         public enum NewFriendType

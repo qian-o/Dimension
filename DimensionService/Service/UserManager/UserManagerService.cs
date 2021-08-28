@@ -23,14 +23,14 @@ namespace DimensionService.Service.UserManager
         private readonly IHubContext<InformHub> _hub;
         private readonly IUserInfoDAO _userInfoDAO;
         private readonly ILoginInfoDAO _loginInfoDAO;
-        private readonly IFriendInfoDAO _friendListDAO;
+        private readonly IFriendInfoDAO _friendInfoDAO;
 
-        public UserManagerService(IHubContext<InformHub> hub, IUserInfoDAO userInfoDAO, ILoginInfoDAO loginInfoDAO, IFriendInfoDAO friendListDAO)
+        public UserManagerService(IHubContext<InformHub> hub, IUserInfoDAO userInfoDAO, ILoginInfoDAO loginInfoDAO, IFriendInfoDAO friendInfoDAO)
         {
             _hub = hub;
             _userInfoDAO = userInfoDAO;
             _loginInfoDAO = loginInfoDAO;
-            _friendListDAO = friendListDAO;
+            _friendInfoDAO = friendInfoDAO;
         }
 
         public bool UserLogin(UserLoginModel data, out LoginInfoModel login, out string message)
@@ -236,10 +236,9 @@ namespace DimensionService.Service.UserManager
                 bool state = false;
                 friendSorts = new();
                 message = string.Empty;
-                List<FriendModel> friendModels = _friendListDAO.GetFriends(userID);
-                List<string> userIDs = friendModels.Select(item => item.UserID).ToList();
+                List<FriendModel> friendModels = _friendInfoDAO.GetFriends(userID);
                 List<FriendBriefModel> friendBriefs = new();
-                friendBriefs.AddRange(_userInfoDAO.GetUserInfos(userIDs).Select(item => new FriendBriefModel
+                friendBriefs.AddRange(_userInfoDAO.GetUserInfos(friendModels.Select(item => item.UserID).ToList()).Select(item => new FriendBriefModel
                 {
                     UserID = item.UserID,
                     NickName = item.NickName,
@@ -275,12 +274,12 @@ namespace DimensionService.Service.UserManager
             {
                 bool state = false;
                 message = string.Empty;
-                if (!_friendListDAO.ConfirmFriend(data.UserID, data.FriendID))
+                if (!_friendInfoDAO.ConfirmFriend(data.UserID, data.FriendID))
                 {
-                    _friendListDAO.AddFriend(data.UserID, data.FriendID, data.VerifyInfo);
+                    _friendInfoDAO.AddFriend(data.UserID, data.FriendID, data.VerifyInfo);
                 }
                 // 如果直接确认好友关系
-                if (_friendListDAO.ConfirmFriend(data.UserID, data.FriendID))
+                if (_friendInfoDAO.ConfirmFriend(data.UserID, data.FriendID))
                 {
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
                     {
@@ -307,9 +306,9 @@ namespace DimensionService.Service.UserManager
             {
                 bool state = false;
                 message = string.Empty;
-                if (!_friendListDAO.ConfirmFriend(data.UserID, data.FriendID))
+                if (!_friendInfoDAO.ConfirmFriend(data.UserID, data.FriendID))
                 {
-                    _friendListDAO.VerifyFriend(data.UserID, data.FriendID, data.Passed);
+                    _friendInfoDAO.VerifyFriend(data.UserID, data.FriendID, data.Passed);
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
                     {
                         string userID = item.UserID == data.UserID ? data.FriendID : data.UserID;
@@ -336,7 +335,7 @@ namespace DimensionService.Service.UserManager
                 bool state = false;
                 newFriendBriefs = new();
                 message = string.Empty;
-                newFriendBriefs = JsonConvert.DeserializeObject<List<NewFriendBriefModel>>(JArray.FromObject(_friendListDAO.GetNewFriends(userID)).ToString());
+                newFriendBriefs = JsonConvert.DeserializeObject<List<NewFriendBriefModel>>(JArray.FromObject(_friendInfoDAO.GetNewFriends(userID)).ToString());
                 List<string> userIDs = newFriendBriefs.Select(item => item.UserID).ToList();
                 List<UserInfoModel> userInfos = _userInfoDAO.GetUserInfos(userIDs);
                 foreach (UserInfoModel userInfo in userInfos)
@@ -376,9 +375,9 @@ namespace DimensionService.Service.UserManager
                     friendDetails.HeadPortrait = userInfoModel.HeadPortrait;
                     friendDetails.PhoneNumber = userInfoModel.PhoneNumber;
                     friendDetails.Personalized = userInfoModel.Personalized;
-                    if (data.UserID == data.FriendID || _friendListDAO.ConfirmFriend(data.UserID, data.FriendID))
+                    if (data.UserID == data.FriendID || _friendInfoDAO.ConfirmFriend(data.UserID, data.FriendID))
                     {
-                        if (_friendListDAO.GetFriends(data.UserID).Find(item => item.UserID == data.FriendID) is FriendModel friend)
+                        if (_friendInfoDAO.GetFriends(data.UserID).Find(item => item.UserID == data.FriendID) is FriendModel friend)
                         {
                             friendDetails.RemarkName = friend.RemarkName;
                             friendDetails.RemarkInformation = friend.RemarkInformation;
@@ -412,11 +411,11 @@ namespace DimensionService.Service.UserManager
             {
                 bool state = false;
                 message = string.Empty;
-                if (_friendListDAO.ConfirmFriend(data.UserID, data.FriendID))
+                if (_friendInfoDAO.ConfirmFriend(data.UserID, data.FriendID))
                 {
                     if (data.RemarkName != null || data.RemarkInformation != null)
                     {
-                        _friendListDAO.UpdateRemark(data.UserID, data.FriendID, data.RemarkName, data.RemarkInformation);
+                        _friendInfoDAO.UpdateRemark(data.UserID, data.FriendID, data.RemarkName, data.RemarkInformation);
                         foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID))
                         {
                             _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.RemarkInfoChanged.ToString(),

@@ -9,7 +9,7 @@
         <Grid Height="120">
             <Border Background="#FFFFFF" CornerRadius="3">
                 <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="#C0C4CC"/>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
                 </Border.Effect>
             </Border>
             <Grid Margin="20">
@@ -29,7 +29,7 @@
         <Grid Height="344" Margin="0,6,0,0">
             <Border Background="#FFFFFF" CornerRadius="3">
                 <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="#C0C4CC"/>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
                 </Border.Effect>
             </Border>
             <DockPanel Margin="20">

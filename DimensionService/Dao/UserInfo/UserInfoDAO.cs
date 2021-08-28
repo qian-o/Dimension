@@ -92,7 +92,7 @@ namespace DimensionService.Dao.UserInfo
         {
             using DimensionContext context = new();
             List<UserInfoModel> userInfos = context.UserInfo.Where(item => userIDs.Any(u => u == item.UserID)).ToList();
-            foreach (var item in userInfos)
+            foreach (UserInfoModel item in userInfos)
             {
                 item.Password = string.Empty;
             }

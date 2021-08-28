@@ -14,7 +14,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Style="{StaticResource BorderWhiteGradient}" Margin="0,1,0,1" CornerRadius="7" Tag="{Binding}" Loaded="BrdDetail_Loaded" MouseLeftButtonUp="BrdDetail_MouseLeftButtonUp" TouchUp="BrdDetail_TouchUp">
+                    <Border Style="{StaticResource BorderWhiteGradient}" Tag="{Binding}" Loaded="BrdDetail_Loaded" MouseLeftButtonUp="BrdDetail_MouseLeftButtonUp" TouchUp="BrdDetail_TouchUp">
                         <Grid Margin="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40"/>

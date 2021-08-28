@@ -94,7 +94,9 @@ namespace DimensionClient.Common
             // bool online
             OnlineStatus,
             // string friendID
-            RemarkInfoChanged
+            RemarkInfoChanged,
+            // string friendID
+            ChatColumnChanged
         }
         // Page类型
         public enum PageType
@@ -462,7 +464,7 @@ namespace DimensionClient.Common
             {
                 ClientMessageBox messageBox = new(messageBoxType, message, leftButton, rightButton)
                 {
-                    Owner = window
+                    Owner = window.IsActive ? window : null
                 };
                 messageBox.ShowDialog();
                 messageBoxCloseType = messageBox.CloseType;

@@ -21,6 +21,10 @@ namespace DimensionService.Service.Attachment
 
         public FileResult GetAttachments(string fileName, int height)
         {
+            if (fileName == null)
+            {
+                fileName = "404.png";
+            }
             string filePath = Path.Combine(ClassHelper.attachmentsPath, fileName);
             if (!File.Exists(filePath))
             {
