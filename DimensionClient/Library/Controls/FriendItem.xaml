@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="UserControlMain" DataContextChanged="UserControlMain_DataContextChanged">
     <StackPanel Orientation="Vertical">
-        <Border Height="20" Width="20" HorizontalAlignment="Left" Margin="0,0,0,5" Background="#CCCCCC" CornerRadius="12">
+        <Border Height="20" Width="20" HorizontalAlignment="Left" Margin="0,5,0,5" Background="#CCCCCC" CornerRadius="12">
             <TextBlock x:Name="txbSort" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Foreground="#FFFFFF"/>
         </Border>
         <ItemsControl x:Name="itcFriendBriefs">
