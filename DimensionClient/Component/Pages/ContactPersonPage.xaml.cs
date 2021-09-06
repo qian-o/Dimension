@@ -145,13 +145,19 @@ namespace DimensionClient.Component.Pages
         #region 执行事件
         private void Load(object data)
         {
-            if (UserManagerService.GetFriendList(out List<FriendSortModel> friendSorts))
+            if (mainData.Friends == null)
             {
-                mainData.Friends = friendSorts;
+                if (UserManagerService.GetFriendList(out List<FriendSortModel> friendSorts))
+                {
+                    mainData.Friends = friendSorts;
+                }
             }
-            if (UserManagerService.GetNewFriendList(out List<NewFriendBriefModel> newFriendBrief))
+            if (mainData.NewFriends == null)
             {
-                mainData.NewFriends = newFriendBrief;
+                if (UserManagerService.GetNewFriendList(out List<NewFriendBriefModel> newFriendBrief))
+                {
+                    mainData.NewFriends = newFriendBrief;
+                }
             }
         }
         private void TxbAddFriends_PointerUp()
