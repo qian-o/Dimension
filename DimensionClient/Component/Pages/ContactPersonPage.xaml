@@ -7,7 +7,7 @@
       xmlns:viewmodels="clr-namespace:DimensionClient.Models.ViewModels" xmlns:resultmodels="clr-namespace:DimensionClient.Models.ResultModels"
       mc:Ignorable="d" 
       d:DesignHeight="548" d:DesignWidth="962"
-      x:Name="ContactPersonMain" Title="ContactPersonPage" Background="#FFFFFF" Loaded="ContactPersonMain_Loaded">
+      x:Name="ContactPersonMain" Title="ContactPersonPage" Loaded="ContactPersonMain_Loaded">
     <Page.Resources>
         <ResourceDictionary>
             <viewmodels:ContactPersonViewModel x:Key="MainData"/>

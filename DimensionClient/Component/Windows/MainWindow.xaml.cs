@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 
@@ -154,11 +155,13 @@ namespace DimensionClient.Component.Windows
                 case ClassHelper.PageType.MessageCenterPage:
                     brdMessageCenter.Tag = "1";
                     brdContactPerson.Tag = "0";
+                    grdMain.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
                     grid = brdMessageCenter.Child as Grid;
                     break;
                 case ClassHelper.PageType.ContactPersonPage:
                     brdContactPerson.Tag = "1";
                     brdMessageCenter.Tag = "0";
+                    grdMain.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"));
                     grid = brdContactPerson.Child as Grid;
                     break;
                 default:
