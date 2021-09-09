@@ -1,5 +1,6 @@
 using DimensionService.Dao.ChatColumn;
 using DimensionService.Dao.ChatLink;
+using DimensionService.Dao.ChatMessages;
 using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Dao.UserInfo;
@@ -109,6 +110,7 @@ namespace DimensionService
             services.AddScoped<IFriendInfoDAO, FriendInfoDAO>();
             services.AddScoped<IChatLinkDAO, ChatLinkDAO>();
             services.AddScoped<IChatColumnDAO, ChatColumnDAO>();
+            services.AddScoped<IChatMessagesDAO, ChatMessagesDAO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

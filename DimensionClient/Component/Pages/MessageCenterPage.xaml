@@ -70,12 +70,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#F56C6C" CornerRadius="20" DockPanel.Dock="Left"/>
                             <StackPanel Orientation="Vertical" Margin="8,0,0,0">
                                 <TextBlock Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Left" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="2,8,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Left" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="2,8,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -84,12 +86,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#F56C6C" CornerRadius="20" DockPanel.Dock="Left"/>
                             <StackPanel Orientation="Vertical" Margin="8,0,0,0">
                                 <TextBlock Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Left" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="2,8,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Left" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="2,8,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -98,12 +102,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#F56C6C" CornerRadius="20" DockPanel.Dock="Left"/>
                             <StackPanel Orientation="Vertical" Margin="8,0,0,0">
                                 <TextBlock Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Left" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="2,8,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Left" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="2,8,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -112,12 +118,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#67C23A" CornerRadius="20" DockPanel.Dock="Right"/>
                             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                                 <TextBlock HorizontalAlignment="Right" Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Right" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="8,2,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Right" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="8,2,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -126,12 +134,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#67C23A" CornerRadius="20" DockPanel.Dock="Right"/>
                             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                                 <TextBlock HorizontalAlignment="Right" Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Right" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="8,2,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Right" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="8,2,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>
@@ -140,12 +150,14 @@
                             <Border Height="40" Width="40" VerticalAlignment="Top" Background="#67C23A" CornerRadius="20" DockPanel.Dock="Right"/>
                             <StackPanel Orientation="Vertical" Margin="0,0,8,0">
                                 <TextBlock HorizontalAlignment="Right" Foreground="#9FA1A2" Text="10:20"/>
-                                <Border HorizontalAlignment="Right" Margin="0,4,0,0" Background="#FFFFFF" CornerRadius="8,2,8,8">
-                                    <Border.Effect>
-                                        <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                                    </Border.Effect>
+                                <Grid HorizontalAlignment="Right" Margin="0,4,0,0">
+                                    <Border Background="#FFFFFF" CornerRadius="8,2,8,8">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <TextBlock Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap" Text="测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息测试信息"/>
-                                </Border>
+                                </Grid>
                             </StackPanel>
                         </DockPanel>
                     </Border>

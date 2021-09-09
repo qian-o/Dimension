@@ -17,7 +17,7 @@ namespace DimensionService.Dao.FriendInfo
         {
             using DimensionContext context = new();
             FriendInfoModel userInfo = context.FriendInfo.Where(item => item.UserID == userID).FirstOrDefault();
-            return JsonConvert.DeserializeObject<List<FriendModel>>(userInfo.Friends).Find(friend => friend.UserID == friendID) != null;
+            return JsonConvert.DeserializeObject<List<FriendModel>>(userInfo.Friends).Exists(friend => friend.UserID == friendID);
         }
 
         public List<FriendModel> GetFriends(string userID)

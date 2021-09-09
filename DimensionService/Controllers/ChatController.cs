@@ -1,4 +1,5 @@
 ﻿using DimensionService.Models;
+using DimensionService.Models.DimensionModels;
 using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
 using DimensionService.Service.Chat;
@@ -55,6 +56,25 @@ namespace DimensionService.Controllers
             {
                 State = _chatService.GetChatColumnInfo(userID, out List<ChatColumnInfoModel> chatColumnInfos, out string message),
                 Data = chatColumnInfos,
+                Message = message
+            };
+            return webResult;
+        }
+
+        /// <summary>
+        /// 获取聊天记录
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetChattingRecords")]
+        [HttpGet]
+        public WebResultModel GetChattingRecords(string chatID)
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+
+            WebResultModel webResult = new()
+            {
+                State = _chatService.GetChattingRecords(userID, chatID, out List<ChatMessagesModel> chatMessages, out string message),
+                Data = chatMessages,
                 Message = message
             };
             return webResult;

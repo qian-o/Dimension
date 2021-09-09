@@ -1,6 +1,7 @@
 ﻿using DimensionService.Common;
 using DimensionService.Dao.ChatColumn;
 using DimensionService.Dao.ChatLink;
+using DimensionService.Dao.ChatMessages;
 using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.UserInfo;
 using DimensionService.Hubs;
@@ -23,14 +24,16 @@ namespace DimensionService.Service.Chat
         private readonly IFriendInfoDAO _friendInfoDAO;
         private readonly IChatLinkDAO _chatLinkDAO;
         private readonly IChatColumnDAO _chatColumnDAO;
+        private readonly IChatMessagesDAO _chatMessagesDAO;
 
-        public ChatService(IHubContext<InformHub> hub, IUserInfoDAO userInfoDAO, IFriendInfoDAO friendInfoDAO, IChatLinkDAO chatLinkDAO, IChatColumnDAO chatColumnDAO)
+        public ChatService(IHubContext<InformHub> hub, IUserInfoDAO userInfoDAO, IFriendInfoDAO friendInfoDAO, IChatLinkDAO chatLinkDAO, IChatColumnDAO chatColumnDAO, IChatMessagesDAO chatMessagesDAO)
         {
             _hub = hub;
             _userInfoDAO = userInfoDAO;
             _friendInfoDAO = friendInfoDAO;
             _chatLinkDAO = chatLinkDAO;
             _chatColumnDAO = chatColumnDAO;
+            _chatMessagesDAO = chatMessagesDAO;
         }
 
         public bool AddChat(AddChatModel data, out string message)
@@ -80,6 +83,31 @@ namespace DimensionService.Service.Chat
                     ChatID = chatColumns.Find(chat => chat.FriendID == item.UserID).ChatID
                 }));
                 state = true;
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool GetChattingRecords(string userID, string chatID, out List<ChatMessagesModel> chatMessages, out string message)
+        {
+            try
+            {
+                bool state = false;
+                chatMessages = null;
+                message = string.Empty;
+                if (_chatLinkDAO.ConfirmChatID(userID, chatID))
+                {
+                    chatMessages = _chatMessagesDAO.GetChatMessages(chatID);
+                    state = true;
+                }
+                else
+                {
+                    message = "该聊天室不属于您。";
+                }
+
                 return state;
             }
             catch (Exception)
