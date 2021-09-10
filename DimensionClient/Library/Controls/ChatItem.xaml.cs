@@ -2,11 +2,13 @@
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace DimensionClient.Library.Controls
 {
@@ -17,10 +19,18 @@ namespace DimensionClient.Library.Controls
     {
         private ChatColumnInfoModel chatColumn;
         private static Border borderSelect;
+        private readonly ItemsControl itemsControl;
 
         public ChatItem()
         {
             InitializeComponent();
+
+            itemsControl = new ItemsControl
+            {
+                Style = ClassHelper.FindResource<Style>("ItemsControlVirtualization"),
+                ItemTemplateSelector = ClassHelper.FindResource<DataTemplateSelector>("ChatTemplateSelector")
+            };
+            itemsControl.Loaded += ItemsControl_Loaded;
         }
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
@@ -33,6 +43,18 @@ namespace DimensionClient.Library.Controls
             SignalRClientHelper.NewMessageSignalR -= SignalRClientHelper_NewMessageSignalR;
         }
 
+        private void ItemsControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (itemsControl.Tag == null)
+            {
+                if (VisualTreeHelper.GetChild(itemsControl, 0) is ScrollViewer scroll)
+                {
+                    scroll.ScrollToEnd();
+                }
+                itemsControl.Tag = true;
+            }
+        }
+
         private void UserControlMain_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (DataContext is ChatColumnInfoModel chatColumnInfo)
@@ -41,6 +63,10 @@ namespace DimensionClient.Library.Controls
                 txbNickName.Text = chatColumnInfo.NickName;
                 txbRemarkName.Text = chatColumnInfo.RemarkName;
                 chatColumn = chatColumnInfo;
+                chatColumn.ChatContent = new ObservableCollection<ChatMessagesModel>();
+                chatColumn.Items = itemsControl;
+
+                itemsControl.ItemsSource = chatColumn.ChatContent;
                 ThreadPool.QueueUserWorkItem(Load, chatColumnInfo.ChatID);
             }
         }
@@ -73,6 +99,17 @@ namespace DimensionClient.Library.Controls
                             {
                                 Dispatcher.Invoke(delegate
                                 {
+                                    if (itemsControl.IsLoaded)
+                                    {
+                                        if (VisualTreeHelper.GetChild(itemsControl, 0) is ScrollViewer scroll)
+                                        {
+                                            if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == ClassHelper.UserID)
+                                            {
+                                                scroll.ScrollToEnd();
+                                            }
+                                        }
+                                    }
+
                                     chatColumn.ChatContent.Add(item);
                                 });
                             }
@@ -96,6 +133,7 @@ namespace DimensionClient.Library.Controls
                         {
                             chatColumn.ChatContent.Add(item);
                         }
+
                     });
                 }
             }

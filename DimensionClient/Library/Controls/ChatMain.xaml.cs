@@ -5,7 +5,6 @@ using DimensionClient.Service.Chat;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace DimensionClient.Library.Controls
 {
@@ -42,8 +41,7 @@ namespace DimensionClient.Library.Controls
             ChatColumnInfoModel chatColumnInfo = data as ChatColumnInfoModel;
             chatMainData.ChatID = chatColumnInfo.ChatID;
             chatMainData.FriendNickName = string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? chatColumnInfo.NickName : chatColumnInfo.RemarkName;
-            chatMainData.ChatContent = chatColumnInfo.ChatContent;
-            ScrollViewer scroll = VisualTreeHelper.GetChild(itcChat, 0) as ScrollViewer;
+            brdChat.Child = chatColumnInfo.Items;
         }
 
         #region 执行事件

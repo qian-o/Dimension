@@ -314,26 +314,34 @@ namespace DimensionClient.Common
         {
             string returnStr = string.Empty;
             responseObj = null;
-            switch (mode)
+            try
             {
-                case "GET": returnStr = HttpHelper.SendGet(url, true); break;
-                case "POST": returnStr = HttpHelper.SendPost(url, requestObj, true); break;
-                default:
-                    break;
+                switch (mode)
+                {
+                    case "GET": returnStr = HttpHelper.SendGet(url, true); break;
+                    case "POST": returnStr = HttpHelper.SendPost(url, requestObj, true); break;
+                    default:
+                        break;
+                }
+                if (string.IsNullOrEmpty(returnStr))
+                {
+                    MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));
+                    return false;
+                }
+                responseObj = JObject.Parse(returnStr);
+                if (Convert.ToBoolean(responseObj["State"], cultureInfo))
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageAlert(null, 3, responseObj["Message"].ToString());
+                    return false;
+                }
             }
-            if (string.IsNullOrEmpty(returnStr))
+            catch (Exception ex)
             {
-                MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));
-                return false;
-            }
-            responseObj = JObject.Parse(returnStr);
-            if (Convert.ToBoolean(responseObj["State"], cultureInfo))
-            {
-                return true;
-            }
-            else
-            {
-                MessageAlert(null, 3, responseObj["Message"].ToString());
+                MessageAlert(null, 3, ex.Message);
                 return false;
             }
         }

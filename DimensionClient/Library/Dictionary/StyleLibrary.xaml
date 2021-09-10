@@ -1509,11 +1509,11 @@
     </Style>
 
     <DataTemplate x:Key="OwnTemplate">
-        <controls:MessageOwn DataContext="{Binding}" Margin="0,6,0,6"/>
+        <controls:MessageOwn DataContext="{Binding}"/>
     </DataTemplate>
     
     <DataTemplate x:Key="FriendTemplate">
-        <controls:MessageFriend DataContext="{Binding}" Margin="0,6,0,6"/>
+        <controls:MessageFriend DataContext="{Binding}"/>
     </DataTemplate>
 
 </ResourceDictionary>

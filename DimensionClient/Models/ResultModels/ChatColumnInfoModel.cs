@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace DimensionClient.Models.ResultModels
 {
@@ -15,6 +16,8 @@ namespace DimensionClient.Models.ResultModels
         // 聊天ID
         public string ChatID { get; set; }
         // 聊天内容
-        public ObservableCollection<ChatMessagesModel> ChatContent { get; set; } = new ObservableCollection<ChatMessagesModel>();
+        public ObservableCollection<ChatMessagesModel> ChatContent { get; set; }
+        // 聊天控件
+        public ItemsControl Items { get; set; }
     }
 }
