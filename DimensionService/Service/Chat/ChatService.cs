@@ -115,5 +115,58 @@ namespace DimensionService.Service.Chat
                 throw;
             }
         }
+
+        public bool SendMessage(SendMessageModel data, out string message)
+        {
+            try
+            {
+                bool state = false;
+                message = string.Empty;
+                if (_chatLinkDAO.GetReceiverID(data.UserID, data.ChatID) is string receiverID)
+                {
+                    ChatMessagesModel chatMessages = new()
+                    {
+                        ChatID = data.ChatID,
+                        SenderID = data.UserID,
+                        ReceiverID = receiverID,
+                        MessageType = data.MessageType,
+                        MessageContent = data.MessageContent,
+                        CreateTime = DateTime.Now
+                    };
+                    if (_chatMessagesDAO.AddMessage(chatMessages))
+                    {
+                        if (!_chatColumnDAO.ChatColumnExist(receiverID, data.ChatID))
+                        {
+                            _chatColumnDAO.AddChatColumn(receiverID, data.UserID, data.ChatID);
+                            foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == receiverID))
+                            {
+                                _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.ChatColumnChanged.ToString(),
+                                                                                     arg1: data.UserID);
+                            }
+                        }
+                        foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID || item.UserID == receiverID))
+                        {
+                            _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.NewMessage.ToString(),
+                                                                                 arg1: data.ChatID);
+                        }
+                        state = true;
+                    }
+                    else
+                    {
+                        message = "消息发送失败。";
+                    }
+                }
+                else
+                {
+                    message = "该聊天室不属于您。";
+                }
+
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

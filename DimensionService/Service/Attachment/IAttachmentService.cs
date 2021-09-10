@@ -8,5 +8,6 @@ namespace DimensionService.Service.Attachment
     {
         Task<bool> UploadAttachment(IFormFile file, string fileName);
         FileResult GetAttachments(string fileName, int height);
+        FileResult GetHeadPortraits(string userID, int height);
     }
 }

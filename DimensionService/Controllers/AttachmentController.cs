@@ -52,5 +52,18 @@ namespace DimensionService.Controllers
         {
             return _attachment.GetAttachments(fileName, height);
         }
+
+        /// <summary>
+        /// 根据用户ID获取头像
+        /// </summary>
+        /// <param name="userID">用户ID</param>
+        /// <param name="height">高度</param>
+        /// <returns></returns>
+        [Route("GetHeadPortraits/{userID?}")]
+        [HttpGet]
+        public FileResult GetHeadPortraits(string userID, int height)
+        {
+            return _attachment.GetHeadPortraits(userID, height);
+        }
     }
 }

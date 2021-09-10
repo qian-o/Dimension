@@ -86,7 +86,9 @@ namespace DimensionService.Common
             // string friendID
             RemarkInfoChanged,
             // string friendID
-            ChatColumnChanged
+            ChatColumnChanged,
+            // string chatID
+            NewMessage
         }
         // 新朋友类别
         public enum NewFriendType

@@ -12,5 +12,7 @@ namespace DimensionService.Service.Chat
         bool GetChatColumnInfo(string userID, out List<ChatColumnInfoModel> chatColumnInfos, out string message);
 
         bool GetChattingRecords(string userID, string chatID, out List<ChatMessagesModel> chatMessages, out string message);
+
+        bool SendMessage(SendMessageModel data, out string message);
     }
 }

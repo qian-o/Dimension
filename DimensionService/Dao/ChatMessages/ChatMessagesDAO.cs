@@ -12,5 +12,12 @@ namespace DimensionService.Dao.ChatMessages
             using DimensionContext context = new();
             return context.ChatMessages.Where(item => item.ChatID == chatID).ToList();
         }
+
+        public bool AddMessage(ChatMessagesModel message)
+        {
+            using DimensionContext context = new();
+            context.ChatMessages.Add(message);
+            return context.SaveChanges() > 0;
+        }
     }
 }

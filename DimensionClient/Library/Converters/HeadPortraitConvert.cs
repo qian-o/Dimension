@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace DimensionClient.Library.Converters
 {
-    public class ImageSourceOnlineConvert : IValueConverter
+    public class HeadPortraitConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -15,7 +15,7 @@ namespace DimensionClient.Library.Converters
             {
                 height = System.Convert.ToInt32(parameter, ClassHelper.cultureInfo);
             }
-            string uri = $"{ClassHelper.servicePath}/api/Attachment/GetAttachments/{value}";
+            string uri = $"{ClassHelper.servicePath}/api/Attachment/GetHeadPortraits/{value}";
             uri += height != 0 ? $"?height={height}" : string.Empty;
             return new ImageSourceConverter().ConvertFrom(uri);
         }

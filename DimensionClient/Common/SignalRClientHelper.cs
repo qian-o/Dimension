@@ -10,6 +10,7 @@ namespace DimensionClient.Common
     public delegate void FriendChanged(string sort, string friendID, bool state);
     public delegate void RemarkInfoChanged(string friendID);
     public delegate void ChatColumnChanged(string friendID);
+    public delegate void NewMessage(string chatID);
 
     public static class SignalRClientHelper
     {
@@ -68,6 +69,19 @@ namespace DimensionClient.Common
                 GetChatColumnChanged -= value;
             }
         }
+        // 新消息
+        private static NewMessage GetNewMessage;
+        public static event NewMessage NewMessageSignalR
+        {
+            add
+            {
+                GetNewMessage += value;
+            }
+            remove
+            {
+                GetNewMessage -= value;
+            }
+        }
         #endregion
 
         public static async void InitializeConnection()
@@ -85,6 +99,7 @@ namespace DimensionClient.Common
                 connection.On<bool>(ClassHelper.HubMessageType.OnlineStatus.ToString(), Connection_OnlineStatus);
                 connection.On<string>(ClassHelper.HubMessageType.RemarkInfoChanged.ToString(), Connection_RemarkInfoChanged);
                 connection.On<string>(ClassHelper.HubMessageType.ChatColumnChanged.ToString(), Connection_ChatColumnChanged);
+                connection.On<string>(ClassHelper.HubMessageType.NewMessage.ToString(), Connection_NewMessage);
                 await connection.StartAsync();
             }
             catch (Exception)
@@ -127,6 +142,11 @@ namespace DimensionClient.Common
         private static void Connection_ChatColumnChanged(string friendID)
         {
             GetChatColumnChanged?.Invoke(friendID);
+        }
+
+        private static void Connection_NewMessage(string chatID)
+        {
+            GetNewMessage?.Invoke(chatID);
         }
     }
 }

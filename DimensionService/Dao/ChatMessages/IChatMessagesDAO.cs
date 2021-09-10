@@ -6,5 +6,7 @@ namespace DimensionService.Dao.ChatMessages
     public interface IChatMessagesDAO
     {
         List<ChatMessagesModel> GetChatMessages(string chatID);
+
+        bool AddMessage(ChatMessagesModel message);
     }
 }

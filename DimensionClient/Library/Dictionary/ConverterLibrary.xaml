@@ -9,4 +9,5 @@
     <converters:BoolVisibilityConvert x:Key="BoolVisibilityConvert"/>
     <converters:PersonalDetailsConvert x:Key="PersonalDetailsConvert"/>
     <converters:InversionVisibilityConvert x:Key="InversionVisibilityConvert"/>
+    <converters:HeadPortraitConvert x:Key="HeadPortraitConvert"/>
 </ResourceDictionary>

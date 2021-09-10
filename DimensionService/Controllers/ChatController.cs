@@ -79,5 +79,26 @@ namespace DimensionService.Controllers
             };
             return webResult;
         }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="data">请求数据</param>
+        /// <returns></returns>
+        [Route("SendMessage")]
+        [HttpPost]
+        public WebResultModel SendMessage(SendMessageModel data)
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+            data.UserID = userID;
+
+            WebResultModel webResult = new()
+            {
+                State = _chatService.SendMessage(data, out string message),
+                Data = null,
+                Message = message
+            };
+            return webResult;
+        }
     }
 }

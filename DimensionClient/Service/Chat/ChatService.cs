@@ -30,5 +30,30 @@ namespace DimensionClient.Service.Chat
                 return false;
             }
         }
+
+        public static bool GetChattingRecords(string chatID, out List<ChatMessagesModel> chatMessages)
+        {
+            chatMessages = null;
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/GetChattingRecords?chatID={chatID}", "GET", out JObject responseObj))
+            {
+                chatMessages = JsonConvert.DeserializeObject<List<ChatMessagesModel>>(responseObj["Data"].ToString());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool SendMessage(string chatID, ClassHelper.MessageType messageType, string messageContent)
+        {
+            JObject requestObj = new()
+            {
+                { "ChatID", chatID },
+                { "MessageType", messageType.ToString() },
+                { "MessageContent", messageContent }
+            };
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/SendMessage", "POST", out _, requestObj: requestObj);
+        }
     }
 }

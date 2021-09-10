@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.MessageOwn"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="UserControlMain" DataContextChanged="UserControlMain_DataContextChanged">
+    <Border>
+        <DockPanel Margin="100,0,0,0">
+            <Image x:Name="imgHead" Height="40" Width="40" VerticalAlignment="Top" Source="{Binding Converter={StaticResource HeadPortraitConvert}, ConverterParameter=80}" DockPanel.Dock="Right">
+                <Image.Clip>
+                    <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20"/>
+                </Image.Clip>
+            </Image>
+            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                <TextBlock x:Name="txbTime" HorizontalAlignment="Right" Foreground="#9FA1A2"/>
+                <Grid HorizontalAlignment="Right" Margin="0,4,0,0">
+                    <Border Background="#FFFFFF" CornerRadius="8,2,8,8">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                        </Border.Effect>
+                    </Border>
+                    <TextBlock x:Name="txbContent" Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap"/>
+                </Grid>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

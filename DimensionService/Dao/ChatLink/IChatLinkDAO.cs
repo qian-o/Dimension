@@ -5,5 +5,7 @@
         string GetChatID(string userID1, string userID2);
 
         bool ConfirmChatID(string userID, string chatID);
+
+        string GetReceiverID(string userID, string chatID);
     }
 }

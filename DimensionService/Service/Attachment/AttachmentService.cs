@@ -1,4 +1,6 @@
 ﻿using DimensionService.Common;
+using DimensionService.Dao.UserInfo;
+using DimensionService.Models.DimensionModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -12,6 +14,13 @@ namespace DimensionService.Service.Attachment
 {
     public class AttachmentService : IAttachmentService
     {
+        private readonly IUserInfoDAO _userInfoDAO;
+
+        public AttachmentService(IUserInfoDAO userInfoDAO)
+        {
+            _userInfoDAO = userInfoDAO;
+        }
+
         public async Task<bool> UploadAttachment(IFormFile file, string fileName)
         {
             using Stream stream = file.OpenReadStream();
@@ -51,6 +60,12 @@ namespace DimensionService.Service.Attachment
             return ms.GetType() == typeof(MemoryStream)
                 ? new FileContentResult(((MemoryStream)ms).ToArray(), contentType ?? "application/octet-stream")
                 : new FileStreamResult(ms, contentType ?? "application/octet-stream");
+        }
+
+        public FileResult GetHeadPortraits(string userID, int height)
+        {
+            string fileName = _userInfoDAO.UserInfoFindForUserID(userID) is UserInfoModel userInfo ? userInfo.HeadPortrait : "404.png";
+            return GetAttachments(fileName, height);
         }
     }
 }

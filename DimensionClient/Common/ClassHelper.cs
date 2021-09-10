@@ -26,7 +26,7 @@ namespace DimensionClient.Common
         // 服务器版本
         public const string serviceVersion = "1.0";
         // 服务器地址 ( http://47.96.133.119, http://localhost:5000 )
-        public const string servicePath = "http://47.96.133.119";
+        public const string servicePath = "http://localhost:5000";
         // 客户端标识
         public static readonly UseDevice device = UseDevice.Client;
         // 程序启动目录
@@ -96,7 +96,9 @@ namespace DimensionClient.Common
             // string friendID
             RemarkInfoChanged,
             // string friendID
-            ChatColumnChanged
+            ChatColumnChanged,
+            // string chatID
+            NewMessage
         }
         // Page类型
         public enum PageType
@@ -109,6 +111,15 @@ namespace DimensionClient.Common
         {
             Add,
             Verify
+        }
+        // 消息类别
+        public enum MessageType
+        {
+            Text,
+            Voice,
+            File,
+            VoiceTalk,
+            VideoTalk
         }
         #endregion
 

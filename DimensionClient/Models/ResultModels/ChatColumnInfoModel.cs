@@ -1,4 +1,6 @@
-﻿namespace DimensionClient.Models.ResultModels
+﻿using System.Collections.ObjectModel;
+
+namespace DimensionClient.Models.ResultModels
 {
     public class ChatColumnInfoModel
     {
@@ -12,5 +14,7 @@
         public string HeadPortrait { get; set; }
         // 聊天ID
         public string ChatID { get; set; }
+        // 聊天内容
+        public ObservableCollection<ChatMessagesModel> ChatContent { get; set; } = new ObservableCollection<ChatMessagesModel>();
     }
 }

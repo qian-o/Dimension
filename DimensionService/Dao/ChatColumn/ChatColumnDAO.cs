@@ -25,7 +25,7 @@ namespace DimensionService.Dao.ChatColumn
             lock (bodyLock)
             {
                 using DimensionContext context = new();
-                if (context.ChatColumn.Where(item => item.UserID == userID && item.FriendID == friendID && item.ChatID == chatID).FirstOrDefault() == null)
+                if (!context.ChatColumn.Where(item => item.UserID == userID && item.FriendID == friendID && item.ChatID == chatID).Any())
                 {
                     context.ChatColumn.Add(new ChatColumnModel
                     {
@@ -43,6 +43,12 @@ namespace DimensionService.Dao.ChatColumn
         {
             using DimensionContext context = new();
             return context.ChatColumn.Where(item => item.UserID == userID).ToList();
+        }
+
+        public bool ChatColumnExist(string userID, string chatID)
+        {
+            using DimensionContext context = new();
+            return context.ChatColumn.Where(item => item.UserID == userID && item.ChatID == chatID).Any();
         }
     }
 }
