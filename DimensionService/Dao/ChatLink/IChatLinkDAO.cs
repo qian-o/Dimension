@@ -6,6 +6,6 @@
 
         bool ConfirmChatID(string userID, string chatID);
 
-        string GetReceiverID(string userID, string chatID);
+        string GetPeerID(string userID, string chatID);
     }
 }

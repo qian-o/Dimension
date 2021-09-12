@@ -22,9 +22,9 @@
                 <TextBlock x:Name="txbLastMessage" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="#909399" TextTrimming="CharacterEllipsis"/>
             </Grid>
             <Grid Grid.Column="2">
-                <TextBlock x:Name="txbBadgeTime" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#303133"/>
-                <Border x:Name="brdBadge" Height="16" Width="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,2" Background="#67C23A" CornerRadius="8" Visibility="Collapsed">
-                    <TextBlock x:Name="txbBadgeNumber" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFFFFF" FontSize="8" Text="1"/>
+                <TextBlock x:Name="txbLastTime" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="#303133"/>
+                <Border x:Name="brdBadge" Height="16" MaxWidth="34" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,2" Background="#67C23A" CornerRadius="8" Visibility="Collapsed">
+                    <TextBlock x:Name="txbBadgeNumber" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,5,0" Foreground="#FFFFFF" FontSize="11"/>
                 </Border>
             </Grid>
         </Grid>

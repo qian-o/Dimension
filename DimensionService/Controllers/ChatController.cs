@@ -100,5 +100,26 @@ namespace DimensionService.Controllers
             };
             return webResult;
         }
+
+        /// <summary>
+        /// 消息置为已读
+        /// </summary>
+        /// <param name="data">请求数据</param>
+        /// <returns></returns>
+        [Route("ReadMessage")]
+        [HttpPost]
+        public WebResultModel ReadMessage(ReadMessageModel data)
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+            data.UserID = userID;
+
+            WebResultModel webResult = new()
+            {
+                State = _chatService.ReadMessage(data, out string message),
+                Data = null,
+                Message = message
+            };
+            return webResult;
+        }
     }
 }

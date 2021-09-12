@@ -17,6 +17,7 @@ namespace DimensionService.Models.DimensionModels
         // 接收方ID
         public string ReceiverID { get; set; }
         // 接收方是否已读
+        [ConcurrencyCheck]
         public bool IsRead { get; set; }
         // 消息类型
         public ClassHelper.MessageType MessageType { get; set; }
@@ -26,6 +27,7 @@ namespace DimensionService.Models.DimensionModels
         [ConcurrencyCheck]
         public int IsVisible { get; set; }
         // 消息是否撤回
+        [ConcurrencyCheck]
         public bool IsWithdraw { get; set; }
         // 创建时间
         public DateTime CreateTime { get; set; }

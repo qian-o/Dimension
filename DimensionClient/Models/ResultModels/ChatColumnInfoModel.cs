@@ -1,23 +1,78 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
+﻿using DimensionClient.Common;
+using System.Collections.ObjectModel;
 
 namespace DimensionClient.Models.ResultModels
 {
-    public class ChatColumnInfoModel
+    public class ChatColumnInfoModel : ModelBase
     {
+        private string nickName;
+        private string remarkName;
+        private string headPortrait;
+        private ObservableCollection<ChatMessagesModel> chatContent;
+        private int unread;
+
         // 好友ID
         public string FriendID { get; set; }
         // 昵称
-        public string NickName { get; set; }
+        public string NickName
+        {
+            get => nickName;
+            set
+            {
+                nickName = value;
+                OnPropertyChanged(nameof(NickName));
+            }
+        }
         // 备注名
-        public string RemarkName { get; set; }
+        public string RemarkName
+        {
+            get => remarkName;
+            set
+            {
+                remarkName = value;
+                OnPropertyChanged(nameof(RemarkName));
+            }
+        }
         // 头像
-        public string HeadPortrait { get; set; }
+        public string HeadPortrait
+        {
+            get => headPortrait;
+            set
+            {
+                headPortrait = value;
+                OnPropertyChanged(nameof(HeadPortrait));
+            }
+        }
         // 聊天ID
         public string ChatID { get; set; }
         // 聊天内容
-        public ObservableCollection<ChatMessagesModel> ChatContent { get; set; }
-        // 聊天控件
-        public ItemsControl Items { get; set; }
+        public ObservableCollection<ChatMessagesModel> ChatContent
+        {
+            get => chatContent;
+            set
+            {
+                chatContent = value;
+                OnPropertyChanged(nameof(ChatContent));
+            }
+        }
+        // 未读数
+        public int Unread
+        {
+            get => unread;
+            set
+            {
+                unread = value;
+                OnPropertyChanged(nameof(Unread));
+            }
+        }
+
+        public override void InitializeVariable()
+        {
+            nickName = string.Empty;
+            remarkName = string.Empty;
+            headPortrait = string.Empty;
+            chatContent = null;
+            unread = 0;
+        }
     }
 }

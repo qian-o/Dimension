@@ -57,7 +57,7 @@ namespace DimensionService.Dao.ChatLink
             return context.ChatLink.FirstOrDefault(item => item.ChatID == chatID) is ChatLinkModel chatLink && (chatLink.UserID1 == userID || chatLink.UserID2 == userID);
         }
 
-        public string GetReceiverID(string userID, string chatID)
+        public string GetPeerID(string userID, string chatID)
         {
             using DimensionContext context = new();
             return context.ChatLink.FirstOrDefault(item => item.ChatID == chatID) is ChatLinkModel chatLink

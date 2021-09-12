@@ -1,12 +1,16 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Library.Converters;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -19,18 +23,22 @@ namespace DimensionClient.Library.Controls
     {
         private ChatColumnInfoModel chatColumn;
         private static Border borderSelect;
-        private readonly ItemsControl itemsControl;
+        public MasterChat MasterChat { get; private set; } = new MasterChat();
 
         public ChatItem()
         {
             InitializeComponent();
 
-            itemsControl = new ItemsControl
-            {
-                Style = ClassHelper.FindResource<Style>("ItemsControlVirtualization"),
-                ItemTemplateSelector = ClassHelper.FindResource<DataTemplateSelector>("ChatTemplateSelector")
-            };
-            itemsControl.Loaded += ItemsControl_Loaded;
+            imgHead.SetBinding(DataContextProperty, "HeadPortrait");
+            txbNickName.SetBinding(Run.TextProperty, "NickName");
+            txbRemarkName.SetBinding(Run.TextProperty, "RemarkName");
+            brdBadge.SetBinding(VisibilityProperty, new Binding { Path = new PropertyPath("Unread"), Converter = ClassHelper.FindResource<BoolVisibilityConvert>("BoolVisibilityConvert") });
+            txbBadgeNumber.SetBinding(TextBlock.TextProperty, "Unread");
+
+            MasterChat.itcMasterChat.SetBinding(ItemsControl.ItemsSourceProperty, "ChatContent");
+            MasterChat.brdUnread.IsVisibleChanged += BrdUnread_IsVisibleChanged;
+            MasterChat.Loaded += MasterChat_Loaded;
+            MasterChat.Unloaded += MasterChat_Unloaded;
         }
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
@@ -43,15 +51,46 @@ namespace DimensionClient.Library.Controls
             SignalRClientHelper.NewMessageSignalR -= SignalRClientHelper_NewMessageSignalR;
         }
 
-        private void ItemsControl_Loaded(object sender, RoutedEventArgs e)
+        private void MasterChat_Loaded(object sender, RoutedEventArgs e)
         {
-            if (itemsControl.Tag == null)
+            if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
             {
-                if (VisualTreeHelper.GetChild(itemsControl, 0) is ScrollViewer scroll)
+                scroll.ScrollChanged += Scroll_ScrollChanged;
+                if (MasterChat.itcMasterChat.Tag == null || chatColumn.Unread > 0)
                 {
+                    if (MasterChat.brdUnread.Visibility == Visibility.Collapsed && chatColumn.Unread > 0)
+                    {
+                        ThreadPool.QueueUserWorkItem(ReadMessage);
+                    }
                     scroll.ScrollToEnd();
+                    MasterChat.itcMasterChat.Tag = true;
                 }
-                itemsControl.Tag = true;
+            }
+
+        }
+
+        private void MasterChat_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+            {
+                scroll.ScrollChanged -= Scroll_ScrollChanged;
+            }
+        }
+
+        private void Scroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            ScrollViewer scroll = sender as ScrollViewer;
+            if (scroll.VerticalOffset > scroll.ScrollableHeight - 50)
+            {
+                MasterChat.brdUnread.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BrdUnread_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (chatColumn.Unread > 0 && MasterChat.brdUnread.Visibility == Visibility.Collapsed)
+            {
+                ThreadPool.QueueUserWorkItem(ReadMessage);
             }
         }
 
@@ -59,15 +98,22 @@ namespace DimensionClient.Library.Controls
         {
             if (DataContext is ChatColumnInfoModel chatColumnInfo)
             {
-                imgHead.DataContext = chatColumnInfo.HeadPortrait;
-                txbNickName.Text = chatColumnInfo.NickName;
-                txbRemarkName.Text = chatColumnInfo.RemarkName;
                 chatColumn = chatColumnInfo;
                 chatColumn.ChatContent = new ObservableCollection<ChatMessagesModel>();
-                chatColumn.Items = itemsControl;
+                chatColumn.ChatContent.CollectionChanged += ChatContent_CollectionChanged;
 
-                itemsControl.ItemsSource = chatColumn.ChatContent;
+                MasterChat.DataContext = chatColumn;
+
                 ThreadPool.QueueUserWorkItem(Load, chatColumnInfo.ChatID);
+            }
+        }
+
+        private void ChatContent_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (chatColumn.ChatContent.LastOrDefault() is ChatMessagesModel chatMessages)
+            {
+                txbLastMessage.Text = chatMessages.MessageContent;
+                txbLastTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
             }
         }
 
@@ -99,9 +145,9 @@ namespace DimensionClient.Library.Controls
                             {
                                 Dispatcher.Invoke(delegate
                                 {
-                                    if (itemsControl.IsLoaded)
+                                    if (MasterChat.IsLoaded)
                                     {
-                                        if (VisualTreeHelper.GetChild(itemsControl, 0) is ScrollViewer scroll)
+                                        if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
                                         {
                                             if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == ClassHelper.UserID)
                                             {
@@ -109,11 +155,33 @@ namespace DimensionClient.Library.Controls
                                             }
                                         }
                                     }
-
                                     chatColumn.ChatContent.Add(item);
                                 });
                             }
                         }
+                        int unread = chatMessages.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw).Count();
+                        Dispatcher.Invoke(delegate
+                        {
+                            if (MasterChat.IsLoaded && unread > 0)
+                            {
+                                if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+                                {
+                                    if (scroll.VerticalOffset > scroll.ScrollableHeight - 50)
+                                    {
+                                        ThreadPool.QueueUserWorkItem(ReadMessage);
+                                    }
+                                    else
+                                    {
+                                        chatColumn.Unread = unread;
+                                        MasterChat.brdUnread.Visibility = Visibility.Visible;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                chatColumn.Unread = unread;
+                            }
+                        });
                     }
                 }
 
@@ -123,18 +191,35 @@ namespace DimensionClient.Library.Controls
         #region 执行事件
         private void Load(object data)
         {
-            if (chatColumn.ChatContent.Count == 0)
+            lock (chatColumn.ChatContent)
             {
-                if (ChatService.GetChattingRecords(data.ToString(), out List<ChatMessagesModel> chatMessages))
+                if (chatColumn.ChatContent.Count == 0)
                 {
-                    Dispatcher.Invoke(delegate
+                    if (ChatService.GetChattingRecords(data.ToString(), out List<ChatMessagesModel> chatMessages))
                     {
-                        foreach (ChatMessagesModel item in chatMessages)
+                        Dispatcher.Invoke(delegate
                         {
-                            chatColumn.ChatContent.Add(item);
-                        }
-
-                    });
+                            foreach (ChatMessagesModel item in chatMessages)
+                            {
+                                chatColumn.ChatContent.Add(item);
+                            }
+                        });
+                        chatColumn.Unread = chatMessages.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw).Count();
+                        Dispatcher.Invoke(delegate
+                        {
+                            if (MasterChat.IsLoaded)
+                            {
+                                if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+                                {
+                                    scroll.ScrollToEnd();
+                                    if (chatColumn.Unread > 0)
+                                    {
+                                        ThreadPool.QueueUserWorkItem(ReadMessage);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -147,7 +232,25 @@ namespace DimensionClient.Library.Controls
                 borderSelect.IsEnabled = true;
             }
             borderSelect = border;
-            ClassHelper.TransferringData(typeof(ChatMain), chatColumn);
+            ClassHelper.TransferringData(typeof(ChatMain), this);
+        }
+        private void ReadMessage(object data)
+        {
+            lock (chatColumn.ChatContent)
+            {
+                if (chatColumn.ChatContent.Last(item => item.SenderID != ClassHelper.UserID && !item.IsRead) is ChatMessagesModel chatMessages)
+                {
+                    if (ChatService.ReadMessage(chatColumn.ChatID, chatMessages.ID))
+                    {
+                        foreach (ChatMessagesModel item in chatColumn.ChatContent.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw))
+                        {
+                            item.IsRead = true;
+                        }
+
+                        chatColumn.Unread = 0;
+                    }
+                }
+            }
         }
         #endregion
     }

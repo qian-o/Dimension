@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.MasterChat"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <ItemsControl x:Name="itcMasterChat" Style="{StaticResource ItemsControlVirtualization}" ItemTemplateSelector="{StaticResource ChatTemplateSelector}"/>
+        <Border x:Name="brdUnread" Height="50" Width="50" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Red" CornerRadius="25" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

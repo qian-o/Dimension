@@ -122,7 +122,7 @@ namespace DimensionService.Service.Chat
             {
                 bool state = false;
                 message = string.Empty;
-                if (_chatLinkDAO.GetReceiverID(data.UserID, data.ChatID) is string receiverID)
+                if (_chatLinkDAO.GetPeerID(data.UserID, data.ChatID) is string receiverID)
                 {
                     ChatMessagesModel chatMessages = new()
                     {
@@ -155,6 +155,30 @@ namespace DimensionService.Service.Chat
                     {
                         message = "消息发送失败。";
                     }
+                }
+                else
+                {
+                    message = "该聊天室不属于您。";
+                }
+
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool ReadMessage(ReadMessageModel data, out string message)
+        {
+            try
+            {
+                bool state = false;
+                message = string.Empty;
+                if (_chatLinkDAO.GetPeerID(data.UserID, data.ChatID) is string senderID)
+                {
+                    _chatMessagesDAO.MessageRead(data.ChatID, data.MessageID, senderID);
+                    state = true;
                 }
                 else
                 {

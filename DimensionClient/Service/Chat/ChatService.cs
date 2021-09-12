@@ -55,5 +55,15 @@ namespace DimensionClient.Service.Chat
             };
             return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/SendMessage", "POST", out _, requestObj: requestObj);
         }
+
+        public static bool ReadMessage(string chatID, int messageID)
+        {
+            JObject requestObj = new()
+            {
+                { "ChatID", chatID },
+                { "MessageID", messageID }
+            };
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/ReadMessage", "POST", out _, requestObj: requestObj);
+        }
     }
 }

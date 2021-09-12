@@ -5,6 +5,7 @@ using DimensionClient.Service.Chat;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace DimensionClient.Library.Controls
 {
@@ -33,15 +34,19 @@ namespace DimensionClient.Library.Controls
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(SendMessage);
+            if (!string.IsNullOrEmpty(chatMainData.MessageText))
+            {
+                ThreadPool.QueueUserWorkItem(SendMessage);
+            }
         }
 
         private void ClassHelper_DataPassingChanged(object data)
         {
-            ChatColumnInfoModel chatColumnInfo = data as ChatColumnInfoModel;
+            ChatItem chatItem = data as ChatItem;
+            ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
             chatMainData.ChatID = chatColumnInfo.ChatID;
-            chatMainData.FriendNickName = string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? chatColumnInfo.NickName : chatColumnInfo.RemarkName;
-            brdChat.Child = chatColumnInfo.Items;
+            txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
+            brdChat.Child = chatItem.MasterChat;
         }
 
         #region 执行事件

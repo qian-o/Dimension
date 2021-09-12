@@ -2,6 +2,7 @@
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Chat;
+using DimensionClient.Service.UserManager;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace DimensionClient.Component.Pages
             InitializeComponent();
 
             mainData = DataContext as MessageCenterViewModel;
+            SignalRClientHelper.RemarkInfoChangedSignalR += SignalRClientHelper_RemarkInfoChangedSignalR;
             SignalRClientHelper.ChatColumnChangedSignalR += SignalRClientHelper_ChatColumnChangedSignalR;
         }
 
@@ -34,6 +36,20 @@ namespace DimensionClient.Component.Pages
         private void MessageCenterMain_Unloaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SignalRClientHelper_RemarkInfoChangedSignalR(string friendID)
+        {
+            if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: friendID))
+            {
+                foreach (ChatColumnInfoModel item in mainData.ChatColumnInfos)
+                {
+                    if (item.FriendID == friendID)
+                    {
+                        item.RemarkName = friendDetails.RemarkName;
+                    }
+                }
+            }
         }
 
         private void SignalRClientHelper_ChatColumnChangedSignalR(string friendID)

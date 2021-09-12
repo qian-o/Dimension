@@ -14,5 +14,7 @@ namespace DimensionService.Service.Chat
         bool GetChattingRecords(string userID, string chatID, out List<ChatMessagesModel> chatMessages, out string message);
 
         bool SendMessage(SendMessageModel data, out string message);
+
+        bool ReadMessage(ReadMessageModel data, out string message);
     }
 }

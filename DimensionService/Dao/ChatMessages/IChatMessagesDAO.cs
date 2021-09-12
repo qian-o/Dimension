@@ -8,5 +8,7 @@ namespace DimensionService.Dao.ChatMessages
         List<ChatMessagesModel> GetChatMessages(string chatID);
 
         bool AddMessage(ChatMessagesModel message);
+
+        bool MessageRead(string chatID, int messageID, string senderID);
     }
 }

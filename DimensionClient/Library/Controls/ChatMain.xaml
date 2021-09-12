@@ -7,9 +7,9 @@
     </UserControl.DataContext>
     <DockPanel>
         <Border Height="40" BorderBrush="#EBEEF5" BorderThickness="0,0,0,1" DockPanel.Dock="Top">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Text="{Binding FriendNickName}"/>
+            <TextBlock x:Name="txbFriendNickName" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
         </Border>
-        <Grid MinHeight="100" DockPanel.Dock="Bottom">
+        <Grid MinHeight="140" DockPanel.Dock="Bottom">
             <Border Background="#FFFFFF" CornerRadius="4">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
