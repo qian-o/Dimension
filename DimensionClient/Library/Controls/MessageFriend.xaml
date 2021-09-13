@@ -1,7 +1,16 @@
 ﻿<UserControl x:Class="DimensionClient.Library.Controls.MessageFriend"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Name="UserControlMain" Background="Transparent" DataContextChanged="UserControlMain_DataContextChanged">
+             x:Name="UserControlMain" Background="Transparent" Loaded="UserControlMain_Loaded" DataContextChanged="UserControlMain_DataContextChanged">
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform x:Name="stfLoaded"/>
+            <TranslateTransform x:Name="ttfLoaded"/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.RenderTransformOrigin>
+        <Point X="0" Y="1"/>
+    </UserControl.RenderTransformOrigin>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="MouseMove">
             <BeginStoryboard>

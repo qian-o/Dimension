@@ -25,5 +25,7 @@ namespace DimensionClient.Models.ResultModels
         public bool IsWithdraw { get; set; }
         // 创建时间
         public DateTime CreateTime { get; set; }
+        // 首次加载
+        public bool LoadFirst { get; set; }
     }
 }

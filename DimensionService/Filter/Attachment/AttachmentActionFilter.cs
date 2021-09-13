@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 
 namespace DimensionService.Filter.Attachment
 {
@@ -15,36 +14,33 @@ namespace DimensionService.Filter.Attachment
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (!Debugger.IsAttached)
+            string action = context.ActionDescriptor.RouteValues["action"];
+            if (action is not "GetAttachments" and not "GetHeadPortraits")
             {
-                string action = context.ActionDescriptor.RouteValues["action"];
-                if (action is not "GetAttachments" and not "GetHeadPortraits")
+                LoginInfoDAO loginInfo = new();
+                WebResultModel webResult = new()
                 {
-                    LoginInfoDAO loginInfo = new();
-                    WebResultModel webResult = new()
+                    State = false
+                };
+                if (context.HttpContext.Request.Headers.TryGetValue("UserID", out StringValues userID) && context.HttpContext.Request.Headers.TryGetValue("Token", out StringValues token) && context.HttpContext.Request.Headers.TryGetValue("Device", out StringValues useDevice))
+                {
+                    if (!loginInfo.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
                     {
-                        State = false
+                        webResult.Message = "登录已失效";
+                    }
+                }
+                else
+                {
+                    webResult.Message = "不规范请求";
+                }
+                if (!string.IsNullOrEmpty(webResult.Message))
+                {
+                    context.Result = new ContentResult
+                    {
+                        StatusCode = StatusCodes.Status200OK,
+                        ContentType = "application/json; charset=utf-8",
+                        Content = JsonConvert.SerializeObject(webResult)
                     };
-                    if (context.HttpContext.Request.Headers.TryGetValue("UserID", out StringValues userID) && context.HttpContext.Request.Headers.TryGetValue("Token", out StringValues token) && context.HttpContext.Request.Headers.TryGetValue("Device", out StringValues useDevice))
-                    {
-                        if (!loginInfo.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
-                        {
-                            webResult.Message = "登录已失效";
-                        }
-                    }
-                    else
-                    {
-                        webResult.Message = "不规范请求";
-                    }
-                    if (!string.IsNullOrEmpty(webResult.Message))
-                    {
-                        context.Result = new ContentResult
-                        {
-                            StatusCode = StatusCodes.Status200OK,
-                            ContentType = "application/json; charset=utf-8",
-                            Content = JsonConvert.SerializeObject(webResult)
-                        };
-                    }
                 }
             }
 

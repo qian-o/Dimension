@@ -143,6 +143,7 @@ namespace DimensionClient.Library.Controls
                         {
                             if (chatColumn.ChatContent.FirstOrDefault(c => c.ID == item.ID) == null)
                             {
+                                item.LoadFirst = true;
                                 Dispatcher.Invoke(delegate
                                 {
                                     if (MasterChat.IsLoaded)
