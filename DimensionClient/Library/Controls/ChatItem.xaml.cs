@@ -112,7 +112,7 @@ namespace DimensionClient.Library.Controls
         {
             if (chatColumn.ChatContent.LastOrDefault() is ChatMessagesModel chatMessages)
             {
-                txbLastMessage.Text = chatMessages.MessageContent;
+                txbLastMessage.Text = chatMessages.MessageContent.Replace("\r\n", string.Empty);
                 txbLastTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
             }
         }
@@ -239,7 +239,7 @@ namespace DimensionClient.Library.Controls
         {
             lock (chatColumn.ChatContent)
             {
-                if (chatColumn.ChatContent.Last(item => item.SenderID != ClassHelper.UserID && !item.IsRead) is ChatMessagesModel chatMessages)
+                if (chatColumn.ChatContent.LastOrDefault(item => item.SenderID != ClassHelper.UserID && !item.IsRead) is ChatMessagesModel chatMessages)
                 {
                     if (ChatService.ReadMessage(chatColumn.ChatID, chatMessages.ID))
                     {
