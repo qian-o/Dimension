@@ -290,6 +290,15 @@ namespace DimensionService.Service.UserManager
                                                                          arg3: true);
                     }
                 }
+                else
+                {
+                    foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
+                    {
+                        string userID = item.UserID == data.UserID ? data.FriendID : data.UserID;
+                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.NewFriend.ToString(),
+                                                                         arg1: userID);
+                    }
+                }
                 state = true;
 
                 return state;

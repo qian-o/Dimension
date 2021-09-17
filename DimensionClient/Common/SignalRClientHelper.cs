@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace DimensionClient.Common
 {
     public delegate void FriendOnline(string friendID, bool online);
+    public delegate void NewFriend(string friendID);
     public delegate void FriendChanged(string sort, string friendID, bool state);
     public delegate void RemarkInfoChanged(string friendID);
     public delegate void ChatColumnChanged(string friendID);
@@ -28,6 +29,19 @@ namespace DimensionClient.Common
             remove
             {
                 GetFriendOnline -= value;
+            }
+        }
+        // 新好友
+        private static NewFriend GetNewFriend;
+        public static event NewFriend NewFriendSignalR
+        {
+            add
+            {
+                GetNewFriend += value;
+            }
+            remove
+            {
+                GetNewFriend -= value;
             }
         }
         // 好友状态改变
@@ -95,6 +109,7 @@ namespace DimensionClient.Common
                 connection.Closed += Connection_Closed;
                 connection.On<string, string>(ClassHelper.HubMessageType.Notification.ToString(), Connection_Notification);
                 connection.On<string, bool>(ClassHelper.HubMessageType.FriendOnline.ToString(), Connection_FriendOnline);
+                connection.On<string>(ClassHelper.HubMessageType.NewFriend.ToString(), Connection_NewFriend);
                 connection.On<string, string, bool>(ClassHelper.HubMessageType.FriendChanged.ToString(), Connection_FriendChanged);
                 connection.On<bool>(ClassHelper.HubMessageType.OnlineStatus.ToString(), Connection_OnlineStatus);
                 connection.On<string>(ClassHelper.HubMessageType.RemarkInfoChanged.ToString(), Connection_RemarkInfoChanged);
@@ -122,6 +137,11 @@ namespace DimensionClient.Common
         private static void Connection_FriendOnline(string friendID, bool online)
         {
             GetFriendOnline?.Invoke(friendID, online);
+        }
+
+        private static void Connection_NewFriend(string friendID)
+        {
+            GetNewFriend?.Invoke(friendID);
         }
 
         private static void Connection_FriendChanged(string sort, string friendID, bool state)

@@ -46,6 +46,6 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-        <controls:ChatMain Grid.Column="1" Margin="20,0,10,0"/>
+        <controls:ChatMain Grid.Column="1" Margin="20,0,10,0 " Visibility="Collapsed"/>
     </Grid>
 </Page>

@@ -30,6 +30,7 @@ namespace DimensionClient.Component.Pages
             mainData = Resources["MainData"] as ContactPersonViewModel;
             newFriendData = Resources["NewFriendData"] as FriendDetailsModel;
             SignalRClientHelper.FriendOnlineSignalR += SignalRClientHelper_FriendOnlineSignalR;
+            SignalRClientHelper.NewFriendSignalR += SignalRClientHelper_NewFriendSignalR;
             SignalRClientHelper.FriendChangedSignalR += SignalRClientHelper_FriendChangedSignalR;
             SignalRClientHelper.RemarkInfoChangedSignalR += SignalRClientHelper_RemarkInfoChangedSignalR;
         }
@@ -110,6 +111,14 @@ namespace DimensionClient.Component.Pages
                         friend.OnLine = online;
                     }
                 }
+            }
+        }
+
+        private void SignalRClientHelper_NewFriendSignalR(string friendID)
+        {
+            if (UserManagerService.GetNewFriendList(out List<NewFriendBriefModel> newFriendBrief))
+            {
+                mainData.NewFriends = newFriendBrief;
             }
         }
 

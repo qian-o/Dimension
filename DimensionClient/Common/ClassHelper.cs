@@ -89,6 +89,8 @@ namespace DimensionClient.Common
             Notification,
             // string friendID, bool online
             FriendOnline,
+            // string friendID
+            NewFriend,
             // string sort, string friendID, bool state ( true 添加 false 删除 )
             FriendChanged,
             // bool online

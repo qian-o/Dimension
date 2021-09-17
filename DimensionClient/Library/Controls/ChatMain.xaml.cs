@@ -42,6 +42,8 @@ namespace DimensionClient.Library.Controls
 
         private void ClassHelper_DataPassingChanged(object data)
         {
+            Visibility = Visibility.Visible;
+
             ChatItem chatItem = data as ChatItem;
             ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
             chatMainData.ChatID = chatColumnInfo.ChatID;
