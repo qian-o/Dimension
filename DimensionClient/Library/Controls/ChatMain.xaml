@@ -9,7 +9,7 @@
         <Border Height="40" BorderBrush="#EBEEF5" BorderThickness="0,0,0,1" DockPanel.Dock="Top">
             <TextBlock x:Name="txbFriendNickName" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
         </Border>
-        <Grid MinHeight="140" DockPanel.Dock="Bottom">
+        <Grid MinHeight="160" DockPanel.Dock="Bottom">
             <Border Background="#FFFFFF" CornerRadius="4">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
@@ -19,7 +19,17 @@
                 <Border BorderBrush="#EBEEF5" BorderThickness="0,1,0,0" Margin="0,6,0,0" DockPanel.Dock="Bottom">
                     <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" MinWidth="60" Padding="0" HorizontalAlignment="Right" Margin="0,6,0,0" FontSize="14" Content="发送" Click="BtnSend_Click"/>
                 </Border>
-                <TextBox Style="{StaticResource TextBoxEmpty}" BorderThickness="0" Margin="2,2,2,0" TextWrapping="Wrap" AcceptsReturn="True" FontSize="14" MaxLength="500" Text="{Binding MessageText}" DockPanel.Dock="Bottom"/>
+                <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,2,2,0" IsDocumentEnabled="True" AcceptsTab="True" FontSize="14" DockPanel.Dock="Bottom" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown" KeyUp="RtbMessage_KeyUp">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                    <RichTextBox.CommandBindings>
+                        <CommandBinding Command="EditingCommands.EnterParagraphBreak" CanExecute="CommandBinding_CanExecute"/>
+                        <CommandBinding Command="EditingCommands.EnterLineBreak" CanExecute="CommandBinding_CanExecute"/>
+                    </RichTextBox.CommandBindings>
+                </RichTextBox>
             </DockPanel>
         </Grid>
         <Border x:Name="brdChat" Margin="0,5,0,5"/>

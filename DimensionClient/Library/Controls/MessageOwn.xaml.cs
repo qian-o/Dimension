@@ -1,5 +1,7 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
+using Newtonsoft.Json;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,7 +60,41 @@ namespace DimensionClient.Library.Controls
             {
                 imgHead.DataContext = chatMessages.SenderID;
                 txbTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
-                txbContent.Text = chatMessages.MessageContent;
+                switch (chatMessages.MessageType)
+                {
+                    case ClassHelper.MessageType.Text:
+                        txbContent.Visibility = Visibility.Visible;
+                        txbContent.Text = chatMessages.MessageContent;
+                        break;
+                    case ClassHelper.MessageType.Voice:
+                        break;
+                    case ClassHelper.MessageType.File:
+                        {
+                            FileModel fileModel = JsonConvert.DeserializeObject<FileModel>(chatMessages.MessageContent);
+                            switch (fileModel.FileType)
+                            {
+                                case ClassHelper.FileType.Image:
+                                    imgContent.Visibility = Visibility.Visible;
+                                    imgContent.DataContext = fileModel.FileName;
+                                    break;
+                                case ClassHelper.FileType.Word:
+                                    break;
+                                case ClassHelper.FileType.Excel:
+                                    break;
+                                case ClassHelper.FileType.PPT:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+                    case ClassHelper.MessageType.VoiceTalk:
+                        break;
+                    case ClassHelper.MessageType.VideoTalk:
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

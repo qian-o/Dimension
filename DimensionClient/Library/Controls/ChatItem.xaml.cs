@@ -1,7 +1,9 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Library.Converters;
+using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -112,7 +114,37 @@ namespace DimensionClient.Library.Controls
         {
             if (chatColumn.ChatContent.LastOrDefault() is ChatMessagesModel chatMessages)
             {
-                txbLastMessage.Text = chatMessages.MessageContent.Replace("\r\n", string.Empty);
+                switch (chatMessages.MessageType)
+                {
+                    case ClassHelper.MessageType.Text:
+                        txbLastMessage.Text = chatMessages.MessageContent.Replace("\r\n", string.Empty);
+                        break;
+                    case ClassHelper.MessageType.Voice:
+                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VoiceMessage")}]";
+                        break;
+                    case ClassHelper.MessageType.File:
+                        {
+                            FileModel fileModel = JsonConvert.DeserializeObject<FileModel>(chatMessages.MessageContent);
+                            switch (fileModel.FileType)
+                            {
+                                case ClassHelper.FileType.Image:
+                                    txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("ImageMessage")}]";
+                                    break;
+                                default:
+                                    txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("AccessoryMessage")}]";
+                                    break;
+                            }
+                        }
+                        break;
+                    case ClassHelper.MessageType.VoiceTalk:
+                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VoiceTalk")}]";
+                        break;
+                    case ClassHelper.MessageType.VideoTalk:
+                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VideoTalk")}]";
+                        break;
+                    default:
+                        break;
+                }
                 txbLastTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
             }
         }

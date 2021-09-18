@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="DimensionClient.Library.Controls.MessageOwn"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
              x:Name="UserControlMain" Background="Transparent" Loaded="UserControlMain_Loaded" DataContextChanged="UserControlMain_DataContextChanged">
     <UserControl.RenderTransform>
         <TransformGroup>
@@ -42,7 +43,10 @@
                             <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
                         </Border.Effect>
                     </Border>
-                    <TextBlock x:Name="txbContent" Margin="8,5,8,5" FontSize="16" TextWrapping="Wrap"/>
+                    <Grid Margin="8,5,8,5">
+                        <emoji:TextBlock x:Name="txbContent" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed"/>
+                        <Image x:Name="imgContent" MaxHeight="150" MaxWidth="150" Source="{Binding Converter={StaticResource ImageSourceOnlineConvert},ConverterParameter=300}" Visibility="Collapsed"/>
+                    </Grid>
                 </Grid>
             </StackPanel>
         </DockPanel>

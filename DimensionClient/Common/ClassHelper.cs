@@ -7,6 +7,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -122,6 +123,14 @@ namespace DimensionClient.Common
             File,
             VoiceTalk,
             VideoTalk
+        }
+        // 文件类型
+        public enum FileType
+        {
+            Image,
+            Word,
+            Excel,
+            PPT,
         }
         #endregion
 
@@ -333,6 +342,43 @@ namespace DimensionClient.Common
                 responseObj = JObject.Parse(returnStr);
                 if (Convert.ToBoolean(responseObj["State"], cultureInfo))
                 {
+                    return true;
+                }
+                else
+                {
+                    MessageAlert(null, 3, responseObj["Message"].ToString());
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageAlert(null, 3, ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 上传文件到服务器
+        /// </summary>
+        /// <param name="url">地址</param>
+        /// <param name="dataContent">请求数据</param>
+        /// <param name="fileName">文件名</param>
+        /// <returns></returns>
+        public static bool ServerUpload(string url, MultipartFormDataContent dataContent, out string fileName)
+        {
+            fileName = string.Empty;
+            try
+            {
+                string returnStr = HttpHelper.SendUpload(url, dataContent, true);
+                if (string.IsNullOrEmpty(returnStr))
+                {
+                    MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));
+                    return false;
+                }
+                JObject responseObj = JObject.Parse(returnStr);
+                if (Convert.ToBoolean(responseObj["State"], cultureInfo))
+                {
+                    fileName = responseObj["Data"].ToString();
                     return true;
                 }
                 else
