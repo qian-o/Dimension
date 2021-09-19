@@ -135,15 +135,9 @@ namespace DimensionClient.Library.Controls
                     case ClassHelper.MessageType.File:
                         {
                             FileModel fileModel = JsonConvert.DeserializeObject<FileModel>(chatMessages.MessageContent);
-                            switch (fileModel.FileType)
-                            {
-                                case ClassHelper.FileType.Image:
-                                    txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("ImageMessage")}]";
-                                    break;
-                                default:
-                                    txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("AccessoryMessage")}]";
-                                    break;
-                            }
+                            txbLastMessage.Text = fileModel.FileType == ClassHelper.FileType.Image
+                                ? $"[{ClassHelper.FindResource<string>("ImageMessage")}]"
+                                : $"[{ClassHelper.FindResource<string>("AccessoryMessage")}]";
                         }
                         break;
                     case ClassHelper.MessageType.VoiceTalk:
