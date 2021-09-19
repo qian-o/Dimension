@@ -19,7 +19,7 @@
                 <Border BorderBrush="#EBEEF5" BorderThickness="0,1,0,0" Margin="0,6,0,0" DockPanel.Dock="Bottom">
                     <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" MinWidth="60" Padding="0" HorizontalAlignment="Right" Margin="0,6,0,0" FontSize="14" Content="发送" Click="BtnSend_Click"/>
                 </Border>
-                <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,2,2,0" IsDocumentEnabled="True" AcceptsTab="True" FontSize="14" DockPanel.Dock="Bottom" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown" KeyUp="RtbMessage_KeyUp">
+                <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,2,2,0" IsDocumentEnabled="True" FontSize="14" DockPanel.Dock="Bottom" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter Property="Margin" Value="0,0,0,5"/>

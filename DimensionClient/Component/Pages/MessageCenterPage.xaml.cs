@@ -54,18 +54,21 @@ namespace DimensionClient.Component.Pages
 
         private void SignalRClientHelper_ChatColumnChangedSignalR(string friendID)
         {
-            lock (mainData.ChatColumnInfos)
+            if (mainData.ChatColumnInfos.Count != 0)
             {
-                if (ChatService.GetChatColumnInfo(out List<ChatColumnInfoModel> chatColumnInfos))
+                lock (mainData.ChatColumnInfos)
                 {
-                    foreach (ChatColumnInfoModel item in chatColumnInfos)
+                    if (ChatService.GetChatColumnInfo(out List<ChatColumnInfoModel> chatColumnInfos))
                     {
-                        if (mainData.ChatColumnInfos.FirstOrDefault(c => c.ChatID == item.ChatID) == null)
+                        foreach (ChatColumnInfoModel item in chatColumnInfos)
                         {
-                            Dispatcher.Invoke(delegate
+                            if (mainData.ChatColumnInfos.FirstOrDefault(c => c.ChatID == item.ChatID) == null)
                             {
-                                mainData.ChatColumnInfos.Add(item);
-                            });
+                                Dispatcher.Invoke(delegate
+                                {
+                                    mainData.ChatColumnInfos.Add(item);
+                                });
+                            }
                         }
                     }
                 }
@@ -88,7 +91,10 @@ namespace DimensionClient.Component.Pages
                     {
                         foreach (ChatColumnInfoModel item in chatColumnInfos)
                         {
-                            mainData.ChatColumnInfos.Add(item);
+                            Dispatcher.Invoke(delegate
+                            {
+                                mainData.ChatColumnInfos.Add(item);
+                            });
                         }
                     });
                 }

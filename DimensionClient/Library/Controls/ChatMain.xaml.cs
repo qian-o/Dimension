@@ -26,7 +26,7 @@ namespace DimensionClient.Library.Controls
     public partial class ChatMain : UserControl
     {
         private readonly ChatMainViewModel chatMainData;
-        private int lastTouch = 0;
+        private int lastTouch;
         public ChatMain()
         {
             InitializeComponent();
@@ -91,6 +91,10 @@ namespace DimensionClient.Library.Controls
         {
             if (e.Parameter == null)
             {
+                if (e.Command == EditingCommands.EnterParagraphBreak)
+                {
+                    ThreadPool.QueueUserWorkItem(SendMessage);
+                }
                 e.Handled = true;
             }
         }
@@ -100,14 +104,6 @@ namespace DimensionClient.Library.Controls
             if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 EditingCommands.EnterParagraphBreak.Execute(1, rtbMessage);
-            }
-        }
-
-        private void RtbMessage_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.None)
-            {
-                ThreadPool.QueueUserWorkItem(SendMessage);
             }
         }
 
@@ -156,14 +152,12 @@ namespace DimensionClient.Library.Controls
                         {
                             if (coll is Run run)
                             {
-                                chatMainData.MessageText += run.Text;
+                                chatMainData.MessageText += run.Text.Trim();
                             }
                             else if (coll is InlineUIContainer con)
                             {
                                 if (con.Child is Image image)
                                 {
-                                    string name = $"{ClassHelper.GetRandomString(10)}";
-
                                     Task task = new(() =>
                                     {
                                         MultipartFormDataContent dataContent = new();
@@ -173,7 +167,7 @@ namespace DimensionClient.Library.Controls
                                             BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
                                             bitmapEncoder.Frames.Add(BitmapFrame.Create(image.Source as InteropBitmap));
                                             bitmapEncoder.Save(memoryStream);
-                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{name}.png");
+                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{ClassHelper.GetRandomString(10)}.png");
                                             memoryStream.Close();
                                         });
                                         if (ClassHelper.ServerUpload($"{ClassHelper.servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
@@ -188,10 +182,23 @@ namespace DimensionClient.Library.Controls
                                     });
                                     task.Start();
                                     uploading.Add(task);
+
+                                    if (!string.IsNullOrEmpty(chatMainData.MessageText))
+                                    {
+                                        string temporary = chatMainData.MessageText;
+                                        chatMainData.MessageText = string.Empty;
+                                        Task temporaryTask = new(() =>
+                                        {
+                                            ChatService.SendMessage(chatMainData.ChatID, ClassHelper.MessageType.Text, temporary);
+                                        });
+                                        temporaryTask.Start();
+                                        uploading.Add(temporaryTask);
+                                    }
                                 }
                             }
                         }
                     }
+
                 }
             });
 

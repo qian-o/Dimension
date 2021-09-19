@@ -69,8 +69,8 @@ namespace DimensionClient.Library.Controls
 
         private void ClassHelper_DataPassingChanged(object data)
         {
-            ClassHelper.FriendID = data.ToString();
-            ThreadPool.QueueUserWorkItem(GetFriendDetails, ClassHelper.FriendID);
+            ClassHelper.ContactPersonFriendID = data.ToString();
+            ThreadPool.QueueUserWorkItem(GetFriendDetails, ClassHelper.ContactPersonFriendID);
             Dispatcher.Invoke(delegate
             {
                 Visibility = Visibility.Visible;
@@ -85,9 +85,9 @@ namespace DimensionClient.Library.Controls
                 txbRemarkNameAction.Text = "\xe78c";
                 txbRemarkInformationAction.Text = "\xe78c";
             });
-            if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: ClassHelper.FriendID))
+            if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: ClassHelper.ContactPersonFriendID))
             {
-                if (ClassHelper.FriendID == friendDetails.UserID)
+                if (ClassHelper.ContactPersonFriendID == friendDetails.UserID)
                 {
                     friendData.UserID = friendDetails.UserID;
                     friendData.NickName = friendDetails.NickName;
@@ -171,11 +171,11 @@ namespace DimensionClient.Library.Controls
 
             if (UserManagerService.UpdateRemarkInfo(friendData.UserID, datas[0], datas[1]))
             {
-                if (ClassHelper.FriendID == friendData.UserID)
+                if (ClassHelper.ContactPersonFriendID == friendData.UserID)
                 {
-                    if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: ClassHelper.FriendID))
+                    if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: ClassHelper.ContactPersonFriendID))
                     {
-                        if (ClassHelper.FriendID == friendDetails.UserID)
+                        if (ClassHelper.ContactPersonFriendID == friendDetails.UserID)
                         {
                             friendData.RemarkName = friendDetails.RemarkName;
                             friendData.RemarkInformation = friendDetails.RemarkInformation;
@@ -198,7 +198,11 @@ namespace DimensionClient.Library.Controls
         }
         private void SendMessage(object data)
         {
-            ChatService.AddChat(friendData.UserID);
+            if (ChatService.AddChat(friendData.UserID))
+            {
+                ClassHelper.ChatFriendID = friendData.UserID;
+                ClassHelper.SwitchRoute(ClassHelper.PageType.MessageCenterPage);
+            };
         }
         #endregion
     }

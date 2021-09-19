@@ -23,6 +23,7 @@
             <ColumnDefinition Width="260"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <controls:ChatMain Grid.Column="1" Margin="20,0,10,0" Visibility="Collapsed"/>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
@@ -46,6 +47,5 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-        <controls:ChatMain Grid.Column="1" Margin="20,0,10,0 " Visibility="Collapsed"/>
     </Grid>
 </Page>

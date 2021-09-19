@@ -30,7 +30,7 @@ namespace DimensionClient.Library.Controls
         private void BrdDetail_Loaded(object sender, RoutedEventArgs e)
         {
             Border border = sender as Border;
-            if ((border.Tag as FriendBriefModel).UserID == ClassHelper.FriendID)
+            if ((border.Tag as FriendBriefModel).UserID == ClassHelper.ContactPersonFriendID)
             {
                 border.IsEnabled = false;
                 borderSelect = border;

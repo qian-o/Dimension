@@ -45,6 +45,16 @@ namespace DimensionClient.Library.Controls
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
+            if (chatColumn.FriendID == ClassHelper.ChatFriendID)
+            {
+                brdChat.IsEnabled = false;
+                if (borderSelect != null)
+                {
+                    borderSelect.IsEnabled = true;
+                }
+                borderSelect = brdChat;
+                ClassHelper.TransferringData(typeof(ChatMain), this);
+            }
             SignalRClientHelper.NewMessageSignalR += SignalRClientHelper_NewMessageSignalR;
         }
 
@@ -154,12 +164,12 @@ namespace DimensionClient.Library.Controls
         {
             if (e.StylusDevice == null)
             {
-                BrdChat_PointerUp(sender);
+                BrdChat_PointerUp();
             }
         }
         private void BrdChat_TouchUp(object sender, TouchEventArgs e)
         {
-            BrdChat_PointerUp(sender);
+            BrdChat_PointerUp();
         }
         #endregion
 
@@ -256,15 +266,15 @@ namespace DimensionClient.Library.Controls
                 }
             }
         }
-        private void BrdChat_PointerUp(object sender)
+        private void BrdChat_PointerUp()
         {
-            Border border = sender as Border;
-            border.IsEnabled = false;
+            brdChat.IsEnabled = false;
             if (borderSelect != null)
             {
                 borderSelect.IsEnabled = true;
             }
-            borderSelect = border;
+            borderSelect = brdChat;
+            ClassHelper.ChatFriendID = chatColumn.FriendID;
             ClassHelper.TransferringData(typeof(ChatMain), this);
         }
         private void ReadMessage(object data)
