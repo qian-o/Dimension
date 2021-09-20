@@ -45,7 +45,7 @@
                     </Border>
                     <Grid Margin="8,5,8,5">
                         <emoji:TextBlock x:Name="txbContent" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed"/>
-                        <Image x:Name="imgContent" MaxHeight="150" MaxWidth="150" Source="{Binding Converter={StaticResource ImageSourceOnlineConvert},ConverterParameter=300}" Visibility="Collapsed"/>
+                        <Image x:Name="imgContent" MaxHeight="150" MaxWidth="150" Visibility="Collapsed"/>
                     </Grid>
                 </Grid>
             </StackPanel>

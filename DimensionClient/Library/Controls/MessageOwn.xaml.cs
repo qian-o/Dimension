@@ -5,8 +5,10 @@ using Newtonsoft.Json;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using WpfAnimatedGif;
 
 namespace DimensionClient.Library.Controls
 {
@@ -75,6 +77,14 @@ namespace DimensionClient.Library.Controls
                             {
                                 case ClassHelper.FileType.Image:
                                     imgContent.Visibility = Visibility.Visible;
+                                    if (fileModel.FileName.EndsWith(".gif", StringComparison.CurrentCulture))
+                                    {
+                                        imgContent.SetBinding(ImageBehavior.AnimatedSourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert") });
+                                    }
+                                    else
+                                    {
+                                        imgContent.SetBinding(Image.SourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = 300 });
+                                    }
                                     imgContent.DataContext = fileModel.FileName;
                                     break;
                                 case ClassHelper.FileType.Word:

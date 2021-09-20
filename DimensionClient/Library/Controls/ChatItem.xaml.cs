@@ -45,15 +45,22 @@ namespace DimensionClient.Library.Controls
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(ClassHelper.ChatFriendID))
+            {
+                ClassHelper.ChatFriendID = chatColumn.FriendID;
+            }
             if (chatColumn.FriendID == ClassHelper.ChatFriendID)
             {
-                brdChat.IsEnabled = false;
-                if (borderSelect != null)
+                if (brdChat != borderSelect)
                 {
-                    borderSelect.IsEnabled = true;
+                    brdChat.IsEnabled = false;
+                    if (borderSelect != null)
+                    {
+                        borderSelect.IsEnabled = true;
+                    }
+                    borderSelect = brdChat;
+                    ClassHelper.TransferringData(typeof(ChatMain), this);
                 }
-                borderSelect = brdChat;
-                ClassHelper.TransferringData(typeof(ChatMain), this);
             }
             SignalRClientHelper.NewMessageSignalR += SignalRClientHelper_NewMessageSignalR;
         }

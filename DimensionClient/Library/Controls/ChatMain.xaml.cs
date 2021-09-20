@@ -15,8 +15,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using WpfAnimatedGif;
 
 namespace DimensionClient.Library.Controls
 {
@@ -46,18 +46,40 @@ namespace DimensionClient.Library.Controls
 
         private void RtbMessage_Pasting(object sender, DataObjectPastingEventArgs e)
         {
-            if (Clipboard.GetImage() is BitmapSource bitmap)
+            if (Clipboard.ContainsImage())
             {
                 e.CancelCommand();
 
                 Image imgMessage = new()
                 {
                     MaxHeight = 100,
-                    MaxWidth = 100,
-                    Source = bitmap
+                    MaxWidth = 100
                 };
                 imgMessage.MouseLeftButtonDown += ImgMessage_MouseLeftButtonDown;
                 imgMessage.TouchDown += ImgMessage_TouchDown;
+
+                if (Clipboard.ContainsFileDropList())
+                {
+                    string file = Clipboard.GetFileDropList()[0];
+                    if (File.Exists(file))
+                    {
+                        BitmapImage bitmap = new(new Uri(file, UriKind.Absolute));
+                        string ext = new FileInfo(file).Extension.ToLower(ClassHelper.cultureInfo);
+                        if (ext.Contains("gif"))
+                        {
+                            ImageBehavior.SetAnimatedSource(imgMessage, bitmap);
+                        }
+                        else
+                        {
+                            imgMessage.Source = bitmap;
+                        }
+                        imgMessage.Tag = ext;
+                    }
+                }
+                else if (Clipboard.GetImage() is BitmapSource bitmap)
+                {
+                    imgMessage.Source = bitmap;
+                }
                 _ = new InlineUIContainer(imgMessage, rtbMessage.Selection.End.GetPositionAtOffset(0));
                 if (rtbMessage.Selection.End.GetPositionAtOffset(3) != null)
                 {
@@ -164,10 +186,21 @@ namespace DimensionClient.Library.Controls
                                         Dispatcher.Invoke(delegate
                                         {
                                             using MemoryStream memoryStream = new();
-                                            BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
-                                            bitmapEncoder.Frames.Add(BitmapFrame.Create(image.Source as InteropBitmap));
-                                            bitmapEncoder.Save(memoryStream);
-                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{ClassHelper.GetRandomString(10)}.png");
+                                            string extend;
+                                            if (image.Tag != null)
+                                            {
+                                                extend = image.Tag.ToString();
+                                                BitmapImage bitmap = image.Source is BitmapImage bitmapImage ? bitmapImage : (BitmapImage)ImageBehavior.GetAnimatedSource(image);
+                                                new FileStream(bitmap.UriSource.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read).CopyTo(memoryStream);
+                                            }
+                                            else
+                                            {
+                                                extend = ".bmp";
+                                                BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
+                                                bitmapEncoder.Frames.Add(BitmapFrame.Create(image.Source as BitmapSource));
+                                                bitmapEncoder.Save(memoryStream);
+                                            }
+                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{ClassHelper.GetRandomString(10)}{extend}");
                                             memoryStream.Close();
                                         });
                                         if (ClassHelper.ServerUpload($"{ClassHelper.servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
