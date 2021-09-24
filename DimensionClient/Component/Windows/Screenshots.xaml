@@ -1,0 +1,46 @@
+﻿<Window x:Class="DimensionClient.Component.Windows.Screenshots"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodels="clr-namespace:DimensionClient.Models.ViewModels"
+        x:Name="ScreenshotsMain" WindowStyle="None" ResizeMode="NoResize" Background="Transparent" Topmost="True" Loaded="ScreenshotsMain_Loaded" KeyUp="ScreenshotsMain_KeyUp">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1" ResizeBorderThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+    <Window.DataContext>
+        <viewmodels:ScreenshotsViewModel/>
+    </Window.DataContext>
+    <Grid x:Name="grdMain" MouseDown="GrdMain_MouseDown" MouseMove="GrdMain_MouseMove" MouseUp="GrdMain_MouseUp">
+        <Image x:Name="imgMain"/>
+        <Path x:Name="pthMask" Fill="#80000000">
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure IsClosed="True">
+                        <LineSegment x:Name="lin1"/>
+                        <LineSegment x:Name="lin2"/>
+                        <LineSegment x:Name="lin3"/>
+                        <LineSegment x:Name="lin4"/>
+                    </PathFigure>
+                    <PathFigure StartPoint="{Binding PointStart}" IsClosed="True">
+                        <LineSegment Point="{Binding Point1}"/>
+                        <LineSegment Point="{Binding Point2}"/>
+                        <LineSegment Point="{Binding Point3}"/>
+                        <LineSegment Point="{Binding Point4}"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Path x:Name="pthSelect" Stroke="#FF6D00" StrokeThickness="1" Visibility="Collapsed">
+            <Path.Data>
+                <PathGeometry>
+                    <PathFigure StartPoint="{Binding PointStart}" IsClosed="True">
+                        <LineSegment Point="{Binding Point1}"/>
+                        <LineSegment Point="{Binding Point2}"/>
+                        <LineSegment Point="{Binding Point3}"/>
+                        <LineSegment Point="{Binding Point4}"/>
+                    </PathFigure>
+                </PathGeometry>
+            </Path.Data>
+        </Path>
+        <Button x:Name="btnSave" Height="30" Width="80" Style="{StaticResource ButtonPrimary}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{DynamicResource Save}" Click="BtnSave_Click" Visibility="Collapsed"/>
+    </Grid>
+</Window>

@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:DimensionClient.Library.Controls">
 
     <FontFamily x:Key="ElementIcon">/Library/Font/element-icons.ttf#element</FontFamily>
+    <FontFamily x:Key="MessagesIcon">/Library/Font/messages-icons.ttf#iconfont</FontFamily>
 
     <!-- ScrollViewer 滚动条 -->
     <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
@@ -665,6 +666,29 @@
         </Setter>
     </Style>
 
+    <!--文字渐变(主要)-->
+    <Style x:Key="TextBlockPrimary" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#FF6D00"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" To="#FF8A33" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)" To="#FF6D00" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <!--文字渐变(默认)-->
     <Style x:Key="TextBlockElement" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="#606266"/>

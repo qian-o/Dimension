@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Component.Windows;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
@@ -6,6 +7,7 @@ using DimensionClient.Service.Chat;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -17,6 +19,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
+using Image = System.Windows.Controls.Image;
 
 namespace DimensionClient.Library.Controls
 {
@@ -109,6 +112,20 @@ namespace DimensionClient.Library.Controls
         }
         #endregion
 
+        #region 截图(鼠标,触控)
+        private void TxbScreenCapture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.StylusDevice == null)
+            {
+                TxbScreenCapture_PointerUp();
+            }
+        }
+        private void TxbScreenCapture_TouchUp(object sender, TouchEventArgs e)
+        {
+            TxbScreenCapture_PointerUp();
+        }
+        #endregion
+
         private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Parameter == null)
@@ -150,6 +167,23 @@ namespace DimensionClient.Library.Controls
         {
             Image image = sender as Image;
             Console.WriteLine(image);
+        }
+        private void TxbScreenCapture_PointerUp()
+        {
+            Graphics graphicsWin = Graphics.FromHwnd(ClassHelper.GetDesktopIntPtr());
+            int screenWidth = Convert.ToInt32(graphicsWin.VisibleClipBounds.Width);
+            int screenHeight = Convert.ToInt32(graphicsWin.VisibleClipBounds.Height);
+
+            Bitmap bitmap = new(screenWidth, screenHeight);
+            Graphics.FromImage(bitmap).CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(screenWidth, screenHeight));
+
+            Screenshots screenshots = new(bitmap);
+            screenshots.ShowDialog();
+            if (screenshots.IsSave)
+            {
+                rtbMessage.Paste();
+            }
+            bitmap.Dispose();
         }
         private async void SendMessage(object data)
         {

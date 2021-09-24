@@ -17,7 +17,16 @@
             </Border>
             <DockPanel Margin="6">
                 <Border BorderBrush="#EBEEF5" BorderThickness="0,1,0,0" Margin="0,6,0,0" DockPanel.Dock="Bottom">
-                    <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" MinWidth="60" Padding="0" HorizontalAlignment="Right" Margin="0,6,0,0" FontSize="14" Content="发送" Click="BtnSend_Click"/>
+                    <DockPanel Margin="0,6,0,0">
+                        <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" Padding="0" FontSize="14" Content="发送" Click="BtnSend_Click" DockPanel.Dock="Right"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock ToolTip="{DynamicResource SelectEmoji}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe646;"/>
+                            <TextBlock x:Name="txbScreenCapture" ToolTip="{DynamicResource ScreenCapture}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe641;" MouseLeftButtonUp="TxbScreenCapture_MouseLeftButtonUp" TouchUp="TxbScreenCapture_TouchUp"/>
+                            <TextBlock ToolTip="{DynamicResource SendingPictures}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a5;"/>
+                            <TextBlock ToolTip="{DynamicResource UploadFiles}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a9;"/>
+                            <TextBlock ToolTip="{DynamicResource MessageLogging}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6ba;"/>
+                        </StackPanel>
+                    </DockPanel>
                 </Border>
                 <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,2,2,0" IsDocumentEnabled="True" FontSize="14" DockPanel.Dock="Bottom" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown">
                     <RichTextBox.Resources>

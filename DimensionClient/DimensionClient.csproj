@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="client.db" />
     <None Remove="Library\Font\element-icons.ttf" />
+    <None Remove="Library\Font\messages-icons.ttf" />
     <None Remove="Library\Font\苹方黑体-中粗-简.ttf" />
     <None Remove="Library\Image\图片.png" />
     <None Remove="log4net.config" />
@@ -54,6 +55,7 @@
 
   <ItemGroup>
     <Resource Include="Library\Font\element-icons.ttf" />
+    <Resource Include="Library\Font\messages-icons.ttf" />
     <Resource Include="Library\Font\苹方黑体-中粗-简.ttf" />
     <Resource Include="Library\Image\图片.png" />
   </ItemGroup>

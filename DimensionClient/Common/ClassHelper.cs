@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -210,6 +211,32 @@ namespace DimensionClient.Common
         // 联系人
         public static readonly ContactPersonPage contactPersonPage = new();
         #endregion
+
+        #region API
+        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetDesktopWindow();
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool DeleteObject(IntPtr intPtr);
+        #endregion
+
+        /// <summary>
+        /// 获取桌面句柄
+        /// </summary>
+        /// <returns></returns>
+        public static IntPtr GetDesktopIntPtr()
+        {
+            return GetDesktopWindow();
+        }
+
+        /// <summary>
+        /// 根据句柄删除资源
+        /// </summary>
+        /// <param name="intPtr">句柄</param>
+        /// <returns></returns>
+        public static bool DeleteIntPtr(IntPtr intPtr)
+        {
+            return DeleteObject(intPtr);
+        }
 
         /// <summary>
         /// 窗体消息通知

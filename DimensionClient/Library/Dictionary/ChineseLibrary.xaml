@@ -55,4 +55,10 @@
     <system:String x:Key="AccessoryMessage">附件消息</system:String>
     <system:String x:Key="VoiceTalk">语音通话</system:String>
     <system:String x:Key="VideoTalk">视频通话</system:String>
+    <system:String x:Key="SelectEmoji">选择表情</system:String>
+    <system:String x:Key="ScreenCapture">屏幕截图 Alt + M</system:String>
+    <system:String x:Key="SendingPictures">发送图片</system:String>
+    <system:String x:Key="UploadFiles">上传文件</system:String>
+    <system:String x:Key="MessageLogging">消息记录</system:String>
+    <system:String x:Key="Save">保存</system:String>
 </ResourceDictionary>
