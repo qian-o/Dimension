@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +20,8 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
+using static DimensionClient.Common.ClassHelper;
+using static DimensionClient.Common.DisplayDevice;
 using Image = System.Windows.Controls.Image;
 
 namespace DimensionClient.Library.Controls
@@ -39,12 +42,12 @@ namespace DimensionClient.Library.Controls
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
-            ClassHelper.DataPassingChanged += ClassHelper_DataPassingChanged;
+            DataPassingChanged += ClassHelper_DataPassingChanged;
         }
 
         private void UserControlMain_Unloaded(object sender, RoutedEventArgs e)
         {
-            ClassHelper.DataPassingChanged -= ClassHelper_DataPassingChanged;
+            DataPassingChanged -= ClassHelper_DataPassingChanged;
         }
 
         private void RtbMessage_Pasting(object sender, DataObjectPastingEventArgs e)
@@ -67,7 +70,7 @@ namespace DimensionClient.Library.Controls
                     if (File.Exists(file))
                     {
                         BitmapImage bitmap = new(new Uri(file, UriKind.Absolute));
-                        string ext = new FileInfo(file).Extension.ToLower(ClassHelper.cultureInfo);
+                        string ext = new FileInfo(file).Extension.ToLower(cultureInfo);
                         if (ext.Contains("gif"))
                         {
                             ImageBehavior.SetAnimatedSource(imgMessage, bitmap);
@@ -170,20 +173,81 @@ namespace DimensionClient.Library.Controls
         }
         private void TxbScreenCapture_PointerUp()
         {
-            Graphics graphicsWin = Graphics.FromHwnd(ClassHelper.GetDesktopIntPtr());
-            int screenWidth = Convert.ToInt32(graphicsWin.VisibleClipBounds.Width);
-            int screenHeight = Convert.ToInt32(graphicsWin.VisibleClipBounds.Height);
-
-            Bitmap bitmap = new(screenWidth, screenHeight);
-            Graphics.FromImage(bitmap).CopyFromScreen(0, 0, 0, 0, new System.Drawing.Size(screenWidth, screenHeight));
-
-            Screenshots screenshots = new(bitmap);
-            screenshots.ShowDialog();
-            if (screenshots.IsSave)
+            ThreadPool.QueueUserWorkItem(ScreenCapture);
+        }
+        private void ScreenCapture(object data)
+        {
+            Dispatcher.Invoke(delegate
             {
-                rtbMessage.Paste();
+                txbScreenCapture.IsEnabled = false;
+            });
+
+            List<DisplayInfoModel> displays = new();
+            DisplayDevice d = new();
+            d.Cb = Marshal.SizeOf(d);
+            for (uint id = 0; GetDisplayDevices(null, id, ref d, 0); id++)
+            {
+                if (d.DeviceState.HasFlag(DisplayDeviceState.AttachedToDesktop))
+                {
+                    if (GetDisplaySettings(d.DeviceName, currentSettings, out DevMode dEVMODE))
+                    {
+                        DisplayInfoModel displayInfo = new()
+                        {
+                            DisplayWidth = dEVMODE.DmPelsWidth,
+                            DisplayHeight = dEVMODE.DmPelsHeight,
+                            DisplayLeft = dEVMODE.DmPositionX,
+                            DisplayTop = dEVMODE.DmPositionY,
+                            MainDisplay = d.DeviceState.HasFlag(DisplayDeviceState.PrimaryDevice)
+                        };
+                        displays.Add(displayInfo);
+                    }
+                }
+                d.Cb = Marshal.SizeOf(d);
             }
+            int actualLeft = 0;
+            int actualTop = 0;
+            int actualRight = 0;
+            int actualBottom = 0;
+            foreach (DisplayInfoModel item in displays)
+            {
+                if (actualLeft > item.DisplayLeft)
+                {
+                    actualLeft = item.DisplayLeft;
+                }
+                if (actualTop > item.DisplayTop)
+                {
+                    actualTop = item.DisplayTop;
+                }
+                if (actualRight < item.DisplayLeft + item.DisplayWidth)
+                {
+                    actualRight = item.DisplayLeft + item.DisplayWidth;
+                }
+                if (actualBottom < item.DisplayTop + item.DisplayHeight)
+                {
+                    actualBottom = item.DisplayTop + item.DisplayHeight;
+                }
+            }
+            int actualWidth = Math.Abs(actualLeft) + Math.Abs(actualRight);
+            int actualHeight = Math.Abs(actualTop) + Math.Abs(actualBottom);
+            Bitmap bitmap = new(actualWidth, actualHeight);
+            Graphics.FromImage(bitmap).CopyFromScreen(actualLeft, actualTop, 0, 0, new System.Drawing.Size(actualWidth, actualHeight));
+
+            Dispatcher.Invoke(delegate
+            {
+                Screenshots screenshots = new(bitmap, actualLeft, actualTop);
+                screenshots.ShowDialog();
+                if (screenshots.IsSave)
+                {
+                    rtbMessage.Paste();
+                }
+            });
+
             bitmap.Dispose();
+
+            Dispatcher.Invoke(delegate
+            {
+                txbScreenCapture.IsEnabled = true;
+            });
         }
         private async void SendMessage(object data)
         {
@@ -234,17 +298,17 @@ namespace DimensionClient.Library.Controls
                                                 bitmapEncoder.Frames.Add(BitmapFrame.Create(image.Source as BitmapSource));
                                                 bitmapEncoder.Save(memoryStream);
                                             }
-                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{ClassHelper.GetRandomString(10)}{extend}");
+                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
                                             memoryStream.Close();
                                         });
-                                        if (ClassHelper.ServerUpload($"{ClassHelper.servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
+                                        if (ServerUpload($"{servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
                                         {
                                             FileModel fileModel = new()
                                             {
-                                                FileType = ClassHelper.FileType.Image,
+                                                FileType = FileType.Image,
                                                 FileName = fileName
                                             };
-                                            ChatService.SendMessage(chatMainData.ChatID, ClassHelper.MessageType.File, JObject.FromObject(fileModel).ToString());
+                                            ChatService.SendMessage(chatMainData.ChatID, MessageType.File, JObject.FromObject(fileModel).ToString());
                                         }
                                     });
                                     task.Start();
@@ -256,7 +320,7 @@ namespace DimensionClient.Library.Controls
                                         chatMainData.MessageText = string.Empty;
                                         Task temporaryTask = new(() =>
                                         {
-                                            ChatService.SendMessage(chatMainData.ChatID, ClassHelper.MessageType.Text, temporary);
+                                            ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, temporary);
                                         });
                                         temporaryTask.Start();
                                         uploading.Add(temporaryTask);
@@ -271,7 +335,7 @@ namespace DimensionClient.Library.Controls
 
             if (!string.IsNullOrEmpty(chatMainData.MessageText))
             {
-                if (ChatService.SendMessage(chatMainData.ChatID, ClassHelper.MessageType.Text, chatMainData.MessageText))
+                if (ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, chatMainData.MessageText))
                 {
                     chatMainData.MessageText = string.Empty;
                 }

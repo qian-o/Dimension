@@ -46,6 +46,8 @@ namespace DimensionClient.Common
         public static readonly CommonViewModel commonView = new();
         // AES私人密钥
         public const string privateKey = "wangxi1234567890";
+        public const int currentSettings = -1;
+        public const int registrySettings = -2;
         #endregion
 
         #region 变量
@@ -135,6 +137,14 @@ namespace DimensionClient.Common
             Excel,
             PPT,
         }
+        // 屏幕方向
+        public enum Orientation
+        {
+            Angle0,
+            Angle180,
+            Angle270,
+            Angle90
+        }
         #endregion
 
         #region 事件
@@ -213,29 +223,47 @@ namespace DimensionClient.Common
         #endregion
 
         #region API
-        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetDesktopWindow();
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool DeleteObject(IntPtr intPtr);
+        [DllImport("gdi32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool DeleteObject(IntPtr delPtr);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DisplayDevice lpDisplayDevice, uint dwFlags);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool EnumDisplaySettings(string deviceName, int modeNum, out DevMode devMode);
         #endregion
-
-        /// <summary>
-        /// 获取桌面句柄
-        /// </summary>
-        /// <returns></returns>
-        public static IntPtr GetDesktopIntPtr()
-        {
-            return GetDesktopWindow();
-        }
 
         /// <summary>
         /// 根据句柄删除资源
         /// </summary>
         /// <param name="intPtr">句柄</param>
         /// <returns></returns>
-        public static bool DeleteIntPtr(IntPtr intPtr)
+        public static bool DeleteIntPtr(IntPtr delPtr)
         {
-            return DeleteObject(intPtr);
+            return DeleteObject(delPtr);
+        }
+
+        /// <summary>
+        /// 获取显示器列表
+        /// </summary>
+        /// <param name="lpDevice">null</param>
+        /// <param name="iDevNum">第几个</param>
+        /// <param name="lpDisplayDevice">返回数据</param>
+        /// <param name="dwFlags">0</param>
+        /// <returns></returns>
+        public static bool GetDisplayDevices(string lpDevice, uint iDevNum, ref DisplayDevice lpDisplayDevice, uint dwFlags)
+        {
+            return EnumDisplayDevices(lpDevice, iDevNum, ref lpDisplayDevice, dwFlags);
+        }
+
+        /// <summary>
+        /// 获取显示器配置
+        /// </summary>
+        /// <param name="deviceName">显示器名称</param>
+        /// <param name="modeNum">模式</param>
+        /// <param name="devMode">返回数据</param>
+        /// <returns></returns>
+        public static bool GetDisplaySettings(string deviceName, int modeNum, out DevMode devMode)
+        {
+            return EnumDisplaySettings(deviceName, modeNum, out devMode);
         }
 
         /// <summary>

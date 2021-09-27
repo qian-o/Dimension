@@ -26,21 +26,21 @@ namespace DimensionClient.Component.Windows
         // 是否保存
         public bool IsSave { get; private set; }
 
-        public Screenshots(Bitmap bitmap)
+        public Screenshots(Bitmap bitmap, int actualLeft, int actualTop)
         {
             InitializeComponent();
 
-            Top = 0;
-            Left = 0;
-            Width = SystemParameters.PrimaryScreenWidth;
-            Height = SystemParameters.PrimaryScreenHeight;
+            Left = actualLeft;
+            Top = actualTop;
+            Width = bitmap.Width;
+            Height = bitmap.Height;
 
             artwork = bitmap;
             zoomX = bitmap.Width / Width;
             zoomY = bitmap.Height / Height;
-            IntPtr ptr = bitmap.GetHbitmap();
-            imgMain.Source = Imaging.CreateBitmapSourceFromHBitmap(ptr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            ClassHelper.DeleteIntPtr(ptr);
+            IntPtr delPtr = bitmap.GetHbitmap();
+            imgMain.Source = Imaging.CreateBitmapSourceFromHBitmap(delPtr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            ClassHelper.DeleteIntPtr(delPtr);
 
             mainData = DataContext as ScreenshotsViewModel;
         }
@@ -121,9 +121,9 @@ namespace DimensionClient.Component.Windows
             int maxHeight = Convert.ToInt32((maxPoint.Y - minPoint.Y) * zoomY);
             Bitmap bitmap = new(maxWidth, maxHeight);
             Graphics.FromImage(bitmap).DrawImage(artwork, new Rectangle(0, 0, maxWidth, maxHeight), new(minWidth, minHeight, maxWidth, maxHeight), GraphicsUnit.Pixel);
-            IntPtr ptr = bitmap.GetHbitmap();
-            Clipboard.SetImage(Imaging.CreateBitmapSourceFromHBitmap(ptr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()));
-            ClassHelper.DeleteIntPtr(ptr);
+            IntPtr delPtr = bitmap.GetHbitmap();
+            Clipboard.SetImage(Imaging.CreateBitmapSourceFromHBitmap(delPtr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()));
+            ClassHelper.DeleteIntPtr(delPtr);
 
             bitmap.Dispose();
             Close();
