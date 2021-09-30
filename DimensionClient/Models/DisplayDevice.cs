@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DimensionClient.Common
+namespace DimensionClient.Models
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct DisplayDevice
     {
         [MarshalAs(UnmanagedType.U4)]
-        private int cb;
-        public int Cb { get => cb; set => cb = value; }
+        private int cbSize;
+        public int CbSize { get => cbSize; set => cbSize = value; }
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         private readonly string deviceName;
@@ -29,7 +29,6 @@ namespace DimensionClient.Common
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
         private readonly string deviceKey;
         public string DeviceKey => deviceKey;
-
 
         [Flags]
         public enum DisplayDeviceState

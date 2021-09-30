@@ -26,14 +26,14 @@ namespace DimensionClient.Component.Windows
         // 是否保存
         public bool IsSave { get; private set; }
 
-        public Screenshots(Bitmap bitmap, int actualLeft, int actualTop)
+        public Screenshots(Bitmap bitmap, double showLeft, double showTop, double showWidth, double showHeight)
         {
             InitializeComponent();
 
-            Left = actualLeft;
-            Top = actualTop;
-            Width = bitmap.Width;
-            Height = bitmap.Height;
+            Left = showLeft;
+            Top = showTop;
+            Width = showWidth;
+            Height = showHeight;
 
             artwork = bitmap;
             zoomX = bitmap.Width / Width;

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using static DimensionClient.Common.ClassHelper;
 
-namespace DimensionClient.Common
+namespace DimensionClient.Models
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct DevMode
@@ -69,6 +69,5 @@ namespace DimensionClient.Common
         public int DmPanningWidth { get; }
 
         public int DmPanningHeight { get; }
-
     }
 }

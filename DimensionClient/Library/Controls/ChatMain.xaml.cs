@@ -1,5 +1,4 @@
-﻿using DimensionClient.Common;
-using DimensionClient.Component.Windows;
+﻿using DimensionClient.Component.Windows;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,7 +19,6 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
 using static DimensionClient.Common.ClassHelper;
-using static DimensionClient.Common.DisplayDevice;
 using Image = System.Windows.Controls.Image;
 
 namespace DimensionClient.Library.Controls
@@ -182,32 +179,16 @@ namespace DimensionClient.Library.Controls
                 txbScreenCapture.IsEnabled = false;
             });
 
-            List<DisplayInfoModel> displays = new();
-            DisplayDevice d = new();
-            d.Cb = Marshal.SizeOf(d);
-            for (uint id = 0; GetDisplayDevices(null, id, ref d, 0); id++)
-            {
-                if (d.DeviceState.HasFlag(DisplayDeviceState.AttachedToDesktop))
-                {
-                    if (GetDisplaySettings(d.DeviceName, currentSettings, out DevMode dEVMODE))
-                    {
-                        DisplayInfoModel displayInfo = new()
-                        {
-                            DisplayWidth = dEVMODE.DmPelsWidth,
-                            DisplayHeight = dEVMODE.DmPelsHeight,
-                            DisplayLeft = dEVMODE.DmPositionX,
-                            DisplayTop = dEVMODE.DmPositionY,
-                            MainDisplay = d.DeviceState.HasFlag(DisplayDeviceState.PrimaryDevice)
-                        };
-                        displays.Add(displayInfo);
-                    }
-                }
-                d.Cb = Marshal.SizeOf(d);
-            }
+            List<DisplayInfoModel> displays = GetDisplayInfos();
             int actualLeft = 0;
             int actualTop = 0;
             int actualRight = 0;
             int actualBottom = 0;
+
+            double showLeft = 0;
+            double showTop = 0;
+            double showRight = 0;
+            double showBottom = 0;
             foreach (DisplayInfoModel item in displays)
             {
                 if (actualLeft > item.DisplayLeft)
@@ -226,15 +207,35 @@ namespace DimensionClient.Library.Controls
                 {
                     actualBottom = item.DisplayTop + item.DisplayHeight;
                 }
+
+                if (showLeft > item.ShowLeft)
+                {
+                    showLeft = item.ShowLeft;
+                }
+                if (showTop > item.ShowTop)
+                {
+                    showTop = item.ShowTop;
+                }
+                if (showRight < item.ShowLeft + item.ShowWidth)
+                {
+                    showRight = item.ShowLeft + item.ShowWidth;
+                }
+                if (showBottom < item.ShowTop + item.ShowHeight)
+                {
+                    showBottom = item.ShowTop + item.ShowHeight;
+                }
             }
             int actualWidth = Math.Abs(actualLeft) + Math.Abs(actualRight);
             int actualHeight = Math.Abs(actualTop) + Math.Abs(actualBottom);
+
+            double showWidth = Math.Abs(showLeft) + Math.Abs(showRight);
+            double showHeight = Math.Abs(showTop) + Math.Abs(showBottom);
             Bitmap bitmap = new(actualWidth, actualHeight);
             Graphics.FromImage(bitmap).CopyFromScreen(actualLeft, actualTop, 0, 0, new System.Drawing.Size(actualWidth, actualHeight));
 
             Dispatcher.Invoke(delegate
             {
-                Screenshots screenshots = new(bitmap, actualLeft, actualTop);
+                Screenshots screenshots = new(bitmap, showLeft, showTop, showWidth, showHeight);
                 screenshots.ShowDialog();
                 if (screenshots.IsSave)
                 {

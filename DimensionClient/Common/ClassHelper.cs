@@ -4,6 +4,7 @@ using DimensionClient.Models;
 using DimensionClient.Models.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using static DimensionClient.Models.DisplayDevice;
 
 namespace DimensionClient.Common
 {
@@ -145,6 +147,20 @@ namespace DimensionClient.Common
             Angle270,
             Angle90
         }
+        // 监控选项
+        public enum MonitorOptions : uint
+        {
+            MONITORDEFAULTTONULL = 0x00000000,
+            MONITORDEFAULTTOPRIMARY = 0x00000001,
+            MONITORDEFAULTTONEAREST = 0x00000002
+        }
+        // Dpi类型
+        public enum DpiType
+        {
+            Effective = 0,
+            Angular = 1,
+            Raw = 2,
+        }
         #endregion
 
         #region 事件
@@ -229,6 +245,12 @@ namespace DimensionClient.Common
         private static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DisplayDevice lpDisplayDevice, uint dwFlags);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern bool EnumDisplaySettings(string deviceName, int modeNum, out DevMode devMode);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr MonitorFromPoint(Point pt, MonitorOptions dwFlags);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool GetMonitorInfo(IntPtr hmonitor, [In, Out] MONITORINFOEX info);
+        [DllImport("Shcore.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr GetDpiForMonitor(IntPtr hmonitor, DpiType dpiType, out uint dpiX, out uint dpiY);
         #endregion
 
         /// <summary>
@@ -264,6 +286,40 @@ namespace DimensionClient.Common
         public static bool GetDisplaySettings(string deviceName, int modeNum, out DevMode devMode)
         {
             return EnumDisplaySettings(deviceName, modeNum, out devMode);
+        }
+
+        /// <summary>
+        /// 根据坐标获取所在窗体句柄
+        /// </summary>
+        /// <param name="pt">坐标</param>
+        /// <param name="dwFlags">设置</param>
+        /// <returns></returns>
+        public static IntPtr GetDisplayIntPtr(Point pt, MonitorOptions dwFlags)
+        {
+            return MonitorFromPoint(pt, dwFlags);
+        }
+
+        /// <summary>
+        /// 获取窗体信息
+        /// </summary>
+        /// <param name="hmonitor">窗体句柄</param>
+        /// <param name="info">返回数据</param>
+        /// <returns></returns>
+        public static bool GetDisplayInfo(IntPtr hmonitor, [In, Out] MONITORINFOEX info)
+        {
+            return GetMonitorInfo(hmonitor, info);
+        }
+
+        /// <summary>
+        /// 获取屏幕Dpi
+        /// </summary>
+        /// <param name="hmonitor">窗体句柄</param>
+        /// <param name="dpiType">Dpi类型</param>
+        /// <param name="dpiX">x轴Dpi</param>
+        /// <param name="dpiY">y轴Dpi</param>
+        public static void GetDisplayDpi(IntPtr hmonitor, DpiType dpiType, out uint dpiX, out uint dpiY)
+        {
+            GetDpiForMonitor(hmonitor, dpiType, out dpiX, out dpiY);
         }
 
         /// <summary>
@@ -594,6 +650,50 @@ namespace DimensionClient.Common
                 messageBoxCloseType = messageBox.CloseType;
             });
             return messageBoxCloseType;
+        }
+
+        /// <summary>
+        /// 获取所有窗体信息
+        /// </summary>
+        /// <returns></returns>
+        public static List<DisplayInfoModel> GetDisplayInfos()
+        {
+            List<DisplayInfoModel> displays = new();
+            DisplayDevice d = new();
+            d.CbSize = Marshal.SizeOf(d);
+            for (uint id = 0; GetDisplayDevices(null, id, ref d, 0); id++)
+            {
+                if (d.DeviceState.HasFlag(DisplayDeviceState.AttachedToDesktop))
+                {
+                    if (GetDisplaySettings(d.DeviceName, currentSettings, out DevMode dEVMODE))
+                    {
+                        IntPtr intPtr = GetDisplayIntPtr(new Point(dEVMODE.DmPositionX, dEVMODE.DmPositionY), MonitorOptions.MONITORDEFAULTTONEAREST);
+                        MONITORINFOEX mONITORINFOEX = new();
+                        if (GetDisplayInfo(intPtr, mONITORINFOEX))
+                        {
+                            GetDpiForMonitor(intPtr, DpiType.Effective, out uint dpiX, out uint dpiY);
+                            DisplayInfoModel displayInfo = new()
+                            {
+                                WindowIntPtr = intPtr,
+                                DisplayWidth = dEVMODE.DmPelsWidth,
+                                DisplayHeight = dEVMODE.DmPelsHeight,
+                                DisplayLeft = dEVMODE.DmPositionX,
+                                DisplayTop = dEVMODE.DmPositionY,
+                                MainDisplay = d.DeviceState.HasFlag(DisplayDeviceState.PrimaryDevice),
+                                ShowWidth = mONITORINFOEX.RcMonitor.Left != 0 ? Math.Abs(mONITORINFOEX.RcMonitor.Left) : Math.Abs(mONITORINFOEX.RcMonitor.Right),
+                                ShowHeight = mONITORINFOEX.RcMonitor.Top != 0 ? Math.Abs(mONITORINFOEX.RcMonitor.Top) : Math.Abs(mONITORINFOEX.RcMonitor.Bottom),
+                                ShowLeft = mONITORINFOEX.RcMonitor.Left,
+                                ShowTop = mONITORINFOEX.RcMonitor.Top
+                            };
+                            displayInfo.ShowWidth /= (double)dpiX / 96;
+                            displayInfo.ShowHeight /= (double)dpiY / 96;
+                            displays.Add(displayInfo);
+                        }
+                    }
+                }
+                d.CbSize = Marshal.SizeOf(d);
+            }
+            return displays;
         }
     }
 }
