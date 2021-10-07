@@ -668,27 +668,23 @@ namespace DimensionClient.Common
                     if (GetDisplaySettings(d.DeviceName, currentSettings, out DevMode dEVMODE))
                     {
                         IntPtr intPtr = GetDisplayIntPtr(new Point(dEVMODE.DmPositionX, dEVMODE.DmPositionY), MonitorOptions.MONITORDEFAULTTONEAREST);
-                        MONITORINFOEX mONITORINFOEX = new();
-                        if (GetDisplayInfo(intPtr, mONITORINFOEX))
+                        GetDpiForMonitor(intPtr, DpiType.Effective, out uint dpiX, out uint dpiY);
+                        double zoomX = (double)dpiX / 96;
+                        double zoomY = (double)dpiY / 96;
+                        DisplayInfoModel displayInfo = new()
                         {
-                            GetDpiForMonitor(intPtr, DpiType.Effective, out uint dpiX, out uint dpiY);
-                            DisplayInfoModel displayInfo = new()
-                            {
-                                WindowIntPtr = intPtr,
-                                DisplayWidth = dEVMODE.DmPelsWidth,
-                                DisplayHeight = dEVMODE.DmPelsHeight,
-                                DisplayLeft = dEVMODE.DmPositionX,
-                                DisplayTop = dEVMODE.DmPositionY,
-                                MainDisplay = d.DeviceState.HasFlag(DisplayDeviceState.PrimaryDevice),
-                                ShowWidth = mONITORINFOEX.RcMonitor.Left != 0 ? Math.Abs(mONITORINFOEX.RcMonitor.Left) : Math.Abs(mONITORINFOEX.RcMonitor.Right),
-                                ShowHeight = mONITORINFOEX.RcMonitor.Top != 0 ? Math.Abs(mONITORINFOEX.RcMonitor.Top) : Math.Abs(mONITORINFOEX.RcMonitor.Bottom),
-                                ShowLeft = mONITORINFOEX.RcMonitor.Left,
-                                ShowTop = mONITORINFOEX.RcMonitor.Top
-                            };
-                            displayInfo.ShowWidth /= (double)dpiX / 96;
-                            displayInfo.ShowHeight /= (double)dpiY / 96;
-                            displays.Add(displayInfo);
-                        }
+                            WindowIntPtr = intPtr,
+                            DisplayWidth = dEVMODE.DmPelsWidth,
+                            DisplayHeight = dEVMODE.DmPelsHeight,
+                            DisplayLeft = dEVMODE.DmPositionX,
+                            DisplayTop = dEVMODE.DmPositionY,
+                            MainDisplay = d.DeviceState.HasFlag(DisplayDeviceState.PrimaryDevice),
+                            ShowWidth = dEVMODE.DmPelsWidth / zoomX,
+                            ShowHeight = dEVMODE.DmPelsHeight / zoomY,
+                            ShowLeft = dEVMODE.DmPositionX / zoomX,
+                            ShowTop = dEVMODE.DmPositionY / zoomY
+                        };
+                        displays.Add(displayInfo);
                     }
                 }
                 d.CbSize = Marshal.SizeOf(d);
