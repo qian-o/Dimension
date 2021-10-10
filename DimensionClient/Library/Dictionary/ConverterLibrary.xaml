@@ -10,4 +10,5 @@
     <converters:PersonalDetailsConvert x:Key="PersonalDetailsConvert"/>
     <converters:InversionVisibilityConvert x:Key="InversionVisibilityConvert"/>
     <converters:HeadPortraitConvert x:Key="HeadPortraitConvert"/>
+    <converters:SourceOnlineConvert x:Key="SourceOnlineConvert"/>
 </ResourceDictionary>

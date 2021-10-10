@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using WpfAnimatedGif;
 
 namespace DimensionClient.Library.Controls
 {
@@ -76,16 +75,18 @@ namespace DimensionClient.Library.Controls
                             switch (fileModel.FileType)
                             {
                                 case ClassHelper.FileType.Image:
-                                    imgContent.Visibility = Visibility.Visible;
-                                    if (fileModel.FileName.EndsWith(".gif", StringComparison.CurrentCulture))
+                                    if (fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
                                     {
-                                        imgContent.SetBinding(ImageBehavior.AnimatedSourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert") });
+                                        mdiContent.Visibility = Visibility.Visible;
+                                        mdiContent.SetBinding(MediaElement.SourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert") });
+                                        mdiContent.DataContext = fileModel.FileName;
                                     }
                                     else
                                     {
+                                        imgContent.Visibility = Visibility.Visible;
                                         imgContent.SetBinding(Image.SourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = 300 });
+                                        imgContent.DataContext = fileModel.FileName;
                                     }
-                                    imgContent.DataContext = fileModel.FileName;
                                     break;
                                 case ClassHelper.FileType.Word:
                                     break;
@@ -106,6 +107,12 @@ namespace DimensionClient.Library.Controls
                         break;
                 }
             }
+        }
+
+        private void MdiContent_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            mdiContent.Position = TimeSpan.FromMilliseconds(1);
+            mdiContent.Play();
         }
     }
 }

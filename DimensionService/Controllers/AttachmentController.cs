@@ -4,7 +4,6 @@ using DimensionService.Models;
 using DimensionService.Service.Attachment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DimensionService.Controllers
 {
@@ -28,12 +27,12 @@ namespace DimensionService.Controllers
         /// <returns></returns>
         [Route("UploadAttachment")]
         [HttpPost]
-        public async Task<WebResultModel> UploadAttachment(IFormFile file)
+        public WebResultModel UploadAttachment(IFormFile file)
         {
             string fileName = $"{ClassHelper.GetRandomString(10)}_{file.FileName}";
             WebResultModel webResult = new()
             {
-                State = await _attachment.UploadAttachment(file, fileName),
+                State = _attachment.UploadAttachment(file, fileName),
                 Data = fileName,
                 Message = "上传成功"
             };

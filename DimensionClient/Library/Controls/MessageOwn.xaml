@@ -47,6 +47,7 @@
                     <Grid Margin="8,5,8,5">
                         <emoji:TextBlock x:Name="txbContent" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed"/>
                         <Image x:Name="imgContent" MaxHeight="150" MaxWidth="150" Visibility="Collapsed"/>
+                        <MediaElement x:Name="mdiContent" Height="100" LoadedBehavior="Play" MediaEnded="MdiContent_MediaEnded" Visibility="Collapsed"/>
                     </Grid>
                 </Grid>
             </StackPanel>
