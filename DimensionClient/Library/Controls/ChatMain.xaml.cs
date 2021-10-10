@@ -16,8 +16,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
 using static DimensionClient.Common.ClassHelper;
 using Image = System.Windows.Controls.Image;
 
@@ -53,37 +53,27 @@ namespace DimensionClient.Library.Controls
             {
                 e.CancelCommand();
 
-                Image imgMessage = new()
+                ImageMedia imageMedia = new()
                 {
                     MaxHeight = 100,
                     MaxWidth = 100
                 };
-                imgMessage.MouseLeftButtonDown += ImgMessage_MouseLeftButtonDown;
-                imgMessage.TouchDown += ImgMessage_TouchDown;
+                imageMedia.MouseLeftButtonDown += ImageMedia_MouseLeftButtonDown;
+                imageMedia.TouchDown += ImageMedia_TouchDown;
 
                 if (Clipboard.ContainsFileDropList())
                 {
                     string file = Clipboard.GetFileDropList()[0];
                     if (File.Exists(file))
                     {
-                        BitmapImage bitmap = new(new Uri(file, UriKind.Absolute));
-                        string ext = new FileInfo(file).Extension.ToLower(cultureInfo);
-                        if (ext.Contains("gif"))
-                        {
-                            ImageBehavior.SetAnimatedSource(imgMessage, bitmap);
-                        }
-                        else
-                        {
-                            imgMessage.Source = bitmap;
-                        }
-                        imgMessage.Tag = ext;
+                        imageMedia.ImageUri = new Uri(file, UriKind.Absolute);
                     }
                 }
-                else if (Clipboard.GetImage() is BitmapSource bitmap)
+                else if (Clipboard.GetData(DataFormats.Bitmap) is InteropBitmap bitmap)
                 {
-                    imgMessage.Source = bitmap;
+                    imageMedia.ImageData = bitmap;
                 }
-                _ = new InlineUIContainer(imgMessage, rtbMessage.Selection.End.GetPositionAtOffset(0));
+                _ = new InlineUIContainer(imageMedia, rtbMessage.Selection.End.GetPositionAtOffset(0));
                 if (rtbMessage.Selection.End.GetPositionAtOffset(3) != null)
                 {
                     rtbMessage.Selection.Select(rtbMessage.Selection.End.GetPositionAtOffset(3), rtbMessage.Selection.End.GetPositionAtOffset(3));
@@ -92,18 +82,18 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 富文本中查看图片(鼠标,触控)
-        private void ImgMessage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ImageMedia_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount >= 2)
             {
-                ImgMessage_PointerDown(sender);
+                ImageMedia_PointerDown(sender);
             }
         }
-        private void ImgMessage_TouchDown(object sender, TouchEventArgs e)
+        private void ImageMedia_TouchDown(object sender, TouchEventArgs e)
         {
             if (e.Timestamp - lastTouch < 300)
             {
-                ImgMessage_PointerDown(sender);
+                ImageMedia_PointerDown(sender);
             }
             else
             {
@@ -163,7 +153,7 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 执行事件
-        private static void ImgMessage_PointerDown(object sender)
+        private static void ImageMedia_PointerDown(object sender)
         {
             Image image = sender as Image;
             Console.WriteLine(image);
@@ -277,29 +267,41 @@ namespace DimensionClient.Library.Controls
                             }
                             else if (coll is InlineUIContainer con)
                             {
-                                if (con.Child is Image image)
+                                if (con.Child is ImageMedia imageMedia)
                                 {
                                     Task task = new(() =>
                                     {
                                         MultipartFormDataContent dataContent = new();
+                                        double fileSize = 0;
+                                        double fileWidth = 0;
+                                        double fileHeight = 0;
                                         Dispatcher.Invoke(delegate
                                         {
                                             using MemoryStream memoryStream = new();
                                             string extend;
-                                            if (image.Tag != null)
+                                            BitmapSource bitmapSource;
+                                            if (imageMedia.ImageUri != null)
                                             {
-                                                extend = image.Tag.ToString();
-                                                BitmapImage bitmap = image.Source is BitmapImage bitmapImage ? bitmapImage : (BitmapImage)ImageBehavior.GetAnimatedSource(image);
-                                                new FileStream(bitmap.UriSource.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read).CopyTo(memoryStream);
+                                                extend = new FileInfo(imageMedia.ImageUri.LocalPath).Extension.ToLower(cultureInfo);
+                                                File.OpenRead(imageMedia.ImageUri.LocalPath).CopyTo(memoryStream);
+
+                                                bitmapSource = new BitmapImage(imageMedia.ImageUri);
                                             }
                                             else
                                             {
                                                 extend = ".bmp";
                                                 BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
-                                                bitmapEncoder.Frames.Add(BitmapFrame.Create(image.Source as BitmapSource));
+                                                bitmapEncoder.Frames.Add(BitmapFrame.Create(imageMedia.ImageData));
                                                 bitmapEncoder.Save(memoryStream);
+
+                                                bitmapSource = imageMedia.ImageData;
                                             }
                                             dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
+
+                                            fileSize = (double)memoryStream.Length / 1000 / 1000;
+                                            fileWidth = bitmapSource.Width;
+                                            fileHeight = bitmapSource.Height;
+
                                             memoryStream.Close();
                                         });
                                         if (ServerUpload($"{servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
@@ -307,7 +309,10 @@ namespace DimensionClient.Library.Controls
                                             FileModel fileModel = new()
                                             {
                                                 FileType = FileType.Image,
-                                                FileName = fileName
+                                                FileName = fileName,
+                                                FileMByte = fileSize,
+                                                FileWidth = fileWidth,
+                                                FileHeight = fileHeight
                                             };
                                             ChatService.SendMessage(chatMainData.ChatID, MessageType.File, JObject.FromObject(fileModel).ToString());
                                         }

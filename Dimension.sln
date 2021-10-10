@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionService", "DimensionService\DimensionService.csproj", "{07630C0F-FCEA-43E9-97C9-35BFF477AA98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DimensionClient", "DimensionClient\DimensionClient.csproj", "{C357694A-0939-42FC-98F9-E62BB73D46AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DimensionClient", "DimensionClient\DimensionClient.csproj", "{C357694A-0939-42FC-98F9-E62BB73D46AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

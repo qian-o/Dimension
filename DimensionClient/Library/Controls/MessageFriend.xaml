@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="DimensionClient.Library.Controls.MessageFriend"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf" xmlns:controls="clr-namespace:DimensionClient.Library.Controls"
              x:Name="UserControlMain" Background="Transparent" Loaded="UserControlMain_Loaded" DataContextChanged="UserControlMain_DataContextChanged">
     <UserControl.RenderTransform>
         <TransformGroup>
@@ -45,8 +45,7 @@
                     </Border>
                     <Grid Margin="8,5,8,5">
                         <emoji:TextBlock x:Name="txbContent" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed"/>
-                        <Image x:Name="imgContent" MaxHeight="150" MaxWidth="150" Visibility="Collapsed"/>
-                        <MediaElement x:Name="mdiContent" Height="100" LoadedBehavior="Play" MediaEnded="MdiContent_MediaEnded" Visibility="Collapsed"/>
+                        <controls:ImageMedia x:Name="conImageMedia" Visibility="Collapsed"/>
                     </Grid>
                 </Grid>
             </StackPanel>

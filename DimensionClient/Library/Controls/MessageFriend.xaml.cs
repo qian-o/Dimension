@@ -75,18 +75,27 @@ namespace DimensionClient.Library.Controls
                             switch (fileModel.FileType)
                             {
                                 case ClassHelper.FileType.Image:
-                                    if (fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
+                                    conImageMedia.Visibility = Visibility.Visible;
+                                    if (fileModel.FileWidth < 440 && fileModel.FileHeight < 440)
                                     {
-                                        mdiContent.Visibility = Visibility.Visible;
-                                        mdiContent.SetBinding(MediaElement.SourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert") });
-                                        mdiContent.DataContext = fileModel.FileName;
+                                        conImageMedia.Width = fileModel.FileWidth;
+                                        conImageMedia.Height = fileModel.FileHeight;
                                     }
                                     else
                                     {
-                                        imgContent.Visibility = Visibility.Visible;
-                                        imgContent.SetBinding(Image.SourceProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = 300 });
-                                        imgContent.DataContext = fileModel.FileName;
+                                        double ratios = fileModel.FileWidth / 440;
+                                        conImageMedia.Width = 440;
+                                        conImageMedia.Height = fileModel.FileHeight / ratios;
                                     }
+                                    if (fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
+                                    {
+                                        conImageMedia.SetBinding(ImageMedia.ImageUriProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert") });
+                                    }
+                                    else
+                                    {
+                                        conImageMedia.SetBinding(ImageMedia.ImageDataProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = 600 });
+                                    }
+                                    conImageMedia.DataContext = fileModel.FileName;
                                     break;
                                 case ClassHelper.FileType.Word:
                                     break;
@@ -107,12 +116,6 @@ namespace DimensionClient.Library.Controls
                         break;
                 }
             }
-        }
-
-        private void MdiContent_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mdiContent.Position = TimeSpan.FromMilliseconds(1);
-            mdiContent.Play();
         }
     }
 }
