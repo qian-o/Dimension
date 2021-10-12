@@ -53,6 +53,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="XamlAnimatedGif">
+      <HintPath>Library\DynamicLibrary\XamlAnimatedGif\XamlAnimatedGif.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Library\Font\element-icons.ttf" />
     <Resource Include="Library\Font\messages-icons.ttf" />
     <Resource Include="Library\Font\苹方黑体-中粗-简.ttf" />
