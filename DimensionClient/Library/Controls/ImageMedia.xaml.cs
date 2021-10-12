@@ -2,7 +2,9 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using XamlAnimatedGif;
 
 namespace DimensionClient.Library.Controls
 {
@@ -35,12 +37,11 @@ namespace DimensionClient.Library.Controls
             Uri uri = e.NewValue as Uri;
             if (uri.LocalPath.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
             {
-                image.mdiSource.Visibility = Visibility.Visible;
-                image.mdiSource.Source = uri;
+                AnimationBehavior.SetSourceUri(image.imgSource, uri);
+                AnimationBehavior.SetRepeatBehavior(image.imgSource, RepeatBehavior.Forever);
             }
             else
             {
-                image.imgSource.Visibility = Visibility.Visible;
                 image.imgSource.Source = new BitmapImage(uri);
             }
         }
@@ -54,12 +55,6 @@ namespace DimensionClient.Library.Controls
         public ImageMedia()
         {
             InitializeComponent();
-        }
-
-        private void MdiSource_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mdiSource.Position = TimeSpan.FromMilliseconds(1);
-            mdiSource.Play();
         }
     }
 }

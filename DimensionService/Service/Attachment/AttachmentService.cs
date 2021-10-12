@@ -10,6 +10,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DimensionService.Service.Attachment
 {
@@ -22,35 +23,10 @@ namespace DimensionService.Service.Attachment
             _userInfoDAO = userInfoDAO;
         }
 
-        public bool UploadAttachment(IFormFile file, string fileName)
+        public async Task<bool> UploadAttachment(IFormFile file, string fileName)
         {
             using Stream stream = file.OpenReadStream();
-            if (file.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
-            {
-                using Image image = Image.Load(stream);
-                if (image.GetType() == typeof(Image<Rgba32>))
-                {
-                    foreach (ImageFrame<Rgba32> item in image.Frames)
-                    {
-                        for (int y = 0; y < item.Height; y++)
-                        {
-                            Span<Rgba32> rgba32s = item.GetPixelRowSpan(y);
-                            for (int x = 0; x < item.Width; x++)
-                            {
-                                if (rgba32s[x].A == 0)
-                                {
-                                    rgba32s[x] = new Rgba32(255, 255, 255);
-                                }
-                            }
-                        }
-                    }
-                }
-                image.SaveAsGif(Path.Combine(ClassHelper.attachmentsPath, $"{fileName}"));
-            }
-            else
-            {
-                ClassHelper.WriteFile(stream, Path.Combine(ClassHelper.attachmentsPath, fileName));
-            }
+            await ClassHelper.WriteFileAsync(stream, Path.Combine(ClassHelper.attachmentsPath, fileName));
             stream.Close();
             return true;
         }

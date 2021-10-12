@@ -23,6 +23,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace DimensionService.Common
 {
@@ -224,15 +225,15 @@ namespace DimensionService.Common
         }
 
         /// <summary>
-        /// 写文件导到磁盘
+        /// 写文件导到磁盘(异步)
         /// </summary>
         /// <param name="stream">数据流</param>
         /// <param name="path">文件路径</param>
         /// <returns></returns>
-        public static void WriteFile(Stream stream, string path)
+        public static async Task WriteFileAsync(Stream stream, string path)
         {
             using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write, FileShare.Write);
-            stream.CopyTo(fileStream);
+            await stream.CopyToAsync(fileStream);
             fileStream.Close();
         }
 
