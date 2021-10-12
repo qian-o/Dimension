@@ -73,10 +73,11 @@ namespace DimensionClient.Library.Controls
                 {
                     imageMedia.ImageData = bitmap;
                 }
-                _ = new InlineUIContainer(imageMedia, rtbMessage.Selection.End.GetPositionAtOffset(0));
-                if (rtbMessage.Selection.End.GetPositionAtOffset(3) != null)
+                bool tagEnd = rtbMessage.Selection.End.GetPositionAtOffset(2) == null || rtbMessage.Selection.End.GetPositionAtOffset(2).GetPointerContext(LogicalDirection.Forward) == TextPointerContext.None;
+                _ = new InlineUIContainer(imageMedia, rtbMessage.Selection.Start.GetPositionAtOffset(0));
+                if (tagEnd)
                 {
-                    rtbMessage.Selection.Select(rtbMessage.Selection.End.GetPositionAtOffset(3), rtbMessage.Selection.End.GetPositionAtOffset(3));
+                    rtbMessage.Selection.Select(rtbMessage.Document.ContentEnd, rtbMessage.Document.ContentEnd);
                 }
             }
         }
