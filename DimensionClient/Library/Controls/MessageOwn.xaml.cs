@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
@@ -75,27 +76,20 @@ namespace DimensionClient.Library.Controls
                             switch (fileModel.FileType)
                             {
                                 case ClassHelper.FileType.Image:
-                                    conImageMedia.Visibility = Visibility.Visible;
+                                    cusSerializableImage.Visibility = Visibility.Visible;
                                     if (fileModel.FileWidth < 440 && fileModel.FileHeight < 440)
                                     {
-                                        conImageMedia.Width = fileModel.FileWidth;
-                                        conImageMedia.Height = fileModel.FileHeight;
+                                        cusSerializableImage.Width = fileModel.FileWidth;
+                                        cusSerializableImage.Height = fileModel.FileHeight;
                                     }
                                     else
                                     {
                                         double ratios = fileModel.FileWidth / 440;
-                                        conImageMedia.Width = 440;
-                                        conImageMedia.Height = fileModel.FileHeight / ratios;
+                                        cusSerializableImage.Width = 440;
+                                        cusSerializableImage.Height = fileModel.FileHeight / ratios;
                                     }
-                                    if (fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
-                                    {
-                                        conImageMedia.SetBinding(ImageMedia.ImageUriProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert") });
-                                    }
-                                    else
-                                    {
-                                        conImageMedia.SetBinding(ImageMedia.ImageDataProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("ImageSourceOnlineConvert"), ConverterParameter = 600 });
-                                    }
-                                    conImageMedia.DataContext = fileModel.FileName;
+                                    cusSerializableImage.SetBinding(SerializableImage.PathUriProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert"), ConverterParameter = fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture) ? null : cusSerializableImage.Height * 2 });
+                                    cusSerializableImage.DataContext = fileModel.FileName;
                                     break;
                                 case ClassHelper.FileType.Word:
                                     break;

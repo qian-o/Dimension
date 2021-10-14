@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Component.Windows;
+using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
@@ -19,7 +20,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using static DimensionClient.Common.ClassHelper;
-using Image = System.Windows.Controls.Image;
 
 namespace DimensionClient.Library.Controls
 {
@@ -29,7 +29,6 @@ namespace DimensionClient.Library.Controls
     public partial class ChatMain : UserControl
     {
         private readonly ChatMainViewModel chatMainData;
-        private int lastTouch;
         public ChatMain()
         {
             InitializeComponent();
@@ -53,55 +52,45 @@ namespace DimensionClient.Library.Controls
             {
                 e.CancelCommand();
 
-                ImageMedia imageMedia = new()
+                SerializableImage serializableImage = new()
                 {
                     MaxHeight = 100,
                     MaxWidth = 100
                 };
-                imageMedia.MouseLeftButtonDown += ImageMedia_MouseLeftButtonDown;
-                imageMedia.TouchDown += ImageMedia_TouchDown;
 
                 if (Clipboard.ContainsFileDropList())
                 {
                     string file = Clipboard.GetFileDropList()[0];
                     if (File.Exists(file))
                     {
-                        imageMedia.ImageUri = new Uri(file, UriKind.Absolute);
+                        serializableImage.PathUri = new Uri(file, UriKind.Absolute);
                     }
                 }
                 else if (Clipboard.GetData(DataFormats.Bitmap) is InteropBitmap bitmap)
                 {
-                    imageMedia.ImageData = bitmap;
+                    using MemoryStream memory = new();
+                    BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
+                    bitmapEncoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    bitmapEncoder.Save(memory);
+                    byte[] data = memory.ToArray();
+                    string path = Path.Combine(Path.GetTempPath(), $"{GetCacheFileName(data)}.bmp");
+                    if (!File.Exists(path))
+                    {
+                        using FileStream stream = new(path, FileMode.Create, FileAccess.Write, FileShare.Write);
+                        stream.Write(data, 0, data.Length);
+                        stream.Close();
+                    }
+                    serializableImage.PathUri = new Uri(path, UriKind.Absolute);
                 }
+
                 bool tagEnd = rtbMessage.Selection.End.GetPositionAtOffset(2) == null || rtbMessage.Selection.End.GetPositionAtOffset(2).GetPointerContext(LogicalDirection.Forward) == TextPointerContext.None;
-                _ = new InlineUIContainer(imageMedia, rtbMessage.Selection.Start.GetPositionAtOffset(0));
+                _ = new InlineUIContainer(serializableImage, rtbMessage.Selection.Start.GetPositionAtOffset(0));
                 if (tagEnd)
                 {
                     rtbMessage.Selection.Select(rtbMessage.Document.ContentEnd, rtbMessage.Document.ContentEnd);
                 }
             }
         }
-
-        #region 富文本中查看图片(鼠标,触控)
-        private void ImageMedia_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount >= 2)
-            {
-                ImageMedia_PointerDown(sender);
-            }
-        }
-        private void ImageMedia_TouchDown(object sender, TouchEventArgs e)
-        {
-            if (e.Timestamp - lastTouch < 300)
-            {
-                ImageMedia_PointerDown(sender);
-            }
-            else
-            {
-                lastTouch = e.Timestamp;
-            }
-        }
-        #endregion
 
         #region 截图(鼠标,触控)
         private void TxbScreenCapture_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -154,11 +143,6 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 执行事件
-        private static void ImageMedia_PointerDown(object sender)
-        {
-            Image image = sender as Image;
-            Console.WriteLine(image);
-        }
         private void TxbScreenCapture_PointerUp()
         {
             ThreadPool.QueueUserWorkItem(ScreenCapture);
@@ -268,7 +252,7 @@ namespace DimensionClient.Library.Controls
                             }
                             else if (coll is InlineUIContainer con)
                             {
-                                if (con.Child is ImageMedia imageMedia)
+                                if (con.Child is SerializableImage serializableImage)
                                 {
                                     Task task = new(() =>
                                     {
@@ -279,24 +263,9 @@ namespace DimensionClient.Library.Controls
                                         Dispatcher.Invoke(delegate
                                         {
                                             using MemoryStream memoryStream = new();
-                                            string extend;
-                                            BitmapSource bitmapSource;
-                                            if (imageMedia.ImageUri != null)
-                                            {
-                                                extend = new FileInfo(imageMedia.ImageUri.LocalPath).Extension.ToLower(cultureInfo);
-                                                File.OpenRead(imageMedia.ImageUri.LocalPath).CopyTo(memoryStream);
-
-                                                bitmapSource = new BitmapImage(imageMedia.ImageUri);
-                                            }
-                                            else
-                                            {
-                                                extend = ".bmp";
-                                                BitmapEncoder bitmapEncoder = new BmpBitmapEncoder();
-                                                bitmapEncoder.Frames.Add(BitmapFrame.Create(imageMedia.ImageData));
-                                                bitmapEncoder.Save(memoryStream);
-
-                                                bitmapSource = imageMedia.ImageData;
-                                            }
+                                            string extend = new FileInfo(serializableImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
+                                            File.OpenRead(serializableImage.PathUri.LocalPath).CopyTo(memoryStream);
+                                            BitmapSource bitmapSource = new BitmapImage(serializableImage.PathUri);
                                             dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
 
                                             fileSize = (double)memoryStream.Length / 1000 / 1000;

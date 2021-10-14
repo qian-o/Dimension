@@ -691,5 +691,30 @@ namespace DimensionClient.Common
             }
             return displays;
         }
+
+        /// <summary>
+        /// 获取缓存名称
+        /// </summary>
+        /// <param name="bytes">缓存内容</param>
+        /// <returns></returns>
+        public static string GetCacheFileName(byte[] bytes)
+        {
+            using SHA256 sHA256 = SHA256.Create();
+            byte[] hash = sHA256.ComputeHash(bytes);
+            return ToHex(hash);
+        }
+
+        /// <summary>
+        /// 获取哈希值
+        /// </summary>
+        /// <param name="bytes">字节数组</param>
+        /// <returns></returns>
+        public static string ToHex(byte[] bytes)
+        {
+            return bytes.Aggregate(
+                new StringBuilder(),
+                (sb, b) => sb.Append(b.ToString("X2", cultureInfo)),
+                sb => sb.ToString());
+        }
     }
 }
