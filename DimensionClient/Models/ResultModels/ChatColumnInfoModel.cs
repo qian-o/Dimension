@@ -1,5 +1,6 @@
 ﻿using DimensionClient.Common;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 namespace DimensionClient.Models.ResultModels
 {
@@ -65,6 +66,8 @@ namespace DimensionClient.Models.ResultModels
                 OnPropertyChanged(nameof(Unread));
             }
         }
+        // 富文本内容
+        public FlowDocument Flow { get; set; }
 
         public override void InitializeVariable()
         {
@@ -73,6 +76,7 @@ namespace DimensionClient.Models.ResultModels
             headPortrait = string.Empty;
             chatContent = null;
             unread = 0;
+            Flow = null;
         }
     }
 }

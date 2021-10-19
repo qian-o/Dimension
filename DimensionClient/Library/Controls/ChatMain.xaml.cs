@@ -139,6 +139,11 @@ namespace DimensionClient.Library.Controls
             ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
             chatMainData.ChatID = chatColumnInfo.ChatID;
             txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
+            if (chatColumnInfo.Flow == null)
+            {
+                chatColumnInfo.Flow = new FlowDocument();
+            }
+            rtbMessage.Document = chatColumnInfo.Flow;
             brdChat.Child = chatItem.MasterChat;
         }
 
