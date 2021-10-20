@@ -45,7 +45,7 @@ namespace DimensionClient
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            if (e.Exception.HResult != -2147221037)
+            if (e.Exception.HResult is not (-2147221037) and not (-2146233079))
             {
                 ClassHelper.RecordException(typeof(App), e.Exception);
             }

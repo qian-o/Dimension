@@ -1,8 +1,7 @@
 ﻿<UserControl x:Class="DimensionClient.Library.Controls.MessageOwn"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
-             xmlns:customcontrols="clr-namespace:DimensionClient.Library.CustomControls"
+             xmlns:customcontrols="clr-namespace:DimensionClient.Library.CustomControls" xmlns:controls="clr-namespace:DimensionClient.Library.Controls"
              x:Name="UserControlMain" Background="Transparent" Loaded="UserControlMain_Loaded" DataContextChanged="UserControlMain_DataContextChanged">
     <UserControl.RenderTransform>
         <TransformGroup>
@@ -45,7 +44,7 @@
                         </Border.Effect>
                     </Border>
                     <Grid Margin="8,5,8,5">
-                        <emoji:TextBlock x:Name="txbContent" FontSize="16" TextWrapping="Wrap" Visibility="Collapsed"/>
+                        <controls:EmojiReadOnlyTextBox x:Name="conTextBox" Visibility="Collapsed"/>
                         <customcontrols:SerializableImage x:Name="cusSerializableImage" Visibility="Collapsed"/>
                     </Grid>
                 </Grid>

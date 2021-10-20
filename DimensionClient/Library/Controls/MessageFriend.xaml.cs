@@ -65,8 +65,8 @@ namespace DimensionClient.Library.Controls
                 switch (chatMessages.MessageType)
                 {
                     case ClassHelper.MessageType.Text:
-                        txbContent.Visibility = Visibility.Visible;
-                        txbContent.Text = chatMessages.MessageContent;
+                        conTextBox.Visibility = Visibility.Visible;
+                        conTextBox.TextContent = chatMessages.MessageContent;
                         break;
                     case ClassHelper.MessageType.Voice:
                         break;

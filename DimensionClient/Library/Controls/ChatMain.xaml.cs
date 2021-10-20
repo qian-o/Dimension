@@ -141,7 +141,10 @@ namespace DimensionClient.Library.Controls
             txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
             if (chatColumnInfo.Flow == null)
             {
-                chatColumnInfo.Flow = new FlowDocument();
+                chatColumnInfo.Flow = new FlowDocument
+                {
+                    PagePadding = new Thickness(0)
+                };
             }
             rtbMessage.Document = chatColumnInfo.Flow;
             brdChat.Child = chatItem.MasterChat;

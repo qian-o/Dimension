@@ -11,4 +11,5 @@
     <converters:InversionVisibilityConvert x:Key="InversionVisibilityConvert"/>
     <converters:HeadPortraitConvert x:Key="HeadPortraitConvert"/>
     <converters:SourceOnlineConvert x:Key="SourceOnlineConvert"/>
+    <converters:RichTextBoxWidthConvert x:Key="RichTextBoxWidthConvert"/>
 </ResourceDictionary>
