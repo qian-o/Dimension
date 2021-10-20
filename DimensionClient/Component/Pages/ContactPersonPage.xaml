@@ -109,8 +109,8 @@
                         </DockPanel>
                     </UniformGrid>
                     <Grid x:Name="grdMask" Grid.RowSpan="2" Background="Transparent" Visibility="{Binding ElementName=popFriendAdd,Path=IsOpen,Converter={StaticResource PopupMaskConvert}}"/>
-                    <Popup x:Name="popFriendAdd" Grid.RowSpan="2" MinWidth="260" PlacementTarget="{Binding ElementName=tolFriendAdd}" Placement="Left" PopupAnimation="Scroll"  AllowsTransparency="True" HorizontalOffset="10" VerticalOffset="10" StaysOpen="False" IsOpen="{Binding ElementName=tolFriendAdd,Path=IsChecked}">
-                        <Border Padding="10">
+                    <Popup x:Name="popFriendAdd" Grid.RowSpan="2" MinWidth="260" PlacementTarget="{Binding ElementName=tolFriendAdd}" Placement="Left" PopupAnimation="Scroll"  AllowsTransparency="True" HorizontalOffset="12" VerticalOffset="12" StaysOpen="False" IsOpen="{Binding ElementName=tolFriendAdd,Path=IsChecked}">
+                        <Border Padding="12">
                             <Grid>
                                 <Border Background="#FFFFFF" BorderBrush="#E4E7ED" BorderThickness="1" CornerRadius="4">
                                     <Border.Effect>

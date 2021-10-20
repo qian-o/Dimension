@@ -1,10 +1,12 @@
 ﻿using DimensionClient.Common;
+using System.Collections.Generic;
 
 namespace DimensionClient.Models.ViewModels
 {
     public class ChatMainViewModel : ModelBase
     {
         private string messageText;
+        private List<EmojiModel> emojis;
 
         public string ChatID { get; set; }
 
@@ -18,10 +20,21 @@ namespace DimensionClient.Models.ViewModels
             }
         }
 
+        public List<EmojiModel> Emojis
+        {
+            get => emojis;
+            set
+            {
+                emojis = value;
+                OnPropertyChanged(nameof(Emojis));
+            }
+        }
+
         public override void InitializeVariable()
         {
             ChatID = string.Empty;
             messageText = string.Empty;
+            Emojis = null;
         }
     }
 }

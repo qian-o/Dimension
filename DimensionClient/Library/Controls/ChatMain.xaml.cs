@@ -6,10 +6,14 @@ using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Chat;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
+using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,6 +43,7 @@ namespace DimensionClient.Library.Controls
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
             DataPassingChanged += ClassHelper_DataPassingChanged;
+            ThreadPool.QueueUserWorkItem(Load);
         }
 
         private void UserControlMain_Unloaded(object sender, RoutedEventArgs e)
@@ -151,6 +156,26 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 执行事件
+        private void Load(object data)
+        {
+            List<EmojiModel> emojis = new();
+
+            ResourceManager resourceManager = new($"{Assembly.GetExecutingAssembly().GetName().Name}.g", Assembly.GetExecutingAssembly());
+            ResourceSet resources = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true);
+            foreach (DictionaryEntry dictionary in resources)
+            {
+                if (dictionary.Key.ToString().Contains("library/image/emoji/"))
+                {
+                    emojis.Add(new EmojiModel
+                    {
+                        EmojiKey = dictionary.Key.ToString(),
+                        ResourceUri = $"pack://application:,,,/{dictionary.Key}"
+                    });
+                }
+            }
+
+            chatMainData.Emojis = emojis;
+        }
         private void TxbScreenCapture_PointerUp()
         {
             ThreadPool.QueueUserWorkItem(ScreenCapture);

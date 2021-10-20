@@ -9,26 +9,66 @@
         <Border Height="40" BorderBrush="#EBEEF5" BorderThickness="0,0,0,1" DockPanel.Dock="Top">
             <TextBlock x:Name="txbFriendNickName" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
         </Border>
-        <Grid MinHeight="160" DockPanel.Dock="Bottom">
+        <Grid MinHeight="180" DockPanel.Dock="Bottom">
             <Border Background="#FFFFFF" CornerRadius="4">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
                 </Border.Effect>
             </Border>
             <DockPanel Margin="6">
-                <Border BorderBrush="#EBEEF5" BorderThickness="0,1,0,0" Margin="0,6,0,0" DockPanel.Dock="Bottom">
-                    <DockPanel Margin="0,6,0,0">
-                        <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" Padding="0" FontSize="14" Content="发送" Click="BtnSend_Click" DockPanel.Dock="Right"/>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock ToolTip="{DynamicResource SelectEmoji}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe646;"/>
-                            <TextBlock x:Name="txbScreenCapture" ToolTip="{DynamicResource ScreenCapture}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe641;" MouseLeftButtonUp="TxbScreenCapture_MouseLeftButtonUp" TouchUp="TxbScreenCapture_TouchUp"/>
-                            <TextBlock ToolTip="{DynamicResource SendingPictures}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a5;"/>
-                            <TextBlock ToolTip="{DynamicResource UploadFiles}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a9;"/>
-                            <TextBlock ToolTip="{DynamicResource MessageLogging}" Style="{StaticResource TextBlockElement}" Margin="6,0,6,0" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6ba;"/>
-                        </StackPanel>
-                    </DockPanel>
+                <Border BorderBrush="#EBEEF5" BorderThickness="0,0,0,1" Margin="0,0,0,6" DockPanel.Dock="Top">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,2,0,6">
+                        <Grid>
+                            <ToggleButton x:Name="tolSelectEmoji" Width="32" Style="{StaticResource ToggleButtonTemplate}" ToolTip="{DynamicResource SelectEmoji}">
+                                <TextBlock Style="{StaticResource TextBlockElement}" HorizontalAlignment="Center" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe646;"/>
+                            </ToggleButton>
+                            <Grid Background="Transparent" Visibility="{Binding ElementName=popSelectEmoji,Path=IsOpen,Converter={StaticResource PopupMaskConvert}}"/>
+                            <Popup x:Name="popSelectEmoji" PlacementTarget="{Binding ElementName=tolSelectEmoji}" Placement="Top" PopupAnimation="Slide" AllowsTransparency="True" HorizontalOffset="-180" VerticalOffset="-6" StaysOpen="False" IsOpen="{Binding ElementName=tolSelectEmoji,Path=IsChecked}">
+                                <Border Padding="8">
+                                    <Grid Height="240" Width="376">
+                                        <Border Background="#FFFFFF" CornerRadius="5">
+                                            <Border.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.6"/>
+                                            </Border.Effect>
+                                        </Border>
+                                        <Border Padding="0,12,0,12">
+                                            <ScrollViewer Style="{StaticResource for_scrollviewer}" Padding="12,0,12,0">
+                                                <ItemsControl ItemsSource="{Binding Emojis}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Height="40" Width="40" Style="{StaticResource BorderWhiteGradient}" Margin="2" CornerRadius="3">
+                                                                <Image Height="26" Width="26" Source="{Binding ResourceUri}"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <Border Width="32">
+                            <TextBlock x:Name="txbScreenCapture" ToolTip="{DynamicResource ScreenCapture}" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Center" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe641;" MouseLeftButtonUp="TxbScreenCapture_MouseLeftButtonUp" TouchUp="TxbScreenCapture_TouchUp"/>
+                        </Border>
+                        <Border Width="32">
+                            <TextBlock ToolTip="{DynamicResource SendingPictures}" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Center" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a5;"/>
+                        </Border>
+                        <Border Width="32">
+                            <TextBlock ToolTip="{DynamicResource UploadFiles}" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Center" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6a9;"/>
+                        </Border>
+                        <Border Width="32">
+                            <TextBlock ToolTip="{DynamicResource MessageLogging}" Style="{StaticResource TextBlockElement}" HorizontalAlignment="Center" FontFamily="{StaticResource MessagesIcon}" FontSize="20" Text="&#xe6ba;"/>
+                        </Border>
+                    </StackPanel>
                 </Border>
-                <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,2,2,0" IsDocumentEnabled="True" FontSize="14" DockPanel.Dock="Bottom" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown">
+                <Button x:Name="btnSend" Style="{StaticResource ButtonPrimaryWait}" Height="28" HorizontalAlignment="Right" Margin="0,6,0,0" Padding="0" FontSize="14" Content="发送" Click="BtnSend_Click" DockPanel.Dock="Bottom"/>
+                <RichTextBox x:Name="rtbMessage" Style="{x:Null}" BorderThickness="0" Margin="2,0,2,0" IsDocumentEnabled="True" FontSize="14" DockPanel.Dock="Top" DataObject.Pasting="RtbMessage_Pasting" KeyDown="RtbMessage_KeyDown">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter Property="Margin" Value="0,0,0,5"/>

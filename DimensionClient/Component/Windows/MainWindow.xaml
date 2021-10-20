@@ -61,8 +61,8 @@
                         </controls:DynamicImage>
                     </ToggleButton>
                     <Grid Background="Transparent" Visibility="{Binding ElementName=popInformation,Path=IsOpen,Converter={StaticResource PopupMaskConvert}}"/>
-                    <Popup x:Name="popInformation" PlacementTarget="{Binding ElementName=tolHeadImage}" Placement="Bottom" PopupAnimation="Fade"  AllowsTransparency="True" HorizontalOffset="-240" VerticalOffset="-4" StaysOpen="False" IsOpen="{Binding ElementName=tolHeadImage,Path=IsChecked}">
-                        <Border Padding="10">
+                    <Popup x:Name="popInformation" PlacementTarget="{Binding ElementName=tolHeadImage}" Placement="Bottom" PopupAnimation="Fade" AllowsTransparency="True" HorizontalOffset="-242" VerticalOffset="-4" StaysOpen="False" IsOpen="{Binding ElementName=tolHeadImage,Path=IsChecked}">
+                        <Border Padding="12">
                             <Grid Height="100" Width="260">
                                 <Border Background="#FFFFFF" BorderBrush="#E4E7ED" BorderThickness="1" CornerRadius="6">
                                     <Border.Effect>
