@@ -338,9 +338,10 @@ namespace DimensionClient.Library.Controls
                                             };
                                             Dispatcher.Invoke(delegate
                                             {
+                                                serializableImage.PathUri = new Uri(fileName, UriKind.Relative);
                                                 serializableImage.FileWidth = fileWidth;
                                                 serializableImage.FileHeight = fileHeight;
-                                                serializableImage.PathUri = new Uri(fileName, UriKind.Relative);
+                                                serializableImage.IsLoadRelative = true;
                                                 serializableImage.UnLoad();
                                             });
                                         }

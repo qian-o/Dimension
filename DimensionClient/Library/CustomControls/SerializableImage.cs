@@ -12,43 +12,40 @@ namespace DimensionClient.Library.CustomControls
 {
     public class SerializableImage : Image
     {
+        public static readonly DependencyProperty FileWidthProperty =
+            DependencyProperty.Register("FileWidth", typeof(double), typeof(SerializableImage), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty FileHeightProperty =
+            DependencyProperty.Register("FileHeight", typeof(double), typeof(SerializableImage), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty IsLoadRelativeProperty =
+            DependencyProperty.Register("IsLoadRelative", typeof(bool), typeof(SerializableImage), new PropertyMetadata(true));
+        public static readonly DependencyProperty PathUriProperty =
+            DependencyProperty.Register("PathUri", typeof(Uri), typeof(SerializableImage), new PropertyMetadata(null, OnPathUriChanged));
+
         public double FileWidth
         {
             get => (double)GetValue(FileWidthProperty);
             set => SetValue(FileWidthProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for FileWidth.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FileWidthProperty =
-            DependencyProperty.Register("FileWidth", typeof(double), typeof(SerializableImage), new PropertyMetadata(0.0));
-
         public double FileHeight
         {
             get => (double)GetValue(FileHeightProperty);
             set => SetValue(FileHeightProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for FileHeight.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FileHeightProperty =
-            DependencyProperty.Register("FileHeight", typeof(double), typeof(SerializableImage), new PropertyMetadata(0.0));
-
+        public bool IsLoadRelative
+        {
+            get => (bool)GetValue(IsLoadRelativeProperty);
+            set => SetValue(IsLoadRelativeProperty, value);
+        }
         public Uri PathUri
         {
             get => (Uri)GetValue(PathUriProperty);
             set => SetValue(PathUriProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for PathUri.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PathUriProperty =
-            DependencyProperty.Register("PathUri", typeof(Uri), typeof(SerializableImage), new PropertyMetadata(null, OnPathUriChanged));
-
         public static void OnPathUriChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SerializableImage image = d as SerializableImage;
-            if (e.NewValue != null)
-            {
-                image.OnLoad();
-            }
+            image.OnLoad();
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -82,8 +79,9 @@ namespace DimensionClient.Library.CustomControls
                     {
                         Source = new BitmapImage(PathUri);
                     }
+                    IsLoadRelative = false;
                 }
-                else
+                else if (IsLoadRelative)
                 {
                     if (FileWidth != 0 && FileHeight != 0)
                     {
