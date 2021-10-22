@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.ReadOnlyRichBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" FontSize="18">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Paragraph}">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid HorizontalAlignment="Center">
+        <TextBlock x:Name="txbRichBox" TextWrapping="Wrap" Opacity="0"/>
+        <RichTextBox x:Name="rtbRichBox" Width="{Binding ElementName=txbRichBox,Path=ActualWidth,Converter={StaticResource RichTextBoxWidthConvert}}" BorderThickness="0" IsReadOnly="True" Loaded="RtbRichBox_Loaded"/>
+    </Grid>
+</UserControl>

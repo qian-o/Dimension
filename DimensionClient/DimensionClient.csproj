@@ -94,7 +94,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Stfu" Version="0.1.5" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
@@ -103,15 +102,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Emoji.Wpf">
-      <HintPath>Library\DynamicLibrary\EmojiWpf\Emoji.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Typography.GlyphLayout">
-      <HintPath>Library\DynamicLibrary\EmojiWpf\Typography.GlyphLayout.dll</HintPath>
-    </Reference>
-    <Reference Include="Typography.OpenFont">
-      <HintPath>Library\DynamicLibrary\EmojiWpf\Typography.OpenFont.dll</HintPath>
-    </Reference>
     <Reference Include="XamlAnimatedGif">
       <HintPath>Library\DynamicLibrary\XamlAnimatedGif\XamlAnimatedGif.dll</HintPath>
     </Reference>

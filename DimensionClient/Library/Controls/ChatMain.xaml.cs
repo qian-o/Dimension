@@ -22,6 +22,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using static DimensionClient.Common.ClassHelper;
 
@@ -267,28 +268,45 @@ namespace DimensionClient.Library.Controls
             });
 
             List<Task> uploading = new();
+            RichMessageModel richMessage = new();
             Dispatcher.Invoke(delegate
             {
                 foreach (Block item in rtbMessage.Document.Blocks)
                 {
-                    if (!string.IsNullOrEmpty(chatMainData.MessageText))
-                    {
-                        chatMainData.MessageText += Environment.NewLine;
-                    }
                     if (item is Paragraph paragraph)
                     {
+                        if (item != rtbMessage.Document.Blocks.FirstBlock)
+                        {
+                            richMessage.RichMessageContents.Add(new RichMessageContentModel
+                            {
+                                MessageType = RichMessageType.Text,
+                                Content = Environment.NewLine,
+                                FileAttribute = null
+                            });
+                        }
                         foreach (Inline coll in paragraph.Inlines)
                         {
                             if (coll is Run run)
                             {
-                                chatMainData.MessageText += run.Text.Trim();
+                                richMessage.RichMessageContents.Add(new RichMessageContentModel
+                                {
+                                    MessageType = RichMessageType.Text,
+                                    Content = run.Text,
+                                    FileAttribute = null
+                                });
                             }
                             else if (coll is InlineUIContainer con)
                             {
                                 if (con.Child is SerializableImage serializableImage)
                                 {
-                                    Task task = new(() =>
+                                    RichMessageContentModel richMessageContent = new()
                                     {
+                                        MessageType = RichMessageType.Image
+                                    };
+                                    richMessage.RichMessageContents.Add(richMessageContent);
+                                    Task task = new((e) =>
+                                    {
+                                        RichMessageContentModel contentModel = e as RichMessageContentModel;
                                         MultipartFormDataContent dataContent = new();
                                         double fileSize = 0;
                                         double fileWidth = 0;
@@ -309,7 +327,8 @@ namespace DimensionClient.Library.Controls
                                         });
                                         if (ServerUpload($"{servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
                                         {
-                                            FileModel fileModel = new()
+                                            contentModel.Content = fileName;
+                                            contentModel.FileAttribute = new FileModel()
                                             {
                                                 FileType = FileType.Image,
                                                 FileName = fileName,
@@ -317,23 +336,17 @@ namespace DimensionClient.Library.Controls
                                                 FileWidth = fileWidth,
                                                 FileHeight = fileHeight
                                             };
-                                            ChatService.SendMessage(chatMainData.ChatID, MessageType.File, JObject.FromObject(fileModel).ToString());
+                                            Dispatcher.Invoke(delegate
+                                            {
+                                                serializableImage.FileWidth = fileWidth;
+                                                serializableImage.FileHeight = fileHeight;
+                                                serializableImage.PathUri = new Uri(fileName, UriKind.Relative);
+                                                serializableImage.UnLoad();
+                                            });
                                         }
-                                    });
+                                    }, richMessageContent);
                                     task.Start();
                                     uploading.Add(task);
-
-                                    if (!string.IsNullOrEmpty(chatMainData.MessageText))
-                                    {
-                                        string temporary = chatMainData.MessageText;
-                                        chatMainData.MessageText = string.Empty;
-                                        Task temporaryTask = new(() =>
-                                        {
-                                            ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, temporary);
-                                        });
-                                        temporaryTask.Start();
-                                        uploading.Add(temporaryTask);
-                                    }
                                 }
                             }
                         }
@@ -341,16 +354,36 @@ namespace DimensionClient.Library.Controls
 
                 }
             });
-
-            if (!string.IsNullOrEmpty(chatMainData.MessageText))
+            List<RichMessageContentModel> richesText = richMessage.Filter(RichMessageType.Text);
+            List<RichMessageContentModel> richesImage = richMessage.Filter(RichMessageType.Image);
+            if (richesImage.Count > 0)
             {
-                if (ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, chatMainData.MessageText))
+                await Task.WhenAll(uploading);
+                if (richesText.Count == 0)
                 {
-                    chatMainData.MessageText = string.Empty;
+                    foreach (RichMessageContentModel item in richesImage)
+                    {
+                        ChatService.SendMessage(chatMainData.ChatID, MessageType.File, JObject.FromObject(item.FileAttribute).ToString());
+                    }
+                }
+                else
+                {
+                    Dispatcher.Invoke(delegate
+                    {
+                        richMessage.SerializedMessage = XamlWriter.Save(rtbMessage.Document);
+                    });
+                    ChatService.SendMessage(chatMainData.ChatID, MessageType.RichText, JObject.FromObject(richMessage).ToString());
                 }
             }
-
-            await Task.WhenAll(uploading);
+            else if (richesText.Count > 0)
+            {
+                string message = string.Empty;
+                foreach (RichMessageContentModel item in richesText)
+                {
+                    message += item.Content;
+                }
+                ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, message);
+            }
 
             Dispatcher.Invoke(delegate
             {

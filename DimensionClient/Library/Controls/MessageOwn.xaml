@@ -44,7 +44,7 @@
                         </Border.Effect>
                     </Border>
                     <Grid Margin="8,5,8,5">
-                        <controls:EmojiReadOnlyTextBox x:Name="conTextBox" Visibility="Collapsed"/>
+                        <controls:ReadOnlyRichBox x:Name="conRichBox" Visibility="Collapsed"/>
                         <customcontrols:SerializableImage x:Name="cusSerializableImage" Visibility="Collapsed"/>
                     </Grid>
                 </Grid>

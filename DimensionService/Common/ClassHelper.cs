@@ -102,6 +102,7 @@ namespace DimensionService.Common
         public enum MessageType
         {
             Text,
+            RichText,
             Voice,
             File,
             VoiceTalk,
@@ -153,7 +154,6 @@ namespace DimensionService.Common
         {
             using SHA256 sHA256 = SHA256.Create();
             byte[] buffer = Encoding.UTF8.GetBytes(str);
-            //开始加密
             byte[] newBuffer = sHA256.ComputeHash(buffer);
             StringBuilder sb = new();
             for (int i = 0; i < newBuffer.Length; i++)

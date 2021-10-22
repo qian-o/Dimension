@@ -1,12 +1,10 @@
 ﻿using DimensionClient.Common;
-using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -65,8 +63,13 @@ namespace DimensionClient.Library.Controls
                 switch (chatMessages.MessageType)
                 {
                     case ClassHelper.MessageType.Text:
-                        conTextBox.Visibility = Visibility.Visible;
-                        conTextBox.TextContent = chatMessages.MessageContent;
+                        conRichBox.Visibility = Visibility.Visible;
+                        conRichBox.TextContent = chatMessages.MessageContent;
+                        break;
+                    case ClassHelper.MessageType.RichText:
+                        RichMessageModel richMessage = JsonConvert.DeserializeObject<RichMessageModel>(chatMessages.MessageContent);
+                        conRichBox.Visibility = Visibility.Visible;
+                        conRichBox.SerializedContent = richMessage.SerializedMessage;
                         break;
                     case ClassHelper.MessageType.Voice:
                         break;
@@ -77,19 +80,9 @@ namespace DimensionClient.Library.Controls
                             {
                                 case ClassHelper.FileType.Image:
                                     cusSerializableImage.Visibility = Visibility.Visible;
-                                    if (fileModel.FileWidth < 440 && fileModel.FileHeight < 440)
-                                    {
-                                        cusSerializableImage.Width = fileModel.FileWidth;
-                                        cusSerializableImage.Height = fileModel.FileHeight;
-                                    }
-                                    else
-                                    {
-                                        double ratios = fileModel.FileWidth / 440;
-                                        cusSerializableImage.Width = 440;
-                                        cusSerializableImage.Height = fileModel.FileHeight / ratios;
-                                    }
-                                    cusSerializableImage.SetBinding(SerializableImage.PathUriProperty, new Binding { Converter = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert"), ConverterParameter = fileModel.FileName.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture) ? null : cusSerializableImage.Height * 2 });
-                                    cusSerializableImage.DataContext = fileModel.FileName;
+                                    cusSerializableImage.FileWidth = fileModel.FileWidth;
+                                    cusSerializableImage.FileHeight = fileModel.FileHeight;
+                                    cusSerializableImage.PathUri = new Uri(fileModel.FileName, UriKind.Relative);
                                     break;
                                 case ClassHelper.FileType.Word:
                                     break;

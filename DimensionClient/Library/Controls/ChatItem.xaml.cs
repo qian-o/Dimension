@@ -136,6 +136,9 @@ namespace DimensionClient.Library.Controls
                     case ClassHelper.MessageType.Text:
                         txbLastMessage.Text = chatMessages.MessageContent.Replace("\r\n", string.Empty);
                         break;
+                    case ClassHelper.MessageType.RichText:
+                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("RichMessage")}]";
+                        break;
                     case ClassHelper.MessageType.Voice:
                         txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VoiceMessage")}]";
                         break;
