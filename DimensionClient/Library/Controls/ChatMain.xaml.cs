@@ -58,7 +58,7 @@ namespace DimensionClient.Library.Controls
             {
                 e.CancelCommand();
 
-                SerializableImage serializableImage = new()
+                ChatImage chatImage = new()
                 {
                     MaxHeight = 100,
                     MaxWidth = 100
@@ -69,7 +69,7 @@ namespace DimensionClient.Library.Controls
                     string file = Clipboard.GetFileDropList()[0];
                     if (File.Exists(file))
                     {
-                        serializableImage.PathUri = new Uri(file, UriKind.Absolute);
+                        chatImage.PathUri = new Uri(file, UriKind.Absolute);
                     }
                 }
                 else if (Clipboard.GetData(DataFormats.Bitmap) is InteropBitmap bitmap)
@@ -86,11 +86,11 @@ namespace DimensionClient.Library.Controls
                         stream.Write(data, 0, data.Length);
                         stream.Close();
                     }
-                    serializableImage.PathUri = new Uri(path, UriKind.Absolute);
+                    chatImage.PathUri = new Uri(path, UriKind.Absolute);
                 }
 
                 bool tagEnd = rtbMessage.Selection.End.GetPositionAtOffset(2) == null || rtbMessage.Selection.End.GetPositionAtOffset(2).GetPointerContext(LogicalDirection.Forward) == TextPointerContext.None;
-                _ = new InlineUIContainer(serializableImage, rtbMessage.Selection.Start.GetPositionAtOffset(0));
+                _ = new InlineUIContainer(chatImage, rtbMessage.Selection.Start.GetPositionAtOffset(0));
                 if (tagEnd)
                 {
                     rtbMessage.Selection.Select(rtbMessage.Document.ContentEnd, rtbMessage.Document.ContentEnd);
@@ -297,7 +297,7 @@ namespace DimensionClient.Library.Controls
                             }
                             else if (coll is InlineUIContainer con)
                             {
-                                if (con.Child is SerializableImage serializableImage)
+                                if (con.Child is ChatImage chatImage)
                                 {
                                     RichMessageContentModel richMessageContent = new()
                                     {
@@ -314,9 +314,9 @@ namespace DimensionClient.Library.Controls
                                         Dispatcher.Invoke(delegate
                                         {
                                             using MemoryStream memoryStream = new();
-                                            string extend = new FileInfo(serializableImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
-                                            File.OpenRead(serializableImage.PathUri.LocalPath).CopyTo(memoryStream);
-                                            BitmapSource bitmapSource = new BitmapImage(serializableImage.PathUri);
+                                            string extend = new FileInfo(chatImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
+                                            File.OpenRead(chatImage.PathUri.LocalPath).CopyTo(memoryStream);
+                                            BitmapSource bitmapSource = new BitmapImage(chatImage.PathUri);
                                             dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
 
                                             fileSize = (double)memoryStream.Length / 1000 / 1000;
@@ -338,11 +338,11 @@ namespace DimensionClient.Library.Controls
                                             };
                                             Dispatcher.Invoke(delegate
                                             {
-                                                serializableImage.PathUri = new Uri(fileName, UriKind.Relative);
-                                                serializableImage.FileWidth = fileWidth;
-                                                serializableImage.FileHeight = fileHeight;
-                                                serializableImage.IsLoadRelative = true;
-                                                serializableImage.UnLoad();
+                                                chatImage.PathUri = new Uri(fileName, UriKind.Relative);
+                                                chatImage.FileWidth = fileWidth;
+                                                chatImage.FileHeight = fileHeight;
+                                                chatImage.IsLoadRelative = true;
+                                                chatImage.UnLoad();
                                             });
                                         }
                                     }, richMessageContent);

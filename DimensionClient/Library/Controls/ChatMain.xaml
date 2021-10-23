@@ -42,7 +42,7 @@
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Border Height="40" Width="40" Style="{StaticResource BorderWhiteGradient}" Margin="2" CornerRadius="3">
-                                                                <Image Height="26" Width="26" Source="{Binding ResourceUri}"/>
+                                                                <Image Height="24" Width="24" Source="{Binding ResourceUri}"/>
                                                             </Border>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>

@@ -38,15 +38,17 @@
             <StackPanel Orientation="Vertical" Margin="8,0,0,0">
                 <TextBlock x:Name="txbTime" HorizontalAlignment="Left" Foreground="#9FA1A2" Opacity="0"/>
                 <Grid HorizontalAlignment="Left" Margin="0,4,0,0">
-                    <Border Background="#FFFFFF" CornerRadius="2,8,8,8">
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
-                        </Border.Effect>
-                    </Border>
-                    <Grid Margin="8,5,8,5">
-                        <controls:ReadOnlyRichBox x:Name="conRichBox" Visibility="Collapsed"/>
-                        <customcontrols:SerializableImage x:Name="cusSerializableImage" Visibility="Collapsed"/>
+                    <Grid x:Name="grdText" Visibility="Collapsed">
+                        <Border Background="#FFFFFF" CornerRadius="2,8,8,8">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" Color="#C0C4CC" Opacity="0.2"/>
+                            </Border.Effect>
+                        </Border>
+                        <Grid Margin="8,5,8,5">
+                            <controls:ReadOnlyRichBox x:Name="conRichBox"/>
+                        </Grid>
                     </Grid>
+                    <customcontrols:ChatImage x:Name="cusChatImage" ActiveControl="True" Visibility="Collapsed"/>
                 </Grid>
             </StackPanel>
         </DockPanel>

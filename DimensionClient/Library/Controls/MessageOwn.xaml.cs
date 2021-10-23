@@ -63,12 +63,12 @@ namespace DimensionClient.Library.Controls
                 switch (chatMessages.MessageType)
                 {
                     case ClassHelper.MessageType.Text:
-                        conRichBox.Visibility = Visibility.Visible;
+                        grdText.Visibility = Visibility.Visible;
                         conRichBox.TextContent = chatMessages.MessageContent;
                         break;
                     case ClassHelper.MessageType.RichText:
                         RichMessageModel richMessage = JsonConvert.DeserializeObject<RichMessageModel>(chatMessages.MessageContent);
-                        conRichBox.Visibility = Visibility.Visible;
+                        grdText.Visibility = Visibility.Visible;
                         conRichBox.SerializedContent = richMessage.SerializedMessage;
                         break;
                     case ClassHelper.MessageType.Voice:
@@ -79,10 +79,10 @@ namespace DimensionClient.Library.Controls
                             switch (fileModel.FileType)
                             {
                                 case ClassHelper.FileType.Image:
-                                    cusSerializableImage.Visibility = Visibility.Visible;
-                                    cusSerializableImage.FileWidth = fileModel.FileWidth;
-                                    cusSerializableImage.FileHeight = fileModel.FileHeight;
-                                    cusSerializableImage.PathUri = new Uri(fileModel.FileName, UriKind.Relative);
+                                    cusChatImage.Visibility = Visibility.Visible;
+                                    cusChatImage.FileWidth = fileModel.FileWidth;
+                                    cusChatImage.FileHeight = fileModel.FileHeight;
+                                    cusChatImage.PathUri = new Uri(fileModel.FileName, UriKind.Relative);
                                     break;
                                 case ClassHelper.FileType.Word:
                                     break;
