@@ -21,7 +21,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static DimensionClient.Common.ClassHelper;
 
@@ -32,6 +31,7 @@ namespace DimensionClient.Library.Controls
     /// </summary>
     public partial class ChatItem : UserControl
     {
+        private readonly ScrollViewer scroll;
         private ChatColumnInfoModel chatColumn;
         private static Border borderSelect;
         public MasterChat MasterChat { get; private set; } = new MasterChat();
@@ -49,7 +49,12 @@ namespace DimensionClient.Library.Controls
             MasterChat.itcMasterChat.SetBinding(ItemsControl.ItemsSourceProperty, "ChatContent");
             MasterChat.brdUnread.IsVisibleChanged += BrdUnread_IsVisibleChanged;
             MasterChat.Loaded += MasterChat_Loaded;
-            MasterChat.Unloaded += MasterChat_Unloaded;
+
+            MasterChat.itcMasterChat.ApplyTemplate();
+            scroll = MasterChat.itcMasterChat.Template.FindName("sclItems", MasterChat.itcMasterChat) as ScrollViewer;
+            scroll.ScrollChanged += Scroll_ScrollChanged;
+
+            SignalRClientHelper.NewMessageSignalR += SignalRClientHelper_NewMessageSignalR;
         }
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
@@ -71,37 +76,18 @@ namespace DimensionClient.Library.Controls
                     TransferringData(typeof(ChatMain), DataPassingType.SelectMessage, this);
                 }
             }
-            SignalRClientHelper.NewMessageSignalR += SignalRClientHelper_NewMessageSignalR;
-        }
-
-        private void UserControlMain_Unloaded(object sender, RoutedEventArgs e)
-        {
-            SignalRClientHelper.NewMessageSignalR -= SignalRClientHelper_NewMessageSignalR;
         }
 
         private void MasterChat_Loaded(object sender, RoutedEventArgs e)
         {
-            if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+            if (MasterChat.itcMasterChat.Tag == null || chatColumn.Unread > 0)
             {
-                scroll.ScrollChanged += Scroll_ScrollChanged;
-                if (MasterChat.itcMasterChat.Tag == null || chatColumn.Unread > 0)
+                if (MasterChat.brdUnread.Visibility == Visibility.Collapsed && chatColumn.Unread > 0)
                 {
-                    if (MasterChat.brdUnread.Visibility == Visibility.Collapsed && chatColumn.Unread > 0)
-                    {
-                        ThreadPool.QueueUserWorkItem(ReadMessage);
-                    }
-                    scroll.ScrollToEnd();
-                    MasterChat.itcMasterChat.Tag = true;
+                    ThreadPool.QueueUserWorkItem(ReadMessage);
                 }
-            }
-
-        }
-
-        private void MasterChat_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
-            {
-                scroll.ScrollChanged -= Scroll_ScrollChanged;
+                scroll.ScrollToEnd();
+                MasterChat.itcMasterChat.Tag = true;
             }
         }
 
@@ -201,15 +187,9 @@ namespace DimensionClient.Library.Controls
                                 item.LoadFirst = true;
                                 Dispatcher.Invoke(delegate
                                 {
-                                    if (MasterChat.IsLoaded)
+                                    if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == UserID)
                                     {
-                                        if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
-                                        {
-                                            if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == UserID)
-                                            {
-                                                scroll.ScrollToEnd();
-                                            }
-                                        }
+                                        scroll.ScrollToEnd();
                                     }
                                     chatColumn.ChatContent.Add(item);
                                 });
@@ -220,17 +200,14 @@ namespace DimensionClient.Library.Controls
                         {
                             if (MasterChat.IsLoaded && unread > 0)
                             {
-                                if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+                                if (scroll.VerticalOffset > scroll.ScrollableHeight - 50)
                                 {
-                                    if (scroll.VerticalOffset > scroll.ScrollableHeight - 50)
-                                    {
-                                        ThreadPool.QueueUserWorkItem(ReadMessage);
-                                    }
-                                    else
-                                    {
-                                        chatColumn.Unread = unread;
-                                        MasterChat.brdUnread.Visibility = Visibility.Visible;
-                                    }
+                                    ThreadPool.QueueUserWorkItem(ReadMessage);
+                                }
+                                else
+                                {
+                                    chatColumn.Unread = unread;
+                                    MasterChat.brdUnread.Visibility = Visibility.Visible;
                                 }
                             }
                             else
@@ -265,13 +242,10 @@ namespace DimensionClient.Library.Controls
                         {
                             if (MasterChat.IsLoaded)
                             {
-                                if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
+                                scroll.ScrollToEnd();
+                                if (chatColumn.Unread > 0)
                                 {
-                                    scroll.ScrollToEnd();
-                                    if (chatColumn.Unread > 0)
-                                    {
-                                        ThreadPool.QueueUserWorkItem(ReadMessage);
-                                    }
+                                    ThreadPool.QueueUserWorkItem(ReadMessage);
                                 }
                             }
                         });

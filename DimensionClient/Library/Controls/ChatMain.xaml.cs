@@ -166,6 +166,7 @@ namespace DimensionClient.Library.Controls
 
         private void Flow_Loaded(object sender, RoutedEventArgs e)
         {
+            rtbMessage.Selection.Select(rtbMessage.Document.ContentEnd, rtbMessage.Document.ContentEnd);
             rtbMessage.Focus();
         }
 

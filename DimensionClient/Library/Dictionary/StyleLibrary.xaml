@@ -1308,7 +1308,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ItemsControl}">
-                    <ScrollViewer Style="{StaticResource for_scrollviewer}" PanningMode="VerticalFirst">
+                    <ScrollViewer x:Name="sclItems" Style="{StaticResource for_scrollviewer}" PanningMode="VerticalFirst">
                         <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     </ScrollViewer>
                 </ControlTemplate>
