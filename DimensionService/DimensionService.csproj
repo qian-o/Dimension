@@ -1,107 +1,108 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\DimensionService.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591;IDE0058</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\Debug\DimensionService.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591;IDE0058</NoWarn>
+		<OutputPath>bin\Debug\</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\DimensionService.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\Release\DimensionService.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591;IDE0058</NoWarn>
+		<OutputPath>bin\Release\</OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Library\Attachments\404.png" />
-    <None Remove="Library\Attachments\boy.png" />
-    <None Remove="Library\Attachments\favicon.ico" />
-    <None Remove="Library\Attachments\girl.png" />
-    <None Remove="Library\Attachments\google-play.png" />
-    <None Remove="Library\Attachments\itunes-app-store.png" />
-    <None Remove="Library\Attachments\壁纸一.png" />
-    <None Remove="Library\Attachments\头像.png" />
-    <None Remove="Library\Attachments\头像一.png" />
-    <None Remove="Library\Attachments\头像三.jpg" />
-    <None Remove="Library\Attachments\头像二.png" />
-    <None Remove="Library\Attachments\头像五.jpg" />
-    <None Remove="Library\Attachments\头像四.jpg" />
-    <None Remove="Library\Attachments\硝子.png" />
-    <None Remove="Library\Templates\HTML\verify.html" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Library\Attachments\404.png" />
+		<None Remove="Library\Attachments\boy.png" />
+		<None Remove="Library\Attachments\favicon.ico" />
+		<None Remove="Library\Attachments\girl.png" />
+		<None Remove="Library\Attachments\google-play.png" />
+		<None Remove="Library\Attachments\itunes-app-store.png" />
+		<None Remove="Library\Attachments\壁纸一.png" />
+		<None Remove="Library\Attachments\头像.png" />
+		<None Remove="Library\Attachments\头像一.png" />
+		<None Remove="Library\Attachments\头像三.jpg" />
+		<None Remove="Library\Attachments\头像二.png" />
+		<None Remove="Library\Attachments\头像五.jpg" />
+		<None Remove="Library\Attachments\头像四.jpg" />
+		<None Remove="Library\Attachments\硝子.png" />
+		<None Remove="Library\Templates\HTML\verify.html" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Library\Attachments\404.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\boy.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\favicon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\girl.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\google-play.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\itunes-app-store.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\壁纸一.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像一.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像三.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像二.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像五.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\头像四.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Attachments\硝子.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library\Templates\HTML\verify.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Library\Attachments\404.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\boy.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\favicon.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\girl.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\google-play.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\itunes-app-store.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\壁纸一.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像一.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像三.jpg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像二.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像五.jpg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\头像四.jpg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Attachments\硝子.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Library\Templates\HTML\verify.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="aliyun-net-sdk-core" Version="1.5.10" />
-    <PackageReference Include="CHSPinYinConv" Version="1.0.0" />
-    <PackageReference Include="CHTCHSConv" Version="1.0.0" />
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-  </ItemGroup>
-  
+	<ItemGroup>
+		<PackageReference Include="aliyun-net-sdk-core" Version="1.5.10" />
+		<PackageReference Include="CHSPinYinConv" Version="1.0.0" />
+		<PackageReference Include="CHTCHSConv" Version="1.0.0" />
+		<PackageReference Include="log4net" Version="2.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.4" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
+	</ItemGroup>
+
 </Project>

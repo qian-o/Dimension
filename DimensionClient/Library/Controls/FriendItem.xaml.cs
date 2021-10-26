@@ -61,7 +61,7 @@ namespace DimensionClient.Library.Controls
                 borderSelect.IsEnabled = true;
             }
             borderSelect = border;
-            ClassHelper.TransferringData(typeof(FriendInfoCard), (border.Tag as FriendBriefModel).UserID);
+            ClassHelper.TransferringData(typeof(FriendInfoCard), ClassHelper.DataPassingType.SelectFriend, (border.Tag as FriendBriefModel).UserID);
         }
         #endregion
     }

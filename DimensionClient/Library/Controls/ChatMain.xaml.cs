@@ -3,25 +3,20 @@ using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
-using DimensionClient.Service.Chat;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using System.Resources;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using static DimensionClient.Common.ClassHelper;
 
@@ -33,6 +28,7 @@ namespace DimensionClient.Library.Controls
     public partial class ChatMain : UserControl
     {
         private readonly ChatMainViewModel chatMainData;
+        private ChatItem chatItem;
         public ChatMain()
         {
             InitializeComponent();
@@ -117,7 +113,7 @@ namespace DimensionClient.Library.Controls
             {
                 if (e.Command == EditingCommands.EnterParagraphBreak)
                 {
-                    ThreadPool.QueueUserWorkItem(SendMessage);
+                    ThreadPool.QueueUserWorkItem(chatItem.SendMessage);
                 }
                 e.Handled = true;
             }
@@ -133,27 +129,27 @@ namespace DimensionClient.Library.Controls
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(SendMessage);
+            ThreadPool.QueueUserWorkItem(chatItem.SendMessage);
         }
 
-        private void ClassHelper_DataPassingChanged(object data)
+        private void ClassHelper_DataPassingChanged(DataPassingType dataType, object data)
         {
-            if (data == null)
+            if (dataType == DataPassingType.Paste)
             {
                 rtbMessage.Paste();
             }
-            else if (data is ChatItem chatItem)
+            else if (dataType == DataPassingType.SelectMessage)
             {
+                chatItem = data as ChatItem;
                 Visibility = Visibility.Visible;
                 ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
                 chatMainData.ChatID = chatColumnInfo.ChatID;
                 txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
+                rtbMessage.SetBinding(IsEnabledProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(nameof(chatColumnInfo.IsUsable)) });
+                btnSend.SetBinding(IsEnabledProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(nameof(chatColumnInfo.IsUsable)) });
                 if (chatColumnInfo.Flow == null)
                 {
-                    chatColumnInfo.Flow = new FlowDocument
-                    {
-                        PagePadding = new Thickness(0)
-                    };
+                    chatColumnInfo.Flow = new FlowDocument();
                 }
                 rtbMessage.Document = chatColumnInfo.Flow;
                 brdChat.Child = chatItem.MasterChat;
@@ -183,142 +179,7 @@ namespace DimensionClient.Library.Controls
         }
         private static void TxbScreenCapture_PointerUp()
         {
-            TransferringData(typeof(MainWindow), HotKeyType.ScreenCapture);
-        }
-        private async void SendMessage(object data)
-        {
-            Dispatcher.Invoke(delegate
-            {
-                rtbMessage.IsEnabled = false;
-                btnSend.IsEnabled = false;
-            });
-
-            List<Task> uploading = new();
-            RichMessageModel richMessage = new();
-            Dispatcher.Invoke(delegate
-            {
-                foreach (Block item in rtbMessage.Document.Blocks)
-                {
-                    if (item is Paragraph paragraph)
-                    {
-                        if (item != rtbMessage.Document.Blocks.FirstBlock)
-                        {
-                            richMessage.RichMessageContents.Add(new RichMessageContentModel
-                            {
-                                MessageType = RichMessageType.Text,
-                                Content = Environment.NewLine,
-                                FileAttribute = null
-                            });
-                        }
-                        foreach (Inline coll in paragraph.Inlines)
-                        {
-                            if (coll is Run run)
-                            {
-                                richMessage.RichMessageContents.Add(new RichMessageContentModel
-                                {
-                                    MessageType = RichMessageType.Text,
-                                    Content = run.Text,
-                                    FileAttribute = null
-                                });
-                            }
-                            else if (coll is InlineUIContainer con)
-                            {
-                                if (con.Child is ChatImage chatImage)
-                                {
-                                    RichMessageContentModel richMessageContent = new()
-                                    {
-                                        MessageType = RichMessageType.Image
-                                    };
-                                    richMessage.RichMessageContents.Add(richMessageContent);
-                                    Task task = new((e) =>
-                                    {
-                                        RichMessageContentModel contentModel = e as RichMessageContentModel;
-                                        MultipartFormDataContent dataContent = new();
-                                        double fileSize = 0;
-                                        double fileWidth = 0;
-                                        double fileHeight = 0;
-                                        Dispatcher.Invoke(delegate
-                                        {
-                                            using MemoryStream memoryStream = new();
-                                            string extend = new FileInfo(chatImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
-                                            File.OpenRead(chatImage.PathUri.LocalPath).CopyTo(memoryStream);
-                                            BitmapSource bitmapSource = new BitmapImage(chatImage.PathUri);
-                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
-
-                                            fileSize = (double)memoryStream.Length / 1000 / 1000;
-                                            fileWidth = bitmapSource.Width;
-                                            fileHeight = bitmapSource.Height;
-
-                                            memoryStream.Close();
-                                        });
-                                        if (ServerUpload($"{servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
-                                        {
-                                            contentModel.Content = fileName;
-                                            contentModel.FileAttribute = new FileModel()
-                                            {
-                                                FileType = FileType.Image,
-                                                FileName = fileName,
-                                                FileMByte = fileSize,
-                                                FileWidth = fileWidth,
-                                                FileHeight = fileHeight
-                                            };
-                                            Dispatcher.Invoke(delegate
-                                            {
-                                                chatImage.PathUri = new Uri(fileName, UriKind.Relative);
-                                                chatImage.FileWidth = fileWidth;
-                                                chatImage.FileHeight = fileHeight;
-                                                chatImage.IsLoadRelative = true;
-                                                chatImage.UnLoad();
-                                            });
-                                        }
-                                    }, richMessageContent);
-                                    task.Start();
-                                    uploading.Add(task);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            });
-            List<RichMessageContentModel> richesText = richMessage.Filter(RichMessageType.Text);
-            List<RichMessageContentModel> richesImage = richMessage.Filter(RichMessageType.Image);
-            if (richesImage.Count > 0)
-            {
-                await Task.WhenAll(uploading);
-                if (richesText.Count == 0)
-                {
-                    foreach (RichMessageContentModel item in richesImage)
-                    {
-                        ChatService.SendMessage(chatMainData.ChatID, MessageType.File, JObject.FromObject(item.FileAttribute).ToString());
-                    }
-                }
-                else
-                {
-                    Dispatcher.Invoke(delegate
-                    {
-                        richMessage.SerializedMessage = XamlWriter.Save(rtbMessage.Document);
-                    });
-                    ChatService.SendMessage(chatMainData.ChatID, MessageType.RichText, JObject.FromObject(richMessage).ToString());
-                }
-            }
-            else if (richesText.Count > 0)
-            {
-                string message = string.Empty;
-                foreach (RichMessageContentModel item in richesText)
-                {
-                    message += item.Content;
-                }
-                ChatService.SendMessage(chatMainData.ChatID, MessageType.Text, message);
-            }
-
-            Dispatcher.Invoke(delegate
-            {
-                btnSend.IsEnabled = true;
-                rtbMessage.IsEnabled = true;
-                rtbMessage.Document.Blocks.Clear();
-                rtbMessage.Focus();
-            });
+            TransferringData(typeof(MainWindow), DataPassingType.ScreenCapture, null);
         }
         #endregion
     }

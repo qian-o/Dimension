@@ -199,18 +199,11 @@ namespace DimensionClient.Component.Windows
             }
         }
 
-        private void ClassHelper_DataPassingChanged(object data)
+        private void ClassHelper_DataPassingChanged(ClassHelper.DataPassingType dataType, object data)
         {
-            if (data is ClassHelper.HotKeyType hotkey)
+            if (dataType == ClassHelper.DataPassingType.ScreenCapture)
             {
-                switch (hotkey)
-                {
-                    case ClassHelper.HotKeyType.ScreenCapture:
-                        ScreenCapture();
-                        break;
-                    default:
-                        break;
-                }
+                ScreenCapture();
             }
         }
 
@@ -299,7 +292,7 @@ namespace DimensionClient.Component.Windows
             screenshots.ShowDialog();
             if (screenshots.IsSave)
             {
-                ClassHelper.TransferringData(typeof(ChatMain), null);
+                ClassHelper.TransferringData(typeof(ChatMain), ClassHelper.DataPassingType.Paste, null);
             }
 
             bitmap.Dispose();

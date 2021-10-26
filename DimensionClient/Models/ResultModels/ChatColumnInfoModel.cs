@@ -11,6 +11,7 @@ namespace DimensionClient.Models.ResultModels
         private string headPortrait;
         private ObservableCollection<ChatMessagesModel> chatContent;
         private int unread;
+        private bool isUsable;
 
         // 好友ID
         public string FriendID { get; set; }
@@ -68,6 +69,16 @@ namespace DimensionClient.Models.ResultModels
         }
         // 富文本内容
         public FlowDocument Flow { get; set; }
+        // 发送中
+        public bool IsUsable
+        {
+            get => isUsable;
+            set
+            {
+                isUsable = value;
+                OnPropertyChanged(nameof(IsUsable));
+            }
+        }
 
         public override void InitializeVariable()
         {
@@ -77,6 +88,7 @@ namespace DimensionClient.Models.ResultModels
             chatContent = null;
             unread = 0;
             Flow = null;
+            isUsable = true;
         }
     }
 }

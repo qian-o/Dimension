@@ -24,7 +24,7 @@ namespace DimensionClient.Common
     public delegate void NotificationEvent(string title, string message);
     public delegate void AccordingMaskEvent(bool show, bool loading);
     public delegate void RouteEvent(ClassHelper.PageType pageName);
-    public delegate void DataPassing(object data);
+    public delegate void DataPassing(ClassHelper.DataPassingType dataType, object data);
 
     public static class ClassHelper
     {
@@ -176,10 +176,13 @@ namespace DimensionClient.Common
             Angular = 1,
             Raw = 2,
         }
-        // 热键类型
-        public enum HotKeyType
+        // 类数据传递类型
+        public enum DataPassingType
         {
-            ScreenCapture
+            SelectMessage,
+            SelectFriend,
+            ScreenCapture,
+            Paste
         }
         #endregion
 
@@ -392,12 +395,13 @@ namespace DimensionClient.Common
         /// 类数据传递
         /// </summary>
         /// <param name="type">类</param>
+        /// <param name="dataType">数据类型</param>
         /// <param name="data">数据</param>
-        public static void TransferringData(Type type, object data)
+        public static void TransferringData(Type type, DataPassingType dataType, object data)
         {
             foreach (Delegate item in (DataPassingChanged?.GetInvocationList()).Where(item => item.Target.GetType() == type))
             {
-                item.DynamicInvoke(data);
+                item.DynamicInvoke(dataType, data);
             }
         }
 

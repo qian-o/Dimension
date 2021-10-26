@@ -1,167 +1,168 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;IDE0058;MC3005</NoWarn>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;IDE0058;MC3005</NoWarn>
+		<OutputPath>bin\Debug\</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;IDE0058;MC3005</NoWarn>
+		<OutputPath>bin\Release\</OutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="client.db" />
-    <None Remove="Library\Font\element-icons.ttf" />
-    <None Remove="Library\Font\messages-icons.ttf" />
-    <None Remove="Library\Font\苹方黑体-中粗-简.ttf" />
-    <None Remove="Library\Image\Emoji\-angel.png" />
-    <None Remove="Library\Image\Emoji\-angry.png" />
-    <None Remove="Library\Image\Emoji\-astonished-.png" />
-    <None Remove="Library\Image\Emoji\-astonished.png" />
-    <None Remove="Library\Image\Emoji\-confused.png" />
-    <None Remove="Library\Image\Emoji\-cool-.png" />
-    <None Remove="Library\Image\Emoji\-cool.png" />
-    <None Remove="Library\Image\Emoji\-cry-.png" />
-    <None Remove="Library\Image\Emoji\-cry.png" />
-    <None Remove="Library\Image\Emoji\-devil.png" />
-    <None Remove="Library\Image\Emoji\-dizzy.png" />
-    <None Remove="Library\Image\Emoji\-expressionless.png" />
-    <None Remove="Library\Image\Emoji\-flushed.png" />
-    <None Remove="Library\Image\Emoji\-happy-.png" />
-    <None Remove="Library\Image\Emoji\-happy-_1.png" />
-    <None Remove="Library\Image\Emoji\-happy.png" />
-    <None Remove="Library\Image\Emoji\-in-love.png" />
-    <None Remove="Library\Image\Emoji\-injury.png" />
-    <None Remove="Library\Image\Emoji\-joy.png" />
-    <None Remove="Library\Image\Emoji\-kiss-.png" />
-    <None Remove="Library\Image\Emoji\-kiss-_1.png" />
-    <None Remove="Library\Image\Emoji\-kiss.png" />
-    <None Remove="Library\Image\Emoji\-mask.png" />
-    <None Remove="Library\Image\Emoji\-mute.png" />
-    <None Remove="Library\Image\Emoji\-neutral.png" />
-    <None Remove="Library\Image\Emoji\-sad-.png" />
-    <None Remove="Library\Image\Emoji\-sad.png" />
-    <None Remove="Library\Image\Emoji\-scared-.png" />
-    <None Remove="Library\Image\Emoji\-scared.png" />
-    <None Remove="Library\Image\Emoji\-secret.png" />
-    <None Remove="Library\Image\Emoji\-shocked.png" />
-    <None Remove="Library\Image\Emoji\-sick.png" />
-    <None Remove="Library\Image\Emoji\-sleeping.png" />
-    <None Remove="Library\Image\Emoji\-smile-.png" />
-    <None Remove="Library\Image\Emoji\-smile.png" />
-    <None Remove="Library\Image\Emoji\-smiling-.png" />
-    <None Remove="Library\Image\Emoji\-smiling.png" />
-    <None Remove="Library\Image\Emoji\-smirking.png" />
-    <None Remove="Library\Image\Emoji\-surprised.png" />
-    <None Remove="Library\Image\Emoji\-sweat.png" />
-    <None Remove="Library\Image\Emoji\-thinking.png" />
-    <None Remove="Library\Image\Emoji\-tired.png" />
-    <None Remove="Library\Image\Emoji\-tongue-.png" />
-    <None Remove="Library\Image\Emoji\-tongue-_1.png" />
-    <None Remove="Library\Image\Emoji\-tongue.png" />
-    <None Remove="Library\Image\Emoji\-unamused.png" />
-    <None Remove="Library\Image\Emoji\-vomiting-.png" />
-    <None Remove="Library\Image\Emoji\-vomiting.png" />
-    <None Remove="Library\Image\Emoji\-wink.png" />
-    <None Remove="Library\Image\Emoji\-zombie.png" />
-    <None Remove="Library\Image\图片.png" />
-    <None Remove="log4net.config" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="client.db" />
+		<None Remove="Library\Font\element-icons.ttf" />
+		<None Remove="Library\Font\messages-icons.ttf" />
+		<None Remove="Library\Font\苹方黑体-中粗-简.ttf" />
+		<None Remove="Library\Image\Emoji\-angel.png" />
+		<None Remove="Library\Image\Emoji\-angry.png" />
+		<None Remove="Library\Image\Emoji\-astonished-.png" />
+		<None Remove="Library\Image\Emoji\-astonished.png" />
+		<None Remove="Library\Image\Emoji\-confused.png" />
+		<None Remove="Library\Image\Emoji\-cool-.png" />
+		<None Remove="Library\Image\Emoji\-cool.png" />
+		<None Remove="Library\Image\Emoji\-cry-.png" />
+		<None Remove="Library\Image\Emoji\-cry.png" />
+		<None Remove="Library\Image\Emoji\-devil.png" />
+		<None Remove="Library\Image\Emoji\-dizzy.png" />
+		<None Remove="Library\Image\Emoji\-expressionless.png" />
+		<None Remove="Library\Image\Emoji\-flushed.png" />
+		<None Remove="Library\Image\Emoji\-happy-.png" />
+		<None Remove="Library\Image\Emoji\-happy-_1.png" />
+		<None Remove="Library\Image\Emoji\-happy.png" />
+		<None Remove="Library\Image\Emoji\-in-love.png" />
+		<None Remove="Library\Image\Emoji\-injury.png" />
+		<None Remove="Library\Image\Emoji\-joy.png" />
+		<None Remove="Library\Image\Emoji\-kiss-.png" />
+		<None Remove="Library\Image\Emoji\-kiss-_1.png" />
+		<None Remove="Library\Image\Emoji\-kiss.png" />
+		<None Remove="Library\Image\Emoji\-mask.png" />
+		<None Remove="Library\Image\Emoji\-mute.png" />
+		<None Remove="Library\Image\Emoji\-neutral.png" />
+		<None Remove="Library\Image\Emoji\-sad-.png" />
+		<None Remove="Library\Image\Emoji\-sad.png" />
+		<None Remove="Library\Image\Emoji\-scared-.png" />
+		<None Remove="Library\Image\Emoji\-scared.png" />
+		<None Remove="Library\Image\Emoji\-secret.png" />
+		<None Remove="Library\Image\Emoji\-shocked.png" />
+		<None Remove="Library\Image\Emoji\-sick.png" />
+		<None Remove="Library\Image\Emoji\-sleeping.png" />
+		<None Remove="Library\Image\Emoji\-smile-.png" />
+		<None Remove="Library\Image\Emoji\-smile.png" />
+		<None Remove="Library\Image\Emoji\-smiling-.png" />
+		<None Remove="Library\Image\Emoji\-smiling.png" />
+		<None Remove="Library\Image\Emoji\-smirking.png" />
+		<None Remove="Library\Image\Emoji\-surprised.png" />
+		<None Remove="Library\Image\Emoji\-sweat.png" />
+		<None Remove="Library\Image\Emoji\-thinking.png" />
+		<None Remove="Library\Image\Emoji\-tired.png" />
+		<None Remove="Library\Image\Emoji\-tongue-.png" />
+		<None Remove="Library\Image\Emoji\-tongue-_1.png" />
+		<None Remove="Library\Image\Emoji\-tongue.png" />
+		<None Remove="Library\Image\Emoji\-unamused.png" />
+		<None Remove="Library\Image\Emoji\-vomiting-.png" />
+		<None Remove="Library\Image\Emoji\-vomiting.png" />
+		<None Remove="Library\Image\Emoji\-wink.png" />
+		<None Remove="Library\Image\Emoji\-zombie.png" />
+		<None Remove="Library\Image\图片.png" />
+		<None Remove="log4net.config" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="client.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="client.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="log4net.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Library\FileResources\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Library\FileResources\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="XamlAnimatedGif">
-      <HintPath>Library\DynamicLibrary\XamlAnimatedGif\XamlAnimatedGif.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="XamlAnimatedGif">
+			<HintPath>Library\DynamicLibrary\XamlAnimatedGif\XamlAnimatedGif.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Library\Font\element-icons.ttf" />
-    <Resource Include="Library\Font\messages-icons.ttf" />
-    <Resource Include="Library\Font\苹方黑体-中粗-简.ttf" />
-    <Resource Include="Library\Image\Emoji\-angel.png" />
-    <Resource Include="Library\Image\Emoji\-angry.png" />
-    <Resource Include="Library\Image\Emoji\-astonished-.png" />
-    <Resource Include="Library\Image\Emoji\-astonished.png" />
-    <Resource Include="Library\Image\Emoji\-confused.png" />
-    <Resource Include="Library\Image\Emoji\-cool-.png" />
-    <Resource Include="Library\Image\Emoji\-cool.png" />
-    <Resource Include="Library\Image\Emoji\-cry-.png" />
-    <Resource Include="Library\Image\Emoji\-cry.png" />
-    <Resource Include="Library\Image\Emoji\-devil.png" />
-    <Resource Include="Library\Image\Emoji\-dizzy.png" />
-    <Resource Include="Library\Image\Emoji\-expressionless.png" />
-    <Resource Include="Library\Image\Emoji\-flushed.png" />
-    <Resource Include="Library\Image\Emoji\-happy-.png" />
-    <Resource Include="Library\Image\Emoji\-happy-_1.png" />
-    <Resource Include="Library\Image\Emoji\-happy.png" />
-    <Resource Include="Library\Image\Emoji\-in-love.png" />
-    <Resource Include="Library\Image\Emoji\-injury.png" />
-    <Resource Include="Library\Image\Emoji\-joy.png" />
-    <Resource Include="Library\Image\Emoji\-kiss-.png" />
-    <Resource Include="Library\Image\Emoji\-kiss-_1.png" />
-    <Resource Include="Library\Image\Emoji\-kiss.png" />
-    <Resource Include="Library\Image\Emoji\-mask.png" />
-    <Resource Include="Library\Image\Emoji\-mute.png" />
-    <Resource Include="Library\Image\Emoji\-neutral.png" />
-    <Resource Include="Library\Image\Emoji\-sad-.png" />
-    <Resource Include="Library\Image\Emoji\-sad.png" />
-    <Resource Include="Library\Image\Emoji\-scared-.png" />
-    <Resource Include="Library\Image\Emoji\-scared.png" />
-    <Resource Include="Library\Image\Emoji\-secret.png" />
-    <Resource Include="Library\Image\Emoji\-shocked.png" />
-    <Resource Include="Library\Image\Emoji\-sick.png" />
-    <Resource Include="Library\Image\Emoji\-sleeping.png" />
-    <Resource Include="Library\Image\Emoji\-smile-.png" />
-    <Resource Include="Library\Image\Emoji\-smile.png" />
-    <Resource Include="Library\Image\Emoji\-smiling-.png" />
-    <Resource Include="Library\Image\Emoji\-smiling.png" />
-    <Resource Include="Library\Image\Emoji\-smirking.png" />
-    <Resource Include="Library\Image\Emoji\-surprised.png" />
-    <Resource Include="Library\Image\Emoji\-sweat.png" />
-    <Resource Include="Library\Image\Emoji\-thinking.png" />
-    <Resource Include="Library\Image\Emoji\-tired.png" />
-    <Resource Include="Library\Image\Emoji\-tongue-.png" />
-    <Resource Include="Library\Image\Emoji\-tongue-_1.png" />
-    <Resource Include="Library\Image\Emoji\-tongue.png" />
-    <Resource Include="Library\Image\Emoji\-unamused.png" />
-    <Resource Include="Library\Image\Emoji\-vomiting-.png" />
-    <Resource Include="Library\Image\Emoji\-vomiting.png" />
-    <Resource Include="Library\Image\Emoji\-wink.png" />
-    <Resource Include="Library\Image\Emoji\-zombie.png" />
-    <Resource Include="Library\Image\图片.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Library\Font\element-icons.ttf" />
+		<Resource Include="Library\Font\messages-icons.ttf" />
+		<Resource Include="Library\Font\苹方黑体-中粗-简.ttf" />
+		<Resource Include="Library\Image\Emoji\-angel.png" />
+		<Resource Include="Library\Image\Emoji\-angry.png" />
+		<Resource Include="Library\Image\Emoji\-astonished-.png" />
+		<Resource Include="Library\Image\Emoji\-astonished.png" />
+		<Resource Include="Library\Image\Emoji\-confused.png" />
+		<Resource Include="Library\Image\Emoji\-cool-.png" />
+		<Resource Include="Library\Image\Emoji\-cool.png" />
+		<Resource Include="Library\Image\Emoji\-cry-.png" />
+		<Resource Include="Library\Image\Emoji\-cry.png" />
+		<Resource Include="Library\Image\Emoji\-devil.png" />
+		<Resource Include="Library\Image\Emoji\-dizzy.png" />
+		<Resource Include="Library\Image\Emoji\-expressionless.png" />
+		<Resource Include="Library\Image\Emoji\-flushed.png" />
+		<Resource Include="Library\Image\Emoji\-happy-.png" />
+		<Resource Include="Library\Image\Emoji\-happy-_1.png" />
+		<Resource Include="Library\Image\Emoji\-happy.png" />
+		<Resource Include="Library\Image\Emoji\-in-love.png" />
+		<Resource Include="Library\Image\Emoji\-injury.png" />
+		<Resource Include="Library\Image\Emoji\-joy.png" />
+		<Resource Include="Library\Image\Emoji\-kiss-.png" />
+		<Resource Include="Library\Image\Emoji\-kiss-_1.png" />
+		<Resource Include="Library\Image\Emoji\-kiss.png" />
+		<Resource Include="Library\Image\Emoji\-mask.png" />
+		<Resource Include="Library\Image\Emoji\-mute.png" />
+		<Resource Include="Library\Image\Emoji\-neutral.png" />
+		<Resource Include="Library\Image\Emoji\-sad-.png" />
+		<Resource Include="Library\Image\Emoji\-sad.png" />
+		<Resource Include="Library\Image\Emoji\-scared-.png" />
+		<Resource Include="Library\Image\Emoji\-scared.png" />
+		<Resource Include="Library\Image\Emoji\-secret.png" />
+		<Resource Include="Library\Image\Emoji\-shocked.png" />
+		<Resource Include="Library\Image\Emoji\-sick.png" />
+		<Resource Include="Library\Image\Emoji\-sleeping.png" />
+		<Resource Include="Library\Image\Emoji\-smile-.png" />
+		<Resource Include="Library\Image\Emoji\-smile.png" />
+		<Resource Include="Library\Image\Emoji\-smiling-.png" />
+		<Resource Include="Library\Image\Emoji\-smiling.png" />
+		<Resource Include="Library\Image\Emoji\-smirking.png" />
+		<Resource Include="Library\Image\Emoji\-surprised.png" />
+		<Resource Include="Library\Image\Emoji\-sweat.png" />
+		<Resource Include="Library\Image\Emoji\-thinking.png" />
+		<Resource Include="Library\Image\Emoji\-tired.png" />
+		<Resource Include="Library\Image\Emoji\-tongue-.png" />
+		<Resource Include="Library\Image\Emoji\-tongue-_1.png" />
+		<Resource Include="Library\Image\Emoji\-tongue.png" />
+		<Resource Include="Library\Image\Emoji\-unamused.png" />
+		<Resource Include="Library\Image\Emoji\-vomiting-.png" />
+		<Resource Include="Library\Image\Emoji\-vomiting.png" />
+		<Resource Include="Library\Image\Emoji\-wink.png" />
+		<Resource Include="Library\Image\Emoji\-zombie.png" />
+		<Resource Include="Library\Image\图片.png" />
+	</ItemGroup>
 
 </Project>

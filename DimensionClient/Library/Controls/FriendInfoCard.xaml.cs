@@ -67,14 +67,17 @@ namespace DimensionClient.Library.Controls
             }
         }
 
-        private void ClassHelper_DataPassingChanged(object data)
+        private void ClassHelper_DataPassingChanged(ClassHelper.DataPassingType dataType, object data)
         {
-            ClassHelper.ContactPersonFriendID = data.ToString();
-            ThreadPool.QueueUserWorkItem(GetFriendDetails, ClassHelper.ContactPersonFriendID);
-            Dispatcher.Invoke(delegate
+            if (dataType == ClassHelper.DataPassingType.SelectFriend)
             {
-                Visibility = Visibility.Visible;
-            });
+                ClassHelper.ContactPersonFriendID = data.ToString();
+                ThreadPool.QueueUserWorkItem(GetFriendDetails, ClassHelper.ContactPersonFriendID);
+                Dispatcher.Invoke(delegate
+                {
+                    Visibility = Visibility.Visible;
+                });
+            }
         }
 
         #region 执行事件

@@ -1,20 +1,29 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Library.Converters;
+using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using static DimensionClient.Common.ClassHelper;
 
 namespace DimensionClient.Library.Controls
 {
@@ -34,7 +43,7 @@ namespace DimensionClient.Library.Controls
             imgHead.SetBinding(DataContextProperty, "HeadPortrait");
             txbNickName.SetBinding(Run.TextProperty, "NickName");
             txbRemarkName.SetBinding(Run.TextProperty, "RemarkName");
-            brdBadge.SetBinding(VisibilityProperty, new Binding { Path = new PropertyPath("Unread"), Converter = ClassHelper.FindResource<BoolVisibilityConvert>("BoolVisibilityConvert") });
+            brdBadge.SetBinding(VisibilityProperty, new Binding { Path = new PropertyPath("Unread"), Converter = FindResource<BoolVisibilityConvert>("BoolVisibilityConvert") });
             txbBadgeNumber.SetBinding(TextBlock.TextProperty, "Unread");
 
             MasterChat.itcMasterChat.SetBinding(ItemsControl.ItemsSourceProperty, "ChatContent");
@@ -45,11 +54,11 @@ namespace DimensionClient.Library.Controls
 
         private void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(ClassHelper.ChatFriendID))
+            if (string.IsNullOrEmpty(ChatFriendID))
             {
-                ClassHelper.ChatFriendID = chatColumn.FriendID;
+                ChatFriendID = chatColumn.FriendID;
             }
-            if (chatColumn.FriendID == ClassHelper.ChatFriendID)
+            if (chatColumn.FriendID == ChatFriendID)
             {
                 if (brdChat != borderSelect)
                 {
@@ -59,7 +68,7 @@ namespace DimensionClient.Library.Controls
                         borderSelect.IsEnabled = true;
                     }
                     borderSelect = brdChat;
-                    ClassHelper.TransferringData(typeof(ChatMain), this);
+                    TransferringData(typeof(ChatMain), DataPassingType.SelectMessage, this);
                 }
             }
             SignalRClientHelper.NewMessageSignalR += SignalRClientHelper_NewMessageSignalR;
@@ -133,33 +142,33 @@ namespace DimensionClient.Library.Controls
             {
                 switch (chatMessages.MessageType)
                 {
-                    case ClassHelper.MessageType.Text:
+                    case MessageType.Text:
                         txbLastMessage.Text = chatMessages.MessageContent.Replace("\r\n", string.Empty);
                         break;
-                    case ClassHelper.MessageType.RichText:
-                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("RichMessage")}]";
+                    case MessageType.RichText:
+                        txbLastMessage.Text = $"[{FindResource<string>("RichMessage")}]";
                         break;
-                    case ClassHelper.MessageType.Voice:
-                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VoiceMessage")}]";
+                    case MessageType.Voice:
+                        txbLastMessage.Text = $"[{FindResource<string>("VoiceMessage")}]";
                         break;
-                    case ClassHelper.MessageType.File:
+                    case MessageType.File:
                         {
                             FileModel fileModel = JsonConvert.DeserializeObject<FileModel>(chatMessages.MessageContent);
-                            txbLastMessage.Text = fileModel.FileType == ClassHelper.FileType.Image
-                                ? $"[{ClassHelper.FindResource<string>("ImageMessage")}]"
-                                : $"[{ClassHelper.FindResource<string>("AccessoryMessage")}]";
+                            txbLastMessage.Text = fileModel.FileType == FileType.Image
+                                ? $"[{FindResource<string>("ImageMessage")}]"
+                                : $"[{FindResource<string>("AccessoryMessage")}]";
                         }
                         break;
-                    case ClassHelper.MessageType.VoiceTalk:
-                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VoiceTalk")}]";
+                    case MessageType.VoiceTalk:
+                        txbLastMessage.Text = $"[{FindResource<string>("VoiceTalk")}]";
                         break;
-                    case ClassHelper.MessageType.VideoTalk:
-                        txbLastMessage.Text = $"[{ClassHelper.FindResource<string>("VideoTalk")}]";
+                    case MessageType.VideoTalk:
+                        txbLastMessage.Text = $"[{FindResource<string>("VideoTalk")}]";
                         break;
                     default:
                         break;
                 }
-                txbLastTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
+                txbLastTime.Text = chatMessages.CreateTime.ToString("t", cultureInfo);
             }
         }
 
@@ -196,7 +205,7 @@ namespace DimensionClient.Library.Controls
                                     {
                                         if (VisualTreeHelper.GetChild(MasterChat.itcMasterChat, 0) is ScrollViewer scroll)
                                         {
-                                            if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == ClassHelper.UserID)
+                                            if (scroll.VerticalOffset > scroll.ScrollableHeight - 50 || item.SenderID == UserID)
                                             {
                                                 scroll.ScrollToEnd();
                                             }
@@ -206,7 +215,7 @@ namespace DimensionClient.Library.Controls
                                 });
                             }
                         }
-                        int unread = chatMessages.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw).Count();
+                        int unread = chatMessages.Where(item => item.ReceiverID == UserID && !item.IsRead && !item.IsWithdraw).Count();
                         Dispatcher.Invoke(delegate
                         {
                             if (MasterChat.IsLoaded && unread > 0)
@@ -251,7 +260,7 @@ namespace DimensionClient.Library.Controls
                                 chatColumn.ChatContent.Add(item);
                             }
                         });
-                        chatColumn.Unread = chatMessages.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw).Count();
+                        chatColumn.Unread = chatMessages.Where(item => item.ReceiverID == UserID && !item.IsRead && !item.IsWithdraw).Count();
                         Dispatcher.Invoke(delegate
                         {
                             if (MasterChat.IsLoaded)
@@ -278,18 +287,18 @@ namespace DimensionClient.Library.Controls
                 borderSelect.IsEnabled = true;
             }
             borderSelect = brdChat;
-            ClassHelper.ChatFriendID = chatColumn.FriendID;
-            ClassHelper.TransferringData(typeof(ChatMain), this);
+            ChatFriendID = chatColumn.FriendID;
+            TransferringData(typeof(ChatMain), DataPassingType.SelectMessage, this);
         }
         private void ReadMessage(object data)
         {
             lock (chatColumn.ChatContent)
             {
-                if (chatColumn.ChatContent.LastOrDefault(item => item.SenderID != ClassHelper.UserID && !item.IsRead) is ChatMessagesModel chatMessages)
+                if (chatColumn.ChatContent.LastOrDefault(item => item.SenderID != UserID && !item.IsRead) is ChatMessagesModel chatMessages)
                 {
                     if (ChatService.ReadMessage(chatColumn.ChatID, chatMessages.ID))
                     {
-                        foreach (ChatMessagesModel item in chatColumn.ChatContent.Where(item => item.ReceiverID == ClassHelper.UserID && !item.IsRead && !item.IsWithdraw))
+                        foreach (ChatMessagesModel item in chatColumn.ChatContent.Where(item => item.ReceiverID == UserID && !item.IsRead && !item.IsWithdraw))
                         {
                             item.IsRead = true;
                         }
@@ -298,6 +307,135 @@ namespace DimensionClient.Library.Controls
                     }
                 }
             }
+        }
+        public async void SendMessage(object data)
+        {
+            chatColumn.IsUsable = false;
+
+            List<Task> uploading = new();
+            RichMessageModel richMessage = new();
+            Dispatcher.Invoke(delegate
+            {
+                foreach (Block item in chatColumn.Flow.Blocks)
+                {
+                    if (item is Paragraph paragraph)
+                    {
+                        if (item != chatColumn.Flow.Blocks.FirstBlock)
+                        {
+                            richMessage.RichMessageContents.Add(new RichMessageContentModel
+                            {
+                                MessageType = RichMessageType.Text,
+                                Content = Environment.NewLine,
+                                FileAttribute = null
+                            });
+                        }
+                        foreach (Inline coll in paragraph.Inlines)
+                        {
+                            if (coll is Run run)
+                            {
+                                richMessage.RichMessageContents.Add(new RichMessageContentModel
+                                {
+                                    MessageType = RichMessageType.Text,
+                                    Content = run.Text,
+                                    FileAttribute = null
+                                });
+                            }
+                            else if (coll is InlineUIContainer con)
+                            {
+                                if (con.Child is ChatImage chatImage)
+                                {
+                                    RichMessageContentModel richMessageContent = new()
+                                    {
+                                        MessageType = RichMessageType.Image
+                                    };
+                                    richMessage.RichMessageContents.Add(richMessageContent);
+                                    Task task = new((e) =>
+                                    {
+                                        RichMessageContentModel contentModel = e as RichMessageContentModel;
+                                        MultipartFormDataContent dataContent = new();
+                                        double fileSize = 0;
+                                        double fileWidth = 0;
+                                        double fileHeight = 0;
+                                        Dispatcher.Invoke(delegate
+                                        {
+                                            using MemoryStream memoryStream = new();
+                                            string extend = new FileInfo(chatImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
+                                            File.OpenRead(chatImage.PathUri.LocalPath).CopyTo(memoryStream);
+                                            BitmapSource bitmapSource = new BitmapImage(chatImage.PathUri);
+                                            dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");
+
+                                            fileSize = (double)memoryStream.Length / 1000 / 1000;
+                                            fileWidth = bitmapSource.Width;
+                                            fileHeight = bitmapSource.Height;
+
+                                            memoryStream.Close();
+                                        });
+                                        if (ServerUpload($"{servicePath}/api/Attachment/UploadAttachment", dataContent, out string fileName))
+                                        {
+                                            contentModel.Content = fileName;
+                                            contentModel.FileAttribute = new FileModel()
+                                            {
+                                                FileType = FileType.Image,
+                                                FileName = fileName,
+                                                FileMByte = fileSize,
+                                                FileWidth = fileWidth,
+                                                FileHeight = fileHeight
+                                            };
+                                            Dispatcher.Invoke(delegate
+                                            {
+                                                chatImage.PathUri = new Uri(fileName, UriKind.Relative);
+                                                chatImage.FileWidth = fileWidth;
+                                                chatImage.FileHeight = fileHeight;
+                                                chatImage.IsLoadRelative = true;
+                                                chatImage.UnLoad();
+                                            });
+                                        }
+                                    }, richMessageContent);
+                                    task.Start();
+                                    uploading.Add(task);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            });
+            List<RichMessageContentModel> richesText = richMessage.Filter(RichMessageType.Text);
+            List<RichMessageContentModel> richesImage = richMessage.Filter(RichMessageType.Image);
+            if (richesImage.Count > 0)
+            {
+                await Task.WhenAll(uploading);
+                if (richesText.Count == 0)
+                {
+                    foreach (RichMessageContentModel item in richesImage)
+                    {
+                        ChatService.SendMessage(chatColumn.ChatID, MessageType.File, JObject.FromObject(item.FileAttribute).ToString());
+                    }
+                }
+                else
+                {
+                    Dispatcher.Invoke(delegate
+                    {
+                        richMessage.SerializedMessage = XamlWriter.Save(chatColumn.Flow);
+                    });
+                    ChatService.SendMessage(chatColumn.ChatID, MessageType.RichText, JObject.FromObject(richMessage).ToString());
+                }
+            }
+            else if (richesText.Count > 0)
+            {
+                string message = string.Empty;
+                foreach (RichMessageContentModel item in richesText)
+                {
+                    message += item.Content;
+                }
+                ChatService.SendMessage(chatColumn.ChatID, MessageType.Text, message);
+            }
+
+            chatColumn.IsUsable = true;
+            Dispatcher.Invoke(delegate
+            {
+                chatColumn.Flow.Blocks.Clear();
+            });
         }
         #endregion
     }
