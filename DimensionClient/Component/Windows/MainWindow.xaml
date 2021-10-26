@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:threading="clr-namespace:DimensionClient.Threading" xmlns:controls="clr-namespace:DimensionClient.Library.Controls"
         mc:Ignorable="d" d:DesignHeight="630" d:DesignWidth="1060"
-        x:Name="AppMain" Title="MainWindow" MinHeight="576" MinWidth="1024" Height="630" Width="1060" WindowStartupLocation="CenterScreen" Loaded="AppMain_Loaded" StateChanged="AppMain_StateChanged">
+        x:Name="AppMain" Title="MainWindow" MinHeight="576" MinWidth="1024" Height="630" Width="1060" WindowStartupLocation="CenterScreen" Loaded="AppMain_Loaded" Unloaded="AppMain_Unloaded" StateChanged="AppMain_StateChanged">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False" NonClientFrameEdges="None" CaptionHeight="40" />
     </WindowChrome.WindowChrome>

@@ -13,6 +13,8 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using static DimensionClient.Models.DisplayDevice;
 
@@ -50,6 +52,8 @@ namespace DimensionClient.Common
         public const string privateKey = "wangxi1234567890";
         public const int currentSettings = -1;
         public const int registrySettings = -2;
+        // 热键消息
+        public const int wmHotKey = 0x312;
         #endregion
 
         #region 变量
@@ -67,6 +71,10 @@ namespace DimensionClient.Common
         public static string ChatFriendID { get; set; }
         // 选中的联系人好友ID
         public static string ContactPersonFriendID { get; set; }
+        // 热键标识
+        public static string HotKeySetting { get; private set; }
+        // 注册热键时使用唯一标识
+        public static int HotKey { get; private set; }
         #endregion
 
         #region 枚举
@@ -168,74 +176,24 @@ namespace DimensionClient.Common
             Angular = 1,
             Raw = 2,
         }
+        // 热键类型
+        public enum HotKeyType
+        {
+            ScreenCapture
+        }
         #endregion
 
         #region 事件
         // 消息提醒
-        private static MessageEvent GetMessage;
-        public static event MessageEvent MessageHint
-        {
-            add
-            {
-                GetMessage += value;
-            }
-            remove
-            {
-                GetMessage -= value;
-            }
-        }
+        public static event MessageEvent MessageHint;
         // 显示蒙版
-        private static AccordingMaskEvent GetAccording;
-        public static event AccordingMaskEvent AccordingMask
-        {
-            add
-            {
-                GetAccording += value;
-            }
-            remove
-            {
-                GetAccording -= value;
-            }
-        }
+        public static event AccordingMaskEvent AccordingMask;
         // 改变路由
-        private static RouteEvent GetRouted;
-        public static event RouteEvent RoutedChanged
-        {
-            add
-            {
-                GetRouted += value;
-            }
-            remove
-            {
-                GetRouted -= value;
-            }
-        }
+        public static event RouteEvent RoutedChanged;
         // 系统通知
-        private static NotificationEvent GetNotification;
-        public static event NotificationEvent NotificationHint
-        {
-            add
-            {
-                GetNotification += value;
-            }
-            remove
-            {
-                GetNotification -= value;
-            }
-        }
+        public static event NotificationEvent NotificationHint;
         // 类直接数据传递
-        private static DataPassing GetDataPassing;
-        public static event DataPassing DataPassingChanged
-        {
-            add
-            {
-                GetDataPassing += value;
-            }
-            remove
-            {
-                GetDataPassing -= value;
-            }
-        }
+        public static event DataPassing DataPassingChanged;
         #endregion
 
         #region 页面
@@ -258,6 +216,16 @@ namespace DimensionClient.Common
         private static extern bool GetMonitorInfo(IntPtr hmonitor, [In, Out] MONITORINFOEX info);
         [DllImport("Shcore.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr GetDpiForMonitor(IntPtr hmonitor, DpiType dpiType, out uint dpiX, out uint dpiY);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeys fsModifiers, int vk);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern short GlobalAddAtom(string lpString);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern short GlobalFindAtom(string lpString);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern short GlobalDeleteAtom(short nAtom);
         #endregion
 
         /// <summary>
@@ -339,14 +307,14 @@ namespace DimensionClient.Common
         {
             if (window != null)
             {
-                foreach (Delegate item in (GetMessage?.GetInvocationList()).Where(item => item.Target.GetType() == window))
+                foreach (Delegate item in (MessageHint?.GetInvocationList()).Where(item => item.Target.GetType() == window))
                 {
                     item.DynamicInvoke(messageType, message);
                 }
             }
             else
             {
-                GetMessage?.Invoke(messageType, message);
+                MessageHint?.Invoke(messageType, message);
             }
         }
 
@@ -360,14 +328,14 @@ namespace DimensionClient.Common
         {
             if (window != null)
             {
-                foreach (Delegate item in (GetNotification?.GetInvocationList()).Where(item => item.Target.GetType() == window))
+                foreach (Delegate item in (NotificationHint?.GetInvocationList()).Where(item => item.Target.GetType() == window))
                 {
                     item.DynamicInvoke(title, message);
                 }
             }
             else
             {
-                GetNotification?.Invoke(title, message);
+                NotificationHint?.Invoke(title, message);
             }
         }
 
@@ -377,7 +345,7 @@ namespace DimensionClient.Common
         /// <param name="show">显示隐藏</param>
         public static void ShowMask(bool show, bool loading = true)
         {
-            GetAccording?.Invoke(show, loading);
+            AccordingMask?.Invoke(show, loading);
         }
 
         /// <summary>
@@ -396,7 +364,7 @@ namespace DimensionClient.Common
         /// <param name="routeName">页面名称</param>
         public static void SwitchRoute(PageType pageName)
         {
-            GetRouted?.Invoke(pageName);
+            RoutedChanged?.Invoke(pageName);
         }
 
         /// <summary>
@@ -427,7 +395,7 @@ namespace DimensionClient.Common
         /// <param name="data">数据</param>
         public static void TransferringData(Type type, object data)
         {
-            foreach (Delegate item in (GetDataPassing?.GetInvocationList()).Where(item => item.Target.GetType() == type))
+            foreach (Delegate item in (DataPassingChanged?.GetInvocationList()).Where(item => item.Target.GetType() == type))
             {
                 item.DynamicInvoke(data);
             }
@@ -721,6 +689,38 @@ namespace DimensionClient.Common
                 new StringBuilder(),
                 (sb, b) => sb.Append(b.ToString("X2", cultureInfo)),
                 sb => sb.ToString());
+        }
+
+        /// <summary>
+        /// 注册热键
+        /// </summary>
+        /// <param name="window">窗体</param>
+        /// <returns></returns>
+        public static bool RegisteredHotkey(Window window)
+        {
+            HotKeySetting = GetRandomString(10);
+            IntPtr ptr = new WindowInteropHelper(window).Handle;
+            if (GlobalFindAtom(HotKeySetting) != 0)
+            {
+                GlobalDeleteAtom(GlobalFindAtom(HotKeySetting));
+            }
+            HotKey = GlobalAddAtom(HotKeySetting);
+            return RegisterHotKey(ptr, HotKey, ModifierKeys.Alt, 81);
+        }
+
+        /// <summary>
+        /// 注销热键
+        /// </summary>
+        /// <param name="window">窗体</param>
+        /// <returns></returns>
+        public static bool UnRegisteredHotkey(Window window)
+        {
+            IntPtr ptr = new WindowInteropHelper(window).Handle;
+            if (GlobalFindAtom(HotKeySetting) != 0)
+            {
+                GlobalDeleteAtom(GlobalFindAtom(HotKeySetting));
+            }
+            return UnregisterHotKey(ptr, HotKey);
         }
     }
 }

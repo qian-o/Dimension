@@ -19,83 +19,17 @@ namespace DimensionClient.Common
 
         #region 事件
         // 好友在线状态
-        private static FriendOnline GetFriendOnline;
-        public static event FriendOnline FriendOnlineSignalR
-        {
-            add
-            {
-                GetFriendOnline += value;
-            }
-            remove
-            {
-                GetFriendOnline -= value;
-            }
-        }
+        public static event FriendOnline FriendOnlineSignalR;
         // 新好友
-        private static NewFriend GetNewFriend;
-        public static event NewFriend NewFriendSignalR
-        {
-            add
-            {
-                GetNewFriend += value;
-            }
-            remove
-            {
-                GetNewFriend -= value;
-            }
-        }
+        public static event NewFriend NewFriendSignalR;
         // 好友状态改变
-        private static FriendChanged GetFriendChanged;
-        public static event FriendChanged FriendChangedSignalR
-        {
-            add
-            {
-                GetFriendChanged += value;
-            }
-            remove
-            {
-                GetFriendChanged -= value;
-            }
-        }
+        public static event FriendChanged FriendChangedSignalR;
         // 好友备注改变
-        private static RemarkInfoChanged GetRemarkInfoChanged;
-        public static event RemarkInfoChanged RemarkInfoChangedSignalR
-        {
-            add
-            {
-                GetRemarkInfoChanged += value;
-            }
-            remove
-            {
-                GetRemarkInfoChanged -= value;
-            }
-        }
+        public static event RemarkInfoChanged RemarkInfoChangedSignalR;
         // 聊天列表改变
-        private static ChatColumnChanged GetChatColumnChanged;
-        public static event ChatColumnChanged ChatColumnChangedSignalR
-        {
-            add
-            {
-                GetChatColumnChanged += value;
-            }
-            remove
-            {
-                GetChatColumnChanged -= value;
-            }
-        }
+        public static event ChatColumnChanged ChatColumnChangedSignalR;
         // 新消息
-        private static NewMessage GetNewMessage;
-        public static event NewMessage NewMessageSignalR
-        {
-            add
-            {
-                GetNewMessage += value;
-            }
-            remove
-            {
-                GetNewMessage -= value;
-            }
-        }
+        public static event NewMessage NewMessageSignalR;
         #endregion
 
         public static async void InitializeConnection()
@@ -136,17 +70,17 @@ namespace DimensionClient.Common
 
         private static void Connection_FriendOnline(string friendID, bool online)
         {
-            GetFriendOnline?.Invoke(friendID, online);
+            FriendOnlineSignalR?.Invoke(friendID, online);
         }
 
         private static void Connection_NewFriend(string friendID)
         {
-            GetNewFriend?.Invoke(friendID);
+            NewFriendSignalR?.Invoke(friendID);
         }
 
         private static void Connection_FriendChanged(string sort, string friendID, bool state)
         {
-            GetFriendChanged?.Invoke(sort, friendID, state);
+            FriendChangedSignalR?.Invoke(sort, friendID, state);
         }
 
         private static void Connection_OnlineStatus(bool online)
@@ -156,17 +90,17 @@ namespace DimensionClient.Common
 
         private static void Connection_RemarkInfoChanged(string friendID)
         {
-            GetRemarkInfoChanged?.Invoke(friendID);
+            RemarkInfoChangedSignalR?.Invoke(friendID);
         }
 
         private static void Connection_ChatColumnChanged(string friendID)
         {
-            GetChatColumnChanged?.Invoke(friendID);
+            ChatColumnChangedSignalR?.Invoke(friendID);
         }
 
         private static void Connection_NewMessage(string chatID)
         {
-            GetNewMessage?.Invoke(chatID);
+            NewMessageSignalR?.Invoke(chatID);
         }
     }
 }

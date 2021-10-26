@@ -1,11 +1,14 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Library.Controls;
+using DimensionClient.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -17,6 +20,9 @@ namespace DimensionClient.Component.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 钩子
+        private HwndSource hwnd;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +32,7 @@ namespace DimensionClient.Component.Windows
             ClassHelper.NotificationHint += ClassHelper_NotificationHint;
             ClassHelper.RoutedChanged += ClassHelper_RoutedChanged;
             ClassHelper.AccordingMask += ClassHelper_AccordingMask;
+            ClassHelper.DataPassingChanged += ClassHelper_DataPassingChanged;
 
             #region 绑定全局属性
             grdInformation.DataContext = ClassHelper.commonView;
@@ -40,6 +47,19 @@ namespace DimensionClient.Component.Windows
         private void AppMain_Loaded(object sender, RoutedEventArgs e)
         {
             ThreadPool.QueueUserWorkItem(Load);
+            if (ClassHelper.RegisteredHotkey(this))
+            {
+                hwnd = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+                hwnd.AddHook(WndProc);
+            }
+        }
+
+        private void AppMain_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (ClassHelper.UnRegisteredHotkey(this))
+            {
+                hwnd.RemoveHook(WndProc);
+            }
         }
 
         private void AppMain_StateChanged(object sender, EventArgs e)
@@ -179,10 +199,110 @@ namespace DimensionClient.Component.Windows
             }
         }
 
+        private void ClassHelper_DataPassingChanged(object data)
+        {
+            if (data is ClassHelper.HotKeyType hotkey)
+            {
+                switch (hotkey)
+                {
+                    case ClassHelper.HotKeyType.ScreenCapture:
+                        ScreenCapture();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == ClassHelper.wmHotKey)
+            {
+                if (wParam.ToInt32() == ClassHelper.HotKey)
+                {
+                    foreach (Window item in Application.Current.Windows)
+                    {
+                        if (item.ShowActivated && item.GetType() == typeof(Screenshots))
+                        {
+                            return IntPtr.Zero;
+                        }
+                    }
+                    ScreenCapture();
+                    handled = true;
+                }
+            }
+            return IntPtr.Zero;
+        }
+
         #region 执行事件
         private void Load(object data)
         {
             ClassHelper.SwitchRoute(ClassHelper.PageType.MessageCenterPage);
+        }
+        private static void ScreenCapture()
+        {
+            List<DisplayInfoModel> displays = ClassHelper.GetDisplayInfos();
+            int actualLeft = 0;
+            int actualTop = 0;
+            int actualRight = 0;
+            int actualBottom = 0;
+
+            double showLeft = 0;
+            double showTop = 0;
+            double showRight = 0;
+            double showBottom = 0;
+            foreach (DisplayInfoModel item in displays)
+            {
+                if (actualLeft > item.DisplayLeft)
+                {
+                    actualLeft = item.DisplayLeft;
+                }
+                if (actualTop > item.DisplayTop)
+                {
+                    actualTop = item.DisplayTop;
+                }
+                if (actualRight < item.DisplayLeft + item.DisplayWidth)
+                {
+                    actualRight = item.DisplayLeft + item.DisplayWidth;
+                }
+                if (actualBottom < item.DisplayTop + item.DisplayHeight)
+                {
+                    actualBottom = item.DisplayTop + item.DisplayHeight;
+                }
+
+                if (showLeft > item.ShowLeft)
+                {
+                    showLeft = item.ShowLeft;
+                }
+                if (showTop > item.ShowTop)
+                {
+                    showTop = item.ShowTop;
+                }
+                if (showRight < item.ShowLeft + item.ShowWidth)
+                {
+                    showRight = item.ShowLeft + item.ShowWidth;
+                }
+                if (showBottom < item.ShowTop + item.ShowHeight)
+                {
+                    showBottom = item.ShowTop + item.ShowHeight;
+                }
+            }
+            int actualWidth = Math.Abs(actualLeft) + Math.Abs(actualRight);
+            int actualHeight = Math.Abs(actualTop) + Math.Abs(actualBottom);
+
+            double showWidth = Math.Abs(showLeft) + Math.Abs(showRight);
+            double showHeight = Math.Abs(showTop) + Math.Abs(showBottom);
+            System.Drawing.Bitmap bitmap = new(actualWidth, actualHeight);
+            System.Drawing.Graphics.FromImage(bitmap).CopyFromScreen(actualLeft, actualTop, 0, 0, new System.Drawing.Size(actualWidth, actualHeight));
+
+            Screenshots screenshots = new(bitmap, showLeft, showTop, showWidth, showHeight);
+            screenshots.ShowDialog();
+            if (screenshots.IsSave)
+            {
+                ClassHelper.TransferringData(typeof(ChatMain), null);
+            }
+
+            bitmap.Dispose();
         }
         private static void BrdSelectPage_PointerUp(object sender)
         {

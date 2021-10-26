@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net.Http;
@@ -139,21 +138,26 @@ namespace DimensionClient.Library.Controls
 
         private void ClassHelper_DataPassingChanged(object data)
         {
-            Visibility = Visibility.Visible;
-
-            ChatItem chatItem = data as ChatItem;
-            ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
-            chatMainData.ChatID = chatColumnInfo.ChatID;
-            txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
-            if (chatColumnInfo.Flow == null)
+            if (data == null)
             {
-                chatColumnInfo.Flow = new FlowDocument
-                {
-                    PagePadding = new Thickness(0)
-                };
+                rtbMessage.Paste();
             }
-            rtbMessage.Document = chatColumnInfo.Flow;
-            brdChat.Child = chatItem.MasterChat;
+            else if (data is ChatItem chatItem)
+            {
+                Visibility = Visibility.Visible;
+                ChatColumnInfoModel chatColumnInfo = chatItem.DataContext as ChatColumnInfoModel;
+                chatMainData.ChatID = chatColumnInfo.ChatID;
+                txbFriendNickName.SetBinding(TextBlock.TextProperty, new Binding { Source = chatColumnInfo, Path = new PropertyPath(string.IsNullOrEmpty(chatColumnInfo.RemarkName) ? nameof(chatColumnInfo.NickName) : nameof(chatColumnInfo.RemarkName)) });
+                if (chatColumnInfo.Flow == null)
+                {
+                    chatColumnInfo.Flow = new FlowDocument
+                    {
+                        PagePadding = new Thickness(0)
+                    };
+                }
+                rtbMessage.Document = chatColumnInfo.Flow;
+                brdChat.Child = chatItem.MasterChat;
+            }
         }
 
         #region 执行事件
@@ -177,87 +181,9 @@ namespace DimensionClient.Library.Controls
 
             chatMainData.Emojis = emojis;
         }
-        private void TxbScreenCapture_PointerUp()
+        private static void TxbScreenCapture_PointerUp()
         {
-            ThreadPool.QueueUserWorkItem(ScreenCapture);
-        }
-        private void ScreenCapture(object data)
-        {
-            Dispatcher.Invoke(delegate
-            {
-                txbScreenCapture.IsEnabled = false;
-            });
-
-            List<DisplayInfoModel> displays = GetDisplayInfos();
-            int actualLeft = 0;
-            int actualTop = 0;
-            int actualRight = 0;
-            int actualBottom = 0;
-
-            double showLeft = 0;
-            double showTop = 0;
-            double showRight = 0;
-            double showBottom = 0;
-            foreach (DisplayInfoModel item in displays)
-            {
-                if (actualLeft > item.DisplayLeft)
-                {
-                    actualLeft = item.DisplayLeft;
-                }
-                if (actualTop > item.DisplayTop)
-                {
-                    actualTop = item.DisplayTop;
-                }
-                if (actualRight < item.DisplayLeft + item.DisplayWidth)
-                {
-                    actualRight = item.DisplayLeft + item.DisplayWidth;
-                }
-                if (actualBottom < item.DisplayTop + item.DisplayHeight)
-                {
-                    actualBottom = item.DisplayTop + item.DisplayHeight;
-                }
-
-                if (showLeft > item.ShowLeft)
-                {
-                    showLeft = item.ShowLeft;
-                }
-                if (showTop > item.ShowTop)
-                {
-                    showTop = item.ShowTop;
-                }
-                if (showRight < item.ShowLeft + item.ShowWidth)
-                {
-                    showRight = item.ShowLeft + item.ShowWidth;
-                }
-                if (showBottom < item.ShowTop + item.ShowHeight)
-                {
-                    showBottom = item.ShowTop + item.ShowHeight;
-                }
-            }
-            int actualWidth = Math.Abs(actualLeft) + Math.Abs(actualRight);
-            int actualHeight = Math.Abs(actualTop) + Math.Abs(actualBottom);
-
-            double showWidth = Math.Abs(showLeft) + Math.Abs(showRight);
-            double showHeight = Math.Abs(showTop) + Math.Abs(showBottom);
-            Bitmap bitmap = new(actualWidth, actualHeight);
-            Graphics.FromImage(bitmap).CopyFromScreen(actualLeft, actualTop, 0, 0, new System.Drawing.Size(actualWidth, actualHeight));
-
-            Dispatcher.Invoke(delegate
-            {
-                Screenshots screenshots = new(bitmap, showLeft, showTop, showWidth, showHeight);
-                screenshots.ShowDialog();
-                if (screenshots.IsSave)
-                {
-                    rtbMessage.Paste();
-                }
-            });
-
-            bitmap.Dispose();
-
-            Dispatcher.Invoke(delegate
-            {
-                txbScreenCapture.IsEnabled = true;
-            });
+            TransferringData(typeof(MainWindow), HotKeyType.ScreenCapture);
         }
         private async void SendMessage(object data)
         {
