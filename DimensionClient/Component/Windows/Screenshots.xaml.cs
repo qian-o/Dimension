@@ -101,12 +101,13 @@ namespace DimensionClient.Component.Windows
 
         private void GrdMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!mainData.PointStart.Equals(mainData.Point1))
+            Point pointMin = mainData.MinPoint();
+            Point pointMax = mainData.MaxPoint();
+            if (pointMax.X - pointMin.X > 1 && pointMax.Y - pointMin.Y > 1)
             {
-                Point point = mainData.MaxPoint();
-                btnSave.Margin = point.X > (btnSave.Width - 5) && point.Y > (btnSave.Height - 5)
-                    ? (new(point.X - btnSave.Width - 5, point.Y - btnSave.Height - 5, 0, 0))
-                    : (new(point.X + 5, point.Y + 5, 0, 0));
+                btnSave.Margin = pointMax.X > (btnSave.Width - 5) && pointMax.Y > (btnSave.Height - 5)
+                    ? (new(pointMax.X - btnSave.Width - 5, pointMax.Y - btnSave.Height - 5, 0, 0))
+                    : (new(pointMax.X + 5, pointMax.Y + 5, 0, 0));
                 btnSave.Visibility = Visibility.Visible;
             }
         }
