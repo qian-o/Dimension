@@ -113,7 +113,7 @@ namespace DimensionClient.Library.Controls
             {
                 if (e.Command == EditingCommands.EnterParagraphBreak)
                 {
-                    ThreadPool.QueueUserWorkItem(chatItem.SendMessage);
+                    chatItem.Send();
                 }
                 e.Handled = true;
             }
@@ -129,7 +129,7 @@ namespace DimensionClient.Library.Controls
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(chatItem.SendMessage);
+            chatItem.Send();
         }
 
         private void ClassHelper_DataPassingChanged(DataPassingType dataType, object data)
@@ -137,6 +137,13 @@ namespace DimensionClient.Library.Controls
             if (dataType == DataPassingType.Paste)
             {
                 rtbMessage.Paste();
+            }
+            else if (dataType == DataPassingType.MessageFocus)
+            {
+                if (data.ToString() == chatMainData.ChatID)
+                {
+                    rtbMessage.Focus();
+                }
             }
             else if (dataType == DataPassingType.SelectMessage)
             {
@@ -150,10 +157,16 @@ namespace DimensionClient.Library.Controls
                 if (chatColumnInfo.Flow == null)
                 {
                     chatColumnInfo.Flow = new FlowDocument();
+                    chatColumnInfo.Flow.Loaded += Flow_Loaded;
                 }
                 rtbMessage.Document = chatColumnInfo.Flow;
                 brdChat.Child = chatItem.MasterChat;
             }
+        }
+
+        private void Flow_Loaded(object sender, RoutedEventArgs e)
+        {
+            rtbMessage.Focus();
         }
 
         #region 执行事件

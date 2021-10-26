@@ -290,6 +290,10 @@ namespace DimensionClient.Library.Controls
             ChatFriendID = chatColumn.FriendID;
             TransferringData(typeof(ChatMain), DataPassingType.SelectMessage, this);
         }
+        public void Send()
+        {
+            ThreadPool.QueueUserWorkItem(SendMessage);
+        }
         private void ReadMessage(object data)
         {
             lock (chatColumn.ChatContent)
@@ -308,7 +312,7 @@ namespace DimensionClient.Library.Controls
                 }
             }
         }
-        public async void SendMessage(object data)
+        private async void SendMessage(object data)
         {
             chatColumn.IsUsable = false;
 
@@ -431,10 +435,11 @@ namespace DimensionClient.Library.Controls
                 ChatService.SendMessage(chatColumn.ChatID, MessageType.Text, message);
             }
 
-            chatColumn.IsUsable = true;
             Dispatcher.Invoke(delegate
             {
+                chatColumn.IsUsable = true;
                 chatColumn.Flow.Blocks.Clear();
+                TransferringData(typeof(ChatMain), DataPassingType.MessageFocus, chatColumn.ChatID);
             });
         }
         #endregion

@@ -182,7 +182,8 @@ namespace DimensionClient.Common
             SelectMessage,
             SelectFriend,
             ScreenCapture,
-            Paste
+            Paste,
+            MessageFocus
         }
         #endregion
 
