@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace DimensionClient.Service.UserManager
 {
@@ -19,7 +20,7 @@ namespace DimensionClient.Service.UserManager
                 { "UseDevice", ClassHelper.device.ToString() },
                 { "LoginTime", loginTime }
             };
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/UserLogin", "POST", out JObject responseObj, requestObj: requestObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/UserLogin", HttpMethod.Post, out JObject responseObj, requestObj: requestObj))
             {
                 userLoginModel = JsonConvert.DeserializeObject<UserLoginModel>(responseObj["Data"].ToString());
                 return true;
@@ -37,7 +38,7 @@ namespace DimensionClient.Service.UserManager
                 { "VerifyAccount", verifyAccount },
                 { "UseDevice", ClassHelper.device.ToString() }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetVerificationCode", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetVerificationCode", HttpMethod.Post, out _, requestObj: requestObj);
         }
 
         public static bool PhoneNumberLogin(string phoneNumber, string verifyCode, out UserLoginModel userLoginModel)
@@ -49,7 +50,7 @@ namespace DimensionClient.Service.UserManager
                 { "VerifyCode", verifyCode },
                 { "UseDevice", ClassHelper.device.ToString() }
             };
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/PhoneNumberLogin", "POST", out JObject responseObj, requestObj: requestObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/PhoneNumberLogin", HttpMethod.Post, out JObject responseObj, requestObj: requestObj))
             {
                 userLoginModel = JsonConvert.DeserializeObject<UserLoginModel>(responseObj["Data"].ToString());
                 return true;
@@ -63,7 +64,7 @@ namespace DimensionClient.Service.UserManager
         public static bool GetUserInfo(out GetUserInfoModel getUserInfoModel)
         {
             getUserInfoModel = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetUserInfo", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetUserInfo", HttpMethod.Get, out JObject responseObj))
             {
                 getUserInfoModel = JsonConvert.DeserializeObject<GetUserInfoModel>(responseObj["Data"].ToString());
                 return true;
@@ -78,7 +79,7 @@ namespace DimensionClient.Service.UserManager
         public static bool GetFriendList(out List<FriendSortModel> friendSorts)
         {
             friendSorts = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetFriendList", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetFriendList", HttpMethod.Get, out JObject responseObj))
             {
                 friendSorts = JsonConvert.DeserializeObject<List<FriendSortModel>>(responseObj["Data"].ToString());
                 return true;
@@ -96,7 +97,7 @@ namespace DimensionClient.Service.UserManager
                 { "FriendID", friendID },
                 { "VerifyInfo", verifyInfo }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/FriendRegistration", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/FriendRegistration", HttpMethod.Post, out _, requestObj: requestObj);
         }
 
         public static bool FriendValidation(string friendID, bool passed)
@@ -106,13 +107,13 @@ namespace DimensionClient.Service.UserManager
                 { "FriendID", friendID },
                 { "Passed", passed }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/FriendValidation", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/FriendValidation", HttpMethod.Post, out _, requestObj: requestObj);
         }
 
         public static bool GetNewFriendList(out List<NewFriendBriefModel> newFriendBriefs)
         {
             newFriendBriefs = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetNewFriendList", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetNewFriendList", HttpMethod.Get, out JObject responseObj))
             {
                 newFriendBriefs = JsonConvert.DeserializeObject<List<NewFriendBriefModel>>(responseObj["Data"].ToString());
                 return true;
@@ -126,7 +127,7 @@ namespace DimensionClient.Service.UserManager
         public static bool GetFriendInfo(out FriendDetailsModel friendDetails, string friendID = "", string phoneNumber = "")
         {
             friendDetails = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetFriendInfo?{(!string.IsNullOrEmpty(friendID) ? $"friendID={friendID}" : $"phoneNumber={phoneNumber}")}", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/GetFriendInfo?{(!string.IsNullOrEmpty(friendID) ? $"friendID={friendID}" : $"phoneNumber={phoneNumber}")}", HttpMethod.Get, out JObject responseObj))
             {
                 friendDetails = JsonConvert.DeserializeObject<FriendDetailsModel>(responseObj["Data"].ToString());
                 return true;
@@ -151,7 +152,7 @@ namespace DimensionClient.Service.UserManager
             {
                 requestObj.Add("RemarkInformation", remarkInformation);
             }
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/UpdateRemarkInfo", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/UserManager/UpdateRemarkInfo", HttpMethod.Post, out _, requestObj: requestObj);
         }
     }
 }

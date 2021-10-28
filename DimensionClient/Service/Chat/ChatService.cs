@@ -3,6 +3,7 @@ using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace DimensionClient.Service.Chat
 {
@@ -14,13 +15,13 @@ namespace DimensionClient.Service.Chat
             {
                 { "FriendID", friendID }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/AddChat", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/AddChat", HttpMethod.Post, out _, requestObj: requestObj);
         }
 
         public static bool GetChatColumnInfo(out List<ChatColumnInfoModel> chatColumnInfos)
         {
             chatColumnInfos = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/GetChatColumnInfo", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/GetChatColumnInfo", HttpMethod.Get, out JObject responseObj))
             {
                 chatColumnInfos = JsonConvert.DeserializeObject<List<ChatColumnInfoModel>>(responseObj["Data"].ToString());
                 return true;
@@ -34,7 +35,7 @@ namespace DimensionClient.Service.Chat
         public static bool GetChattingRecords(string chatID, out List<ChatMessagesModel> chatMessages)
         {
             chatMessages = null;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/GetChattingRecords?chatID={chatID}", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/GetChattingRecords?chatID={chatID}", HttpMethod.Get, out JObject responseObj))
             {
                 chatMessages = JsonConvert.DeserializeObject<List<ChatMessagesModel>>(responseObj["Data"].ToString());
                 return true;
@@ -53,7 +54,7 @@ namespace DimensionClient.Service.Chat
                 { "MessageType", messageType.ToString() },
                 { "MessageContent", messageContent }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/SendMessage", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/SendMessage", HttpMethod.Post, out _, requestObj: requestObj);
         }
 
         public static bool ReadMessage(string chatID, int messageID)
@@ -63,7 +64,7 @@ namespace DimensionClient.Service.Chat
                 { "ChatID", chatID },
                 { "MessageID", messageID }
             };
-            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/ReadMessage", "POST", out _, requestObj: requestObj);
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Chat/ReadMessage", HttpMethod.Post, out _, requestObj: requestObj);
         }
     }
 }

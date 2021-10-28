@@ -422,19 +422,12 @@ namespace DimensionClient.Common
         /// <param name="responseObj">响应数据</param>
         /// <param name="requestObj">请求数据</param>
         /// <returns></returns>
-        public static bool ServerRequest(string url, string mode, out JObject responseObj, JObject requestObj = null)
+        public static bool ServerRequest(string url, HttpMethod mode, out JObject responseObj, JObject requestObj = null)
         {
-            string returnStr = string.Empty;
             responseObj = null;
             try
             {
-                switch (mode)
-                {
-                    case "GET": returnStr = HttpHelper.SendGet(url, true); break;
-                    case "POST": returnStr = HttpHelper.SendPost(url, requestObj, true); break;
-                    default:
-                        break;
-                }
+                string returnStr = mode == HttpMethod.Get ? HttpHelper.SendGet(url, true) : HttpHelper.SendPost(url, requestObj, true);
                 if (string.IsNullOrEmpty(returnStr))
                 {
                     MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));

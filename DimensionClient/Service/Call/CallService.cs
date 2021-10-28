@@ -1,6 +1,7 @@
 ﻿using DimensionClient.Common;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace DimensionClient.Service.Call
 {
@@ -14,7 +15,7 @@ namespace DimensionClient.Service.Call
                 { "Member", JArray.FromObject(member) },
                 { "CallType", callType.ToString() }
             };
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/CreateCall", "POST", out JObject responseObj, requestObj: requestObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/CreateCall", HttpMethod.Post, out JObject responseObj, requestObj: requestObj))
             {
                 roomID = responseObj["Data"].ToString();
                 return true;
@@ -28,7 +29,7 @@ namespace DimensionClient.Service.Call
         public static bool GetUserSig(string roomID, out string userSig)
         {
             userSig = string.Empty;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetUserSig?RoomID={roomID}", "GET", out JObject responseObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetUserSig?RoomID={roomID}", HttpMethod.Get, out JObject responseObj))
             {
                 userSig = responseObj["Data"].ToString();
                 return true;
