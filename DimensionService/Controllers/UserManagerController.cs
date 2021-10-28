@@ -1,4 +1,4 @@
-﻿using DimensionService.Filter.UserManager;
+﻿using DimensionService.Filter.Authorized;
 using DimensionService.Models;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.RequestModels;
@@ -13,7 +13,7 @@ namespace DimensionService.Controllers
     [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
-    [UserManagerActionFilter]
+    [AuthorizedActionFilter]
     public class UserManagerController : ControllerBase
     {
         private readonly IUserManagerService _userManager;

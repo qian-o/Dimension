@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DimensionService.Migrations
 {
     [DbContext(typeof(DimensionContext))]
-    [Migration("20210822033731_InitialCreate")]
+    [Migration("20211028054701_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,8 +18,35 @@ namespace DimensionService.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DimensionService.Models.DimensionModels.CallRoomModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HouseOwnerID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoomID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Roommate")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HouseOwnerID");
+
+                    b.ToTable("CallRoom");
+                });
 
             modelBuilder.Entity("DimensionService.Models.DimensionModels.ChatColumnModel", b =>
                 {
@@ -81,6 +108,7 @@ namespace DimensionService.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRead")
+                        .IsConcurrencyToken()
                         .HasColumnType("bit");
 
                     b.Property<int>("IsVisible")
@@ -88,6 +116,7 @@ namespace DimensionService.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsWithdraw")
+                        .IsConcurrencyToken()
                         .HasColumnType("bit");
 
                     b.Property<string>("MessageContent")

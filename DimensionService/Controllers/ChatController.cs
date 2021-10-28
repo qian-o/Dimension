@@ -1,4 +1,5 @@
-﻿using DimensionService.Models;
+﻿using DimensionService.Filter.Authorized;
+using DimensionService.Models;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
@@ -12,6 +13,7 @@ namespace DimensionService.Controllers
     [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizedActionFilter]
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;

@@ -9,16 +9,16 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 
-namespace DimensionService.Filter.Attachment
+namespace DimensionService.Filter.Authorized
 {
-    public class AttachmentActionFilter : ActionFilterAttribute
+    public class AuthorizedActionFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!Debugger.IsAttached)
             {
                 string action = context.ActionDescriptor.RouteValues["action"];
-                if (action is not "GetAttachments" and not "GetHeadPortraits")
+                if (action is not "UserLogin" and not "GetVerificationCode" and not "PhoneNumberLogin" and not "GetAttachments" and not "GetHeadPortraits")
                 {
                     LoginInfoDAO loginInfo = new();
                     WebResultModel webResult = new()

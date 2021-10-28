@@ -11,6 +11,7 @@ namespace DimensionService.Context
         public DbSet<ChatLinkModel> ChatLink { get; set; }
         public DbSet<ChatColumnModel> ChatColumn { get; set; }
         public DbSet<ChatMessagesModel> ChatMessages { get; set; }
+        public DbSet<CallRoomModel> CallRoom { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

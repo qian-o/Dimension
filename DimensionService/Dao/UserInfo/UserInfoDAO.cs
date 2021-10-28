@@ -1,5 +1,6 @@
 ﻿using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
+using DimensionService.Models.DimensionModels.CallRoomModels;
 using DimensionService.Models.DimensionModels.FriendInfoModels;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -74,6 +75,13 @@ namespace DimensionService.Dao.UserInfo
                 UserID = userInfo.UserID,
                 Friends = JArray.FromObject(new List<FriendModel>()).ToString(),
                 NewFriends = JArray.FromObject(new List<NewFriendModel>()).ToString()
+            });
+            context.CallRoom.Add(new CallRoomModel
+            {
+                HouseOwnerID = userInfo.UserID,
+                RoomID = $"{userInfo.UserID}_Room",
+                Roommate = JArray.FromObject(new List<RoommateModel>()).ToString(),
+                Enabled = false
             });
             return context.SaveChanges() > 0;
         }

@@ -1,5 +1,5 @@
 ﻿using DimensionService.Common;
-using DimensionService.Filter.Attachment;
+using DimensionService.Filter.Authorized;
 using DimensionService.Models;
 using DimensionService.Service.Attachment;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +11,7 @@ namespace DimensionService.Controllers
     [ApiVersionNeutral]
     [Route("api/[controller]")]
     [ApiController]
-    [AttachmentActionFilter]
+    [AuthorizedActionFilter]
     public class AttachmentController : ControllerBase
     {
         private readonly IAttachmentService _attachment;

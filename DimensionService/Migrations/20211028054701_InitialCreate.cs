@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DimensionService.Migrations
 {
@@ -7,6 +7,22 @@ namespace DimensionService.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CallRoom",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HouseOwnerID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RoomID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Roommate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CallRoom", x => x.ID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ChatColumn",
                 columns: table => new
@@ -119,6 +135,11 @@ namespace DimensionService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CallRoom_HouseOwnerID",
+                table: "CallRoom",
+                column: "HouseOwnerID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChatColumn_UserID",
                 table: "ChatColumn",
                 column: "UserID");
@@ -141,6 +162,9 @@ namespace DimensionService.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CallRoom");
+
             migrationBuilder.DropTable(
                 name: "ChatColumn");
 
