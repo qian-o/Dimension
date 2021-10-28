@@ -35,7 +35,7 @@
             <DockPanel Margin="20">
                 <UniformGrid Rows="1" Columns="2" DockPanel.Dock="Bottom">
                     <Button x:Name="btnSendMessage" Style="{StaticResource ButtonElement}" Margin="10,0,10,0" Content="{DynamicResource SendMessage}" Click="BtnSendMessage_Click"/>
-                    <Button Style="{StaticResource ButtonSuccess}" Margin="10,0,10,0" Content="{DynamicResource VoiceCommunication}"/>
+                    <Button x:Name="btnVoiceCall" Style="{StaticResource ButtonSuccess}" Margin="10,0,10,0" Content="{DynamicResource VoiceCommunication}" Click="BtnVoiceCall_Click"/>
                 </UniformGrid>
                 <DockPanel Margin="5,0,5,0" DockPanel.Dock="Bottom">
                     <DockPanel Margin="0,5,0,10" DockPanel.Dock="Top">

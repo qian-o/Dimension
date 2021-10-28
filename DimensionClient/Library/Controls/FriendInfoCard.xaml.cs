@@ -1,7 +1,9 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
+using DimensionClient.Service.Call;
 using DimensionClient.Service.Chat;
 using DimensionClient.Service.UserManager;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,6 +52,11 @@ namespace DimensionClient.Library.Controls
         private void BtnSendMessage_Click(object sender, RoutedEventArgs e)
         {
             ThreadPool.QueueUserWorkItem(SendMessage);
+        }
+
+        private void BtnVoiceCall_Click(object sender, RoutedEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(VoiceCall);
         }
 
         private void TxtRemark_LostFocus(object sender, RoutedEventArgs e)
@@ -206,6 +213,15 @@ namespace DimensionClient.Library.Controls
                 ClassHelper.ChatFriendID = friendData.UserID;
                 ClassHelper.SwitchRoute(ClassHelper.PageType.MessageCenterPage);
             };
+        }
+        private void VoiceCall(object data)
+        {
+            List<string> member = new();
+            member.Add("test1");
+            if (CallService.CreateCall(member, ClassHelper.CallType.Video, out RoomPermissionInfoModel roomPermissionInfo))
+            {
+                ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, roomPermissionInfo.UserSig);
+            }
         }
         #endregion
     }

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DimensionService.Migrations
 {
@@ -8,6 +8,24 @@ namespace DimensionService.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CallRecord",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RoomID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Effective = table.Column<bool>(type: "bit", nullable: false),
+                    UseDevice = table.Column<int>(type: "int", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CallRecord", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CallRoom",
                 columns: table => new
                 {
@@ -15,6 +33,7 @@ namespace DimensionService.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HouseOwnerID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoomID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CallType = table.Column<int>(type: "int", nullable: false),
                     Roommate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -135,6 +154,11 @@ namespace DimensionService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CallRecord_UserID",
+                table: "CallRecord",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CallRoom_HouseOwnerID",
                 table: "CallRoom",
                 column: "HouseOwnerID");
@@ -162,6 +186,9 @@ namespace DimensionService.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CallRecord");
+
             migrationBuilder.DropTable(
                 name: "CallRoom");
 

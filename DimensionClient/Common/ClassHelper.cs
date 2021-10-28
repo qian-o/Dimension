@@ -32,7 +32,7 @@ namespace DimensionClient.Common
         // 服务器版本
         public const string serviceVersion = "1.0";
         // 服务器地址 ( http://47.96.133.119, http://localhost:5000 )
-        public const string servicePath = "http://47.96.133.119";
+        public const string servicePath = "http://localhost:5000";
         // 客户端标识
         public static readonly UseDevice device = UseDevice.Client;
         // 程序启动目录
@@ -54,6 +54,8 @@ namespace DimensionClient.Common
         public const int registrySettings = -2;
         // 热键消息
         public const int wmHotKey = 0x312;
+        // 通话房间AppID
+        public const uint callAppID = 1400587228;
         #endregion
 
         #region 变量
@@ -184,6 +186,12 @@ namespace DimensionClient.Common
             ScreenCapture,
             Paste,
             MessageFocus
+        }
+        // 通话类别
+        public enum CallType
+        {
+            Voice,
+            Video
         }
         #endregion
 
