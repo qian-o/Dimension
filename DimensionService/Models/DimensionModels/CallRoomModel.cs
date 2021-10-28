@@ -1,6 +1,5 @@
 ﻿using DimensionService.Common;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.DimensionModels
 {
@@ -11,12 +10,11 @@ namespace DimensionService.Models.DimensionModels
         public int ID { get; set; }
         // 房主
         public string HouseOwnerID { get; set; }
+        // 房主设备类型
+        public ClassHelper.UseDevice HouseOwnerDevice { get; set; }
         // 房间ID
         public string RoomID { get; set; }
-        // 通话类型
-        public ClassHelper.CallType CallType { get; set; }
         // 室友
-        [ConcurrencyCheck]
         public string Roommate { get; set; }
         // 房间是否可用
         public bool Enabled { get; set; }

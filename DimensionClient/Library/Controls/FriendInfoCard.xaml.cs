@@ -216,11 +216,18 @@ namespace DimensionClient.Library.Controls
         }
         private void VoiceCall(object data)
         {
-            List<string> member = new();
-            member.Add("test1");
-            if (CallService.CreateCall(member, ClassHelper.CallType.Video, out RoomPermissionInfoModel roomPermissionInfo))
+            List<string> member = new()
             {
-                ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, roomPermissionInfo.UserSig);
+                ClassHelper.UserID,
+                friendData.UserID
+            };
+            if (CallService.CreateCall(member, ClassHelper.CallType.Video, out string roomID))
+            {
+                ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, roomID);
+                if (CallService.GetUserSig(roomID, out string userSig))
+                {
+                    ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, userSig);
+                }
             }
         }
         #endregion

@@ -1,6 +1,4 @@
 ﻿using DimensionClient.Common;
-using DimensionClient.Models.ResultModels;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -8,9 +6,9 @@ namespace DimensionClient.Service.Call
 {
     public static class CallService
     {
-        public static bool CreateCall(List<string> member, ClassHelper.CallType callType, out RoomPermissionInfoModel roomPermission)
+        public static bool CreateCall(List<string> member, ClassHelper.CallType callType, out string roomID)
         {
-            roomPermission = null;
+            roomID = string.Empty;
             JObject requestObj = new()
             {
                 { "Member", JArray.FromObject(member) },
@@ -18,7 +16,7 @@ namespace DimensionClient.Service.Call
             };
             if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/CreateCall", "POST", out JObject responseObj, requestObj: requestObj))
             {
-                roomPermission = JsonConvert.DeserializeObject<RoomPermissionInfoModel>(responseObj["Data"].ToString());
+                roomID = responseObj["Data"].ToString();
                 return true;
             }
             else
@@ -30,11 +28,7 @@ namespace DimensionClient.Service.Call
         public static bool GetUserSig(string roomID, out string userSig)
         {
             userSig = string.Empty;
-            JObject requestObj = new()
-            {
-                { "RoomID", roomID }
-            };
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetUserSig", "POST", out JObject responseObj, requestObj: requestObj))
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetUserSig?RoomID={roomID}", "GET", out JObject responseObj))
             {
                 userSig = responseObj["Data"].ToString();
                 return true;

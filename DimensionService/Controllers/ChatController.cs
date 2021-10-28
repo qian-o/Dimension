@@ -66,6 +66,7 @@ namespace DimensionService.Controllers
         /// <summary>
         /// 获取聊天记录
         /// </summary>
+        /// <param name="chatID">聊天ID</param>
         /// <returns></returns>
         [Route("GetChattingRecords")]
         [HttpGet]

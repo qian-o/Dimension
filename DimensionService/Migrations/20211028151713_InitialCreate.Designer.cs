@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DimensionService.Migrations
 {
     [DbContext(typeof(DimensionContext))]
-    [Migration("20211028104846_InitialCreate")]
+    [Migration("20211028151713_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,38 +21,6 @@ namespace DimensionService.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DimensionService.Models.DimensionModels.CallRecordModel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Effective")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RoomID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UseDevice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("CallRecord");
-                });
-
             modelBuilder.Entity("DimensionService.Models.DimensionModels.CallRoomModel", b =>
                 {
                     b.Property<int>("ID")
@@ -60,11 +28,11 @@ namespace DimensionService.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CallType")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
+
+                    b.Property<int>("HouseOwnerDevice")
+                        .HasColumnType("int");
 
                     b.Property<string>("HouseOwnerID")
                         .HasColumnType("nvarchar(450)");
@@ -73,7 +41,6 @@ namespace DimensionService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Roommate")
-                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");

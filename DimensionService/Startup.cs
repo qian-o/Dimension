@@ -1,4 +1,3 @@
-using DimensionService.Dao.CallRecord;
 using DimensionService.Dao.CallRoom;
 using DimensionService.Dao.ChatColumn;
 using DimensionService.Dao.ChatLink;
@@ -116,7 +115,6 @@ namespace DimensionService
             services.AddScoped<IChatColumnDAO, ChatColumnDAO>();
             services.AddScoped<IChatMessagesDAO, ChatMessagesDAO>();
             services.AddScoped<ICallRoomDAO, CallRoomDAO>();
-            services.AddScoped<ICallRecordDAO, CallRecordDAO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

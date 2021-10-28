@@ -2,7 +2,6 @@
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +10,10 @@ namespace DimensionService.Dao.CallRoom
 {
     public class CallRoomDAO : ICallRoomDAO
     {
-        public bool GetRoomStatus(string houseOwnerID)
+        public CallRoomModel GetCallRoomForHouseOwner(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice)
         {
             using DimensionContext context = new();
-            return context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID).Enabled;
-        }
-
-        public CallRoomModel GetCallRoomForHouseOwnerID(string houseOwnerID)
-        {
-            using DimensionContext context = new();
-            return context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID);
+            return context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice);
         }
 
         public CallRoomModel GetCallRoomForRoomID(string roomID)
@@ -29,36 +22,21 @@ namespace DimensionService.Dao.CallRoom
             return context.CallRoom.FirstOrDefault(item => item.RoomID == roomID);
         }
 
-        public bool UpdatedCallRoom(string houseOwnerID, ClassHelper.CallType callType, List<string> member, bool enabled)
+        public bool UpdatedCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType callType, List<string> member, bool enabled)
         {
-            bool saved = false;
-            while (!saved)
+            using DimensionContext context = new();
+            if (context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice) is CallRoomModel callRoom)
             {
-                try
+                List<RoommateModel> roommates = new();
+                roommates.AddRange(member.Select(item => new RoommateModel
                 {
-                    using DimensionContext context = new();
-                    if (context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID) is CallRoomModel callRoom)
-                    {
-                        callRoom.CallType = callType;
-                        List<RoommateModel> roommates = new();
-                        roommates.AddRange(member.Select(item => new RoommateModel
-                        {
-                            UserID = item,
-                            UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType),
-                            EnterRoom = false
-                        }));
-                        callRoom.Roommate = JArray.FromObject(roommates).ToString();
-                        callRoom.Enabled = enabled;
-                    }
-                    context.SaveChanges();
-                    saved = true;
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-
-                }
+                    UserID = item,
+                    UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType, createRoom: item == callRoom.HouseOwnerID)
+                }));
+                callRoom.Roommate = JArray.FromObject(roommates).ToString();
+                callRoom.Enabled = enabled;
             }
-            return saved;
+            return context.SaveChanges() > 0;
         }
     }
 }
