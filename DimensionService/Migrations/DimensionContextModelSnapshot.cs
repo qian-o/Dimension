@@ -27,6 +27,7 @@ namespace DimensionService.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Enabled")
+                        .IsConcurrencyToken()
                         .HasColumnType("bit");
 
                     b.Property<int>("HouseOwnerDevice")
@@ -39,11 +40,12 @@ namespace DimensionService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Roommate")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("HouseOwnerID");
+                    b.HasIndex("HouseOwnerID", "HouseOwnerDevice");
 
                     b.ToTable("CallRoom");
                 });

@@ -136,9 +136,9 @@ namespace DimensionService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CallRoom_HouseOwnerID",
+                name: "IX_CallRoom_HouseOwnerID_HouseOwnerDevice",
                 table: "CallRoom",
-                column: "HouseOwnerID");
+                columns: new[] { "HouseOwnerID", "HouseOwnerDevice" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatColumn_UserID",

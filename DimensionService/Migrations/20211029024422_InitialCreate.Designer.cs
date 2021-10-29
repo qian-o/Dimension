@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DimensionService.Migrations
 {
     [DbContext(typeof(DimensionContext))]
-    [Migration("20211028151713_InitialCreate")]
+    [Migration("20211029024422_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,7 @@ namespace DimensionService.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Enabled")
+                        .IsConcurrencyToken()
                         .HasColumnType("bit");
 
                     b.Property<int>("HouseOwnerDevice")
@@ -41,11 +42,12 @@ namespace DimensionService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Roommate")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("HouseOwnerID");
+                    b.HasIndex("HouseOwnerID", "HouseOwnerDevice");
 
                     b.ToTable("CallRoom");
                 });
