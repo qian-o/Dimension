@@ -102,7 +102,11 @@ namespace DimensionService.Common
             // string friendID
             ChatColumnChanged,
             // string chatID
-            NewMessage
+            NewMessage,
+            // string roomID
+            CallInvite,
+            // bool isAcceptCall
+            AcceptCall
         }
         // 新朋友类别
         public enum NewFriendType

@@ -2,6 +2,8 @@
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,21 +24,92 @@ namespace DimensionService.Dao.CallRoom
             return context.CallRoom.FirstOrDefault(item => item.RoomID == roomID);
         }
 
-        public bool UpdatedCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType callType, List<string> member, bool enabled)
+        public bool UpdateCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType? callType, List<string> member, bool enabled)
         {
-            using DimensionContext context = new();
-            if (context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice) is CallRoomModel callRoom)
+            bool saved = false;
+            while (!saved)
             {
-                List<RoommateModel> roommates = new();
-                roommates.AddRange(member.Select(item => new RoommateModel
+                try
                 {
-                    UserID = item,
-                    UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType, createRoom: item == callRoom.HouseOwnerID)
-                }));
-                callRoom.Roommate = JArray.FromObject(roommates).ToString();
-                callRoom.Enabled = enabled;
+                    using DimensionContext context = new();
+                    if (context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice) is CallRoomModel callRoom)
+                    {
+                        if (enabled)
+                        {
+                            List<RoommateModel> roommates = new();
+                            roommates.AddRange(member.Select(item => new RoommateModel
+                            {
+                                UserID = item,
+                                UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType.Value, createRoom: item == callRoom.HouseOwnerID)
+                            }));
+                            callRoom.Roommate = JArray.FromObject(roommates).ToString();
+                            callRoom.Enabled = true;
+                        }
+                        else
+                        {
+                            callRoom.Roommate = JArray.FromObject(new List<RoommateModel>()).ToString();
+                            callRoom.Enabled = false;
+                        }
+                    }
+                    context.SaveChanges();
+                    saved = true;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
             }
-            return context.SaveChanges() > 0;
+            return saved;
+        }
+
+        public bool UpdateRoommateStatus(string userID, string roomID, bool state, out string message)
+        {
+            bool saved = false;
+            message = string.Empty;
+            while (!saved)
+            {
+                try
+                {
+                    using DimensionContext context = new();
+                    if (context.CallRoom.FirstOrDefault(item => item.RoomID == roomID) is CallRoomModel callRoom)
+                    {
+                        if (callRoom.Enabled)
+                        {
+                            List<RoommateModel> roommates = JsonConvert.DeserializeObject<List<RoommateModel>>(callRoom.Roommate);
+                            if (roommates.FirstOrDefault(item => item.UserID == userID) is RoommateModel roommate)
+                            {
+                                if (roommate.IsEnter == null)
+                                {
+                                    roommate.IsEnter = state;
+                                }
+                                else
+                                {
+                                    message = "其他终端已处理。";
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                message = "您不属于当前房间。";
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            message = "房间已解散。";
+                            return false;
+                        }
+                    }
+                    context.SaveChanges();
+                    saved = true;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    throw;
+                }
+            }
+            return saved;
         }
     }
 }

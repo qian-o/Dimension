@@ -10,6 +10,8 @@ namespace DimensionService.Dao.CallRoom
 
         CallRoomModel GetCallRoomForRoomID(string roomID);
 
-        bool UpdatedCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType callType, List<string> member, bool enabled);
+        bool UpdateCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType? callType, List<string> member, bool enabled);
+
+        bool UpdateRoommateStatus(string userID, string roomID, bool state, out string message);
     }
 }

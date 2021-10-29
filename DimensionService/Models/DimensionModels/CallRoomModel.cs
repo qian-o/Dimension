@@ -1,9 +1,10 @@
 ﻿using DimensionService.Common;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.DimensionModels
 {
-    [Index(nameof(HouseOwnerID))]
+    [Index(nameof(HouseOwnerID), nameof(HouseOwnerDevice))]
     public class CallRoomModel
     {
         // 主键
@@ -15,8 +16,10 @@ namespace DimensionService.Models.DimensionModels
         // 房间ID
         public string RoomID { get; set; }
         // 室友
+        [ConcurrencyCheck]
         public string Roommate { get; set; }
         // 房间是否可用
+        [ConcurrencyCheck]
         public bool Enabled { get; set; }
     }
 }

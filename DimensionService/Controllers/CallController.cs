@@ -63,5 +63,66 @@ namespace DimensionService.Controllers
             };
             return webResult;
         }
+
+        /// <summary>
+        /// 通知室友进行通话
+        /// </summary>
+        /// <returns></returns>
+        [Route("NotifyRoommate")]
+        [HttpPost]
+        public WebResultModel NotifyRoommate()
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+            Request.Headers.TryGetValue("Device", out StringValues useDevice);
+
+            WebResultModel webResult = new()
+            {
+                State = _callService.NotifyRoommate(userID, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice), out string message),
+                Data = null,
+                Message = message
+            };
+            return webResult;
+        }
+
+        /// <summary>
+        /// 应答通话
+        /// </summary>
+        /// <param name="data">请求数据</param>
+        /// <returns></returns>
+        [Route("ReplyCall")]
+        [HttpPost]
+        public WebResultModel ReplyCall(ReplyCallModel data)
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+            data.UserID = userID;
+
+            WebResultModel webResult = new()
+            {
+                State = _callService.ReplyCall(data, out string message),
+                Data = null,
+                Message = message
+            };
+            return webResult;
+        }
+
+        /// <summary>
+        /// 解散房间
+        /// </summary>
+        /// <returns></returns>
+        [Route("DissolutionRoom")]
+        [HttpPost]
+        public WebResultModel DissolutionRoom()
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+            Request.Headers.TryGetValue("Device", out StringValues useDevice);
+
+            WebResultModel webResult = new()
+            {
+                State = _callService.DissolutionRoom(userID, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice), out string message),
+                Data = null,
+                Message = message
+            };
+            return webResult;
+        }
     }
 }

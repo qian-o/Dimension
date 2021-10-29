@@ -1,8 +1,11 @@
 ﻿using DimensionService.Common;
 using DimensionService.Dao.CallRoom;
+using DimensionService.Hubs;
+using DimensionService.Models;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
 using DimensionService.Models.RequestModels;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,10 +15,12 @@ namespace DimensionService.Service.Call
 {
     public class CallService : ICallService
     {
+        private readonly IHubContext<InformHub> _hub;
         private readonly ICallRoomDAO _callRoomDAO;
 
-        public CallService(ICallRoomDAO callRoomDAO)
+        public CallService(IHubContext<InformHub> hub, ICallRoomDAO callRoomDAO)
         {
+            _hub = hub;
             _callRoomDAO = callRoomDAO;
         }
 
@@ -31,7 +36,7 @@ namespace DimensionService.Service.Call
                 {
                     ClassHelper.DissolutionRoom(ClassHelper.callAppID, callRoom.RoomID, out string _);
                 }
-                _callRoomDAO.UpdatedCallRoom(data.UserID, data.UseDevice, data.CallType, data.Member, true);
+                _callRoomDAO.UpdateCallRoom(data.UserID, data.UseDevice, data.CallType, data.Member, true);
                 roomID = callRoom.RoomID;
                 state = true;
                 return state;
@@ -67,6 +72,91 @@ namespace DimensionService.Service.Call
                 {
                     message = "房间未启用。";
                 }
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool NotifyRoommate(string userID, ClassHelper.UseDevice useDevice, out string message)
+        {
+            try
+            {
+                bool state = false;
+                message = string.Empty;
+                CallRoomModel callRoom = _callRoomDAO.GetCallRoomForHouseOwner(userID, useDevice);
+                if (callRoom.Enabled)
+                {
+                    List<RoommateModel> roommates = JsonConvert.DeserializeObject<List<RoommateModel>>(callRoom.Roommate);
+                    foreach (RoommateModel roommate in roommates)
+                    {
+                        if (roommate.UserID != userID)
+                        {
+                            foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == roommate.UserID))
+                            {
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.CallInvite.ToString(),
+                                                                                     arg1: callRoom.RoomID);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    message = "房间未启用。";
+                }
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool ReplyCall(ReplyCallModel data, out string message)
+        {
+            try
+            {
+                bool state = false;
+                message = string.Empty;
+                CallRoomModel callRoom = _callRoomDAO.GetCallRoomForRoomID(data.RoomID);
+                if (callRoom.Enabled)
+                {
+                    if (_callRoomDAO.UpdateRoommateStatus(data.UserID, data.RoomID, data.IsAcceptCall, out message))
+                    {
+                        if (data.UserID != callRoom.HouseOwnerID)
+                        {
+                            foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == callRoom.HouseOwnerID && item.Device == callRoom.HouseOwnerDevice.ToString()))
+                            {
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.AcceptCall.ToString(),
+                                                                                     arg1: data.IsAcceptCall);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    message = "房间未启用。";
+                }
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool DissolutionRoom(string userID, ClassHelper.UseDevice useDevice, out string message)
+        {
+            try
+            {
+                bool state = false;
+                message = string.Empty;
+                CallRoomModel callRoom = _callRoomDAO.GetCallRoomForHouseOwner(userID, useDevice);
+                ClassHelper.DissolutionRoom(ClassHelper.callAppID, callRoom.RoomID, out string _);
+                _callRoomDAO.UpdateCallRoom(userID, useDevice, null, null, false);
+                state = true;
                 return state;
             }
             catch (Exception)
