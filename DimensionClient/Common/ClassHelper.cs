@@ -77,6 +77,8 @@ namespace DimensionClient.Common
         public static string HotKeySetting { get; private set; }
         // 注册热键时使用唯一标识
         public static int HotKey { get; private set; }
+        // 通话回调
+        public static CallViewManager CallViewManager { get; set; }
         #endregion
 
         #region 枚举
@@ -118,7 +120,13 @@ namespace DimensionClient.Common
             // string friendID
             ChatColumnChanged,
             // string chatID
-            NewMessage
+            NewMessage,
+            // string roomID
+            CallInvite,
+            // string roomID
+            OtherDeviceProcessed,
+            // string userID, bool isAcceptCall
+            AcceptCall
         }
         // Page类型
         public enum PageType

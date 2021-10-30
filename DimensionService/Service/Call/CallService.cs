@@ -127,10 +127,16 @@ namespace DimensionService.Service.Call
                     {
                         if (data.UserID != callRoom.HouseOwnerID)
                         {
+                            foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID && item.Device != data.UseDevice.ToString()))
+                            {
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.OtherDeviceProcessed.ToString(),
+                                                                                     arg1: data.RoomID);
+                            }
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == callRoom.HouseOwnerID && item.Device == callRoom.HouseOwnerDevice.ToString()))
                             {
                                 _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.AcceptCall.ToString(),
-                                                                                     arg1: data.IsAcceptCall);
+                                                                                     arg1: data.UserID,
+                                                                                     arg2: data.IsAcceptCall);
                             }
                         }
                     }

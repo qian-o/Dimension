@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Library.CustomControls;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Call;
 using DimensionClient.Service.Chat;
@@ -218,15 +219,23 @@ namespace DimensionClient.Library.Controls
         {
             List<string> member = new()
             {
-                ClassHelper.UserID,
-                friendData.UserID
+                ClassHelper.UserID
             };
             if (CallService.CreateCall(member, ClassHelper.CallType.Video, out string roomID))
             {
-                ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, roomID);
                 if (CallService.GetUserSig(roomID, out string userSig))
                 {
-                    ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 0, userSig);
+                    ClassHelper.CallViewManager = new CallViewManager(roomID, userSig, ClassHelper.CallType.Video, member);
+                    ClassHelper.CallViewManager.Initialize();
+                    Dispatcher.Invoke(delegate
+                    {
+                        if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
+                        {
+                            Window window = new();
+                            window.Content = videoImage;
+                            window.Show();
+                        }
+                    });
                 }
             }
         }

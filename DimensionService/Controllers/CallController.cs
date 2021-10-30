@@ -95,6 +95,8 @@ namespace DimensionService.Controllers
         {
             Request.Headers.TryGetValue("UserID", out StringValues userID);
             data.UserID = userID;
+            Request.Headers.TryGetValue("Device", out StringValues useDevice);
+            data.UseDevice = (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice);
 
             WebResultModel webResult = new()
             {

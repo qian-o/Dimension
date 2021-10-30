@@ -39,5 +39,25 @@ namespace DimensionClient.Service.Call
                 return false;
             }
         }
+
+        public static bool NotifyRoommate()
+        {
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/NotifyRoommate", HttpMethod.Post, out JObject _);
+        }
+
+        public static bool ReplyCall(string roomID, bool isAcceptCall)
+        {
+            JObject requestObj = new()
+            {
+                { "RoomID", roomID },
+                { "IsAcceptCall", isAcceptCall }
+            };
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/ReplyCall", HttpMethod.Post, out JObject _, requestObj: requestObj);
+        }
+
+        public static bool DissolutionRoom()
+        {
+            return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/DissolutionRoom", HttpMethod.Post, out JObject _);
+        }
     }
 }

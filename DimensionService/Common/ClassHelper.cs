@@ -105,7 +105,9 @@ namespace DimensionService.Common
             NewMessage,
             // string roomID
             CallInvite,
-            // bool isAcceptCall
+            // string roomID
+            OtherDeviceProcessed,
+            // string userID, bool isAcceptCall
             AcceptCall
         }
         // 新朋友类别

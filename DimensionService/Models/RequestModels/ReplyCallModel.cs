@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DimensionService.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels
 {
@@ -14,5 +15,8 @@ namespace DimensionService.Models.RequestModels
         [Display(Name = "是否接受通话")]
         [Required(ErrorMessage = "是否接受通话不能为空")]
         public bool IsAcceptCall { get; set; }
+
+        [Display(Name = "使用设备")]
+        public ClassHelper.UseDevice UseDevice { get; set; }
     }
 }

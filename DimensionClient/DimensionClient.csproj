@@ -105,6 +105,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="ManageLiteAV">
+		  <HintPath>Library\DynamicLibrary\TXLiteAV\ManageLiteAV.dll</HintPath>
+		</Reference>
 		<Reference Include="XamlAnimatedGif">
 			<HintPath>Library\DynamicLibrary\XamlAnimatedGif\XamlAnimatedGif.dll</HintPath>
 		</Reference>
@@ -166,5 +169,9 @@
 		<Resource Include="Library\Image\Emoji\-zombie.png" />
 		<Resource Include="Library\Image\图片.png" />
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy /Y &quot;$(ProjectDir)Library\DynamicLibrary\TXLiteAV\*.dll&quot; &quot;$(ProjectDir)$(OutDir)&quot;" />
+	</Target>
 
 </Project>
