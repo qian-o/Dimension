@@ -40,8 +40,6 @@ namespace DimensionClient.Common
 
         public void Initialize()
         {
-            CallService.ReplyCall(_roomID, true);
-
             cloud = ITRTCCloud.getTRTCShareInstance();
             TRTCParams tRTCParams = new()
             {

@@ -40,7 +40,8 @@ namespace DimensionService.Dao.CallRoom
                             roommates.AddRange(member.Select(item => new RoommateModel
                             {
                                 UserID = item,
-                                UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType.Value, createRoom: item == callRoom.HouseOwnerID)
+                                UserSig = ClassHelper.GetCallAuthorization(item, callRoom.RoomID, callType.Value, createRoom: item == callRoom.HouseOwnerID),
+                                IsEnter = item == callRoom.HouseOwnerID ? true : null
                             }));
                             callRoom.Roommate = JArray.FromObject(roommates).ToString();
                             callRoom.Enabled = true;
