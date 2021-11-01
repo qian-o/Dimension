@@ -25,6 +25,7 @@
 		<None Remove="Library\Font\element-icons.ttf" />
 		<None Remove="Library\Font\messages-icons.ttf" />
 		<None Remove="Library\Font\苹方黑体-中粗-简.ttf" />
+		<None Remove="Library\Image\dianhua.png" />
 		<None Remove="Library\Image\Emoji\-angel.png" />
 		<None Remove="Library\Image\Emoji\-angry.png" />
 		<None Remove="Library\Image\Emoji\-astonished-.png" />
@@ -75,6 +76,8 @@
 		<None Remove="Library\Image\Emoji\-vomiting.png" />
 		<None Remove="Library\Image\Emoji\-wink.png" />
 		<None Remove="Library\Image\Emoji\-zombie.png" />
+		<None Remove="Library\Image\shipin.png" />
+		<None Remove="Library\Image\yuyin.png" />
 		<None Remove="Library\Image\图片.png" />
 		<None Remove="log4net.config" />
 	</ItemGroup>
@@ -117,6 +120,7 @@
 		<Resource Include="Library\Font\element-icons.ttf" />
 		<Resource Include="Library\Font\messages-icons.ttf" />
 		<Resource Include="Library\Font\苹方黑体-中粗-简.ttf" />
+		<Resource Include="Library\Image\dianhua.png" />
 		<Resource Include="Library\Image\Emoji\-angel.png" />
 		<Resource Include="Library\Image\Emoji\-angry.png" />
 		<Resource Include="Library\Image\Emoji\-astonished-.png" />
@@ -167,6 +171,8 @@
 		<Resource Include="Library\Image\Emoji\-vomiting.png" />
 		<Resource Include="Library\Image\Emoji\-wink.png" />
 		<Resource Include="Library\Image\Emoji\-zombie.png" />
+		<Resource Include="Library\Image\shipin.png" />
+		<Resource Include="Library\Image\yuyin.png" />
 		<Resource Include="Library\Image\图片.png" />
 	</ItemGroup>
 

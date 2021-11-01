@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Storyboard x:Key="VideoCallOpacity">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.6"/>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallContent">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].Y" From="-40" To="0" Duration="0:0:0.6"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX" From="0.8" To="1" Duration="0:0:0.6"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleY" From="0.8" To="1" Duration="0:0:0.6"/>
+    </Storyboard>
+    
+    <Storyboard x:Key="VideoCallYuyin">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallShipin">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="40" To="0" Duration="0:0:0.4">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallDianhua">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="60" To="0" Duration="0:0:0.6">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallOwn">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0.2" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="0.2" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+</ResourceDictionary>

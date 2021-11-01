@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Library/Dictionary/ColorDictionary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/ConverterLibrary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/DataTemplateSelectorLibrary.xaml"/>
+                <ResourceDictionary Source="Library/Dictionary/AnimationLibrary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/ChineseLibrary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

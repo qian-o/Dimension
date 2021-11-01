@@ -237,9 +237,7 @@ namespace DimensionClient.Library.Controls
                     {
                         if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
                         {
-                            Window window = new();
-                            window.Content = videoImage;
-                            window.Show();
+                            ClassHelper.ToCall(ClassHelper.CallType.Video);
                         }
                     });
                 }

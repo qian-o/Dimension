@@ -25,6 +25,7 @@ namespace DimensionClient.Common
     public delegate void AccordingMaskEvent(bool show, bool loading);
     public delegate void RouteEvent(ClassHelper.PageType pageName);
     public delegate void DataPassing(ClassHelper.DataPassingType dataType, object data);
+    public delegate void CallEvent(ClassHelper.CallType callType);
 
     public static class ClassHelper
     {
@@ -199,7 +200,9 @@ namespace DimensionClient.Common
         public enum CallType
         {
             Voice,
-            Video
+            Video,
+            ManyVoice,
+            ManyVideo
         }
         #endregion
 
@@ -214,6 +217,8 @@ namespace DimensionClient.Common
         public static event NotificationEvent NotificationHint;
         // 类直接数据传递
         public static event DataPassing DataPassingChanged;
+        // 进行通话
+        public static event CallEvent CallChanged;
         #endregion
 
         #region 页面
@@ -420,6 +425,15 @@ namespace DimensionClient.Common
             {
                 item.DynamicInvoke(dataType, data);
             }
+        }
+
+        /// <summary>
+        /// 进行通话
+        /// </summary>
+        /// <param name="callType">通话类别</param>
+        public static void ToCall(CallType callType)
+        {
+            CallChanged?.Invoke(callType);
         }
 
         /// <summary>

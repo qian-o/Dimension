@@ -130,7 +130,9 @@ namespace DimensionService.Common
         public enum CallType
         {
             Voice,
-            Video
+            Video,
+            ManyVoice,
+            ManyVideo
         }
         #endregion
 
@@ -490,7 +492,7 @@ namespace DimensionService.Common
         public static string GetCallAuthorization(string userID, string roomID, CallType callType, out string privateMapKey, bool createRoom = false)
         {
             TLSSigAPIv2 aPIv2 = new(callAppID, callAppKey);
-            privateMapKey = aPIv2.GenPrivateMapKeyWithStringRoomID(userID, 43200, roomID, createRoom ? callType == CallType.Video ? 255 : (uint)15 : callType == CallType.Video ? 254 : (uint)14);
+            privateMapKey = aPIv2.GenPrivateMapKeyWithStringRoomID(userID, 43200, roomID, createRoom ? callType is CallType.Video or CallType.ManyVideo ? 255 : (uint)15 : callType is CallType.Voice or CallType.ManyVoice ? 254 : (uint)14);
             return aPIv2.GenUserSig(userID);
         }
     }

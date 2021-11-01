@@ -1,9 +1,11 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Library.Controls;
+using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -33,6 +35,7 @@ namespace DimensionClient.Component.Windows
             ClassHelper.RoutedChanged += ClassHelper_RoutedChanged;
             ClassHelper.AccordingMask += ClassHelper_AccordingMask;
             ClassHelper.DataPassingChanged += ClassHelper_DataPassingChanged;
+            ClassHelper.CallChanged += ClassHelper_CallChanged;
 
             #region 绑定全局属性
             grdInformation.DataContext = ClassHelper.commonView;
@@ -207,6 +210,24 @@ namespace DimensionClient.Component.Windows
             }
         }
 
+        private void ClassHelper_CallChanged(ClassHelper.CallType callType)
+        {
+            switch (callType)
+            {
+                case ClassHelper.CallType.Voice:
+                    break;
+                case ClassHelper.CallType.Video:
+                    VideoCall();
+                    break;
+                case ClassHelper.CallType.ManyVoice:
+                    break;
+                case ClassHelper.CallType.ManyVideo:
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == ClassHelper.wmHotKey)
@@ -302,6 +323,33 @@ namespace DimensionClient.Component.Windows
             Border border = (Border)sender;
             ClassHelper.SwitchRoute((ClassHelper.PageType)Enum.Parse(typeof(ClassHelper.PageType), $"{border.Name[3..]}Page"));
         }
+        private void VideoCall()
+        {
+            Dispatcher.Invoke(async delegate
+            {
+                brdVideoCall.Visibility = Visibility.Visible;
+                brdVideoCall.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallOpacity"));
+                brdVideoCallContent.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallContent"));
+                stpVideoCallControl.Visibility = Visibility.Collapsed;
+                await Task.Delay(800);
+                stpVideoCallControl.Visibility = Visibility.Visible;
+                brdVideoCallYuyin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallYuyin"));
+                brdVideoCallShipin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallShipin"));
+                brdVideoCallDianhua.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallDianhua"));
+                if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
+                {
+                    videoImage.OpacityMask = new VisualBrush(brdVideoCallOwnMask);
+                    grdVideoCallOwn.Children.Add(videoImage);
+                }
+            });
+        }
         #endregion
+
+        private void GrdVideoCallOwn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            brdVideoCallOwnMask.CornerRadius = new CornerRadius(50);
+            grdVideoCallOwn.Margin = new Thickness(20);
+            grdVideoCallOwn.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallOwn"));
+        }
     }
 }
