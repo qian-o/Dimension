@@ -1,5 +1,6 @@
 ﻿using DimensionService.Common;
 using DimensionService.Models.RequestModels;
+using DimensionService.Models.ResultModels;
 
 namespace DimensionService.Service.Call
 {
@@ -7,7 +8,7 @@ namespace DimensionService.Service.Call
     {
         bool CreateCall(CreateCallModel data, out string roomID, out string message);
 
-        bool GetUserSig(string userID, string roomID, out string userSig, out string message);
+        bool GetRoomKey(string userID, string roomID, out RoomKeyModel roomKey, out string message);
 
         bool NotifyRoommate(string userID, ClassHelper.UseDevice useDevice, out string message);
 

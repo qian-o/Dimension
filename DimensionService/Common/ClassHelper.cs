@@ -484,11 +484,14 @@ namespace DimensionService.Common
         /// <param name="userID">用户ID</param>
         /// <param name="roomID">房间ID</param>
         /// <param name="callType">通话类型</param>
+        /// <param name="privateMapKey">权限票据</param>
         /// <param name="createRoom">是否创建房间</param>
         /// <returns></returns>
-        public static string GetCallAuthorization(string userID, string roomID, CallType callType, bool createRoom = false)
+        public static string GetCallAuthorization(string userID, string roomID, CallType callType, out string privateMapKey, bool createRoom = false)
         {
-            return new TLSSigAPIv2(callAppID, callAppKey).GenPrivateMapKeyWithStringRoomID(userID, 43200, roomID, createRoom ? callType == CallType.Video ? 255 : (uint)15 : callType == CallType.Video ? 254 : (uint)14);
+            TLSSigAPIv2 aPIv2 = new(callAppID, callAppKey);
+            privateMapKey = aPIv2.GenPrivateMapKeyWithStringRoomID(userID, 43200, roomID, createRoom ? callType == CallType.Video ? 255 : (uint)15 : callType == CallType.Video ? 254 : (uint)14);
+            return aPIv2.GenUserSig(userID);
         }
     }
 }

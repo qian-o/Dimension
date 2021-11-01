@@ -1,4 +1,6 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Models.ResultModels;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -26,12 +28,12 @@ namespace DimensionClient.Service.Call
             }
         }
 
-        public static bool GetUserSig(string roomID, out string userSig)
+        public static bool GetRoomKey(string roomID, out GetRoomKeyModel roomKey)
         {
-            userSig = string.Empty;
-            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetUserSig?RoomID={roomID}", HttpMethod.Get, out JObject responseObj))
+            roomKey = null;
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetRoomKey?RoomID={roomID}", HttpMethod.Get, out JObject responseObj))
             {
-                userSig = responseObj["Data"].ToString();
+                roomKey = JsonConvert.DeserializeObject<GetRoomKeyModel>(responseObj["Data"].ToString());
                 return true;
             }
             else

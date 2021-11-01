@@ -217,15 +217,21 @@ namespace DimensionClient.Library.Controls
         }
         private void VoiceCall(object data)
         {
+            ClassHelper.ShowMask(true);
+
             List<string> member = new()
             {
                 ClassHelper.UserID
             };
             if (CallService.CreateCall(member, ClassHelper.CallType.Video, out string roomID))
             {
-                if (CallService.GetUserSig(roomID, out string userSig))
+                if (CallService.GetRoomKey(roomID, out GetRoomKeyModel roomKey))
                 {
-                    ClassHelper.CallViewManager = new CallViewManager(roomID, userSig, ClassHelper.CallType.Video, member);
+                    if (ClassHelper.CallViewManager != null)
+                    {
+                        ClassHelper.CallViewManager.UnInitialize();
+                    }
+                    ClassHelper.CallViewManager = new CallViewManager(roomID, roomKey, ClassHelper.CallType.Video, member);
                     ClassHelper.CallViewManager.Initialize();
                     Dispatcher.Invoke(delegate
                     {
@@ -238,6 +244,8 @@ namespace DimensionClient.Library.Controls
                     });
                 }
             }
+
+            ClassHelper.ShowMask(false);
         }
         #endregion
     }

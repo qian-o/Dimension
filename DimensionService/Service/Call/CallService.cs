@@ -5,6 +5,7 @@ using DimensionService.Models;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
 using DimensionService.Models.RequestModels;
+using DimensionService.Models.ResultModels;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -47,12 +48,12 @@ namespace DimensionService.Service.Call
             }
         }
 
-        public bool GetUserSig(string userID, string roomID, out string userSig, out string message)
+        public bool GetRoomKey(string userID, string roomID, out RoomKeyModel roomKey, out string message)
         {
             try
             {
                 bool state = false;
-                userSig = string.Empty;
+                roomKey = null;
                 message = string.Empty;
                 CallRoomModel callRoom = _callRoomDAO.GetCallRoomForRoomID(roomID);
                 if (callRoom.Enabled)
@@ -60,7 +61,11 @@ namespace DimensionService.Service.Call
                     List<RoommateModel> roommates = JsonConvert.DeserializeObject<List<RoommateModel>>(callRoom.Roommate);
                     if (roommates.FirstOrDefault(item => item.UserID == userID) is RoommateModel roommate)
                     {
-                        userSig = roommate.UserSig;
+                        roomKey = new RoomKeyModel()
+                        {
+                            UserSig = roommate.UserSig,
+                            PrivateMapKey = roommate.PrivateMapKey
+                        };
                         state = true;
                     }
                     else

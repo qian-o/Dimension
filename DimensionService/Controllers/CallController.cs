@@ -2,6 +2,7 @@
 using DimensionService.Filter.Authorized;
 using DimensionService.Models;
 using DimensionService.Models.RequestModels;
+using DimensionService.Models.ResultModels;
 using DimensionService.Service.Call;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -9,6 +10,7 @@ using System;
 
 namespace DimensionService.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [AuthorizedActionFilter]
@@ -45,20 +47,20 @@ namespace DimensionService.Controllers
         }
 
         /// <summary>
-        /// 获取用户UserSig
+        /// 获取房间Key
         /// </summary>
         /// <param name="roomID">房间ID</param>
         /// <returns></returns>
-        [Route("GetUserSig")]
+        [Route("GetRoomKey")]
         [HttpGet]
-        public WebResultModel GetUserSig(string roomID)
+        public WebResultModel GetRoomKey(string roomID)
         {
             Request.Headers.TryGetValue("UserID", out StringValues userID);
 
             WebResultModel webResult = new()
             {
-                State = _callService.GetUserSig(userID, roomID, out string userSig, out string message),
-                Data = userSig,
+                State = _callService.GetRoomKey(userID, roomID, out RoomKeyModel roomKey, out string message),
+                Data = roomKey,
                 Message = message
             };
             return webResult;

@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Library.CustomControls;
+using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Call;
 using ManageLiteAV;
@@ -15,17 +16,17 @@ namespace DimensionClient.Common
     public class CallViewManager : ITRTCCloudCallback, ITRTCVideoRenderCallback, ITRTCLogCallback
     {
         private readonly string _roomID;
-        private readonly string _userSig;
+        private readonly GetRoomKeyModel _roomKey;
         private readonly ClassHelper.CallType _callType;
         private readonly bool _houseOwner;
 
         private ITRTCCloud cloud;
         public Dictionary<string, CallVideoImage> Video { get; private set; } = new Dictionary<string, CallVideoImage>();
 
-        public CallViewManager(string roomID, string userSig, ClassHelper.CallType callType, List<string> member, bool houseOwner = false)
+        public CallViewManager(string roomID, GetRoomKeyModel roomKey, ClassHelper.CallType callType, List<string> member, bool houseOwner = false)
         {
             _roomID = roomID;
-            _userSig = userSig;
+            _roomKey = roomKey;
             _callType = callType;
             _houseOwner = houseOwner;
 
@@ -45,7 +46,8 @@ namespace DimensionClient.Common
             {
                 sdkAppId = ClassHelper.callAppID,
                 userId = ClassHelper.UserID,
-                userSig = _userSig,
+                userSig = _roomKey.UserSig,
+                privateMapKey = _roomKey.PrivateMapKey,
                 strRoomId = _roomID
             };
 
