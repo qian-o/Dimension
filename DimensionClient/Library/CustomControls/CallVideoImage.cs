@@ -12,7 +12,6 @@ namespace DimensionClient.Library.CustomControls
         public CallVideoImage(CallVideoImageViewModel data)
         {
             _ = SetBinding(SourceProperty, new Binding { Path = new PropertyPath("Writeable") });
-            Stretch = System.Windows.Media.Stretch.UniformToFill;
             DataContext = data;
             CallVideoData = data;
         }

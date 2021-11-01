@@ -35,7 +35,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallOwn">
+    <Storyboard x:Key="VideoCallSmallBox">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0.2" Duration="0:0:0.8">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>

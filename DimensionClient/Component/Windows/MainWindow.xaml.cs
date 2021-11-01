@@ -329,27 +329,29 @@ namespace DimensionClient.Component.Windows
             {
                 brdVideoCall.Visibility = Visibility.Visible;
                 brdVideoCall.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallOpacity"));
-                brdVideoCallContent.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallContent"));
-                stpVideoCallControl.Visibility = Visibility.Collapsed;
+                brdContent.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallContent"));
+                stpCallControl.Visibility = Visibility.Collapsed;
                 await Task.Delay(800);
-                stpVideoCallControl.Visibility = Visibility.Visible;
-                brdVideoCallYuyin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallYuyin"));
-                brdVideoCallShipin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallShipin"));
-                brdVideoCallDianhua.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallDianhua"));
+                stpCallControl.Visibility = Visibility.Visible;
+                brdCallYuyin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallYuyin"));
+                brdCallShipin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallShipin"));
+                brdCallDianhua.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallDianhua"));
                 if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
                 {
-                    videoImage.OpacityMask = new VisualBrush(brdVideoCallOwnMask);
-                    grdVideoCallOwn.Children.Add(videoImage);
+                    videoImage.OpacityMask = new VisualBrush(brdSmallBoxMask);
+                    grdSmallBox.Children.Add(videoImage);
                 }
             });
         }
         #endregion
 
-        private void GrdVideoCallOwn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void GrdSmallBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            brdVideoCallOwnMask.CornerRadius = new CornerRadius(50);
-            grdVideoCallOwn.Margin = new Thickness(20);
-            grdVideoCallOwn.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallOwn"));
+            brdSmallBox.Padding = new Thickness(20);
+            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Right;
+            grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
+            brdSmallBoxMask.CornerRadius = new CornerRadius(50);
+            grdSmallBox.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallSmallBox"));
         }
     }
 }

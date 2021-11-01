@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Common;
+using ManageLiteAV;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -41,6 +42,13 @@ namespace DimensionClient
             ClassHelper.Dispatcher = Dispatcher;
 
             base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            ITRTCCloud.destroyTRTCShareInstance();
+
+            base.OnExit(e);
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
