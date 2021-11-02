@@ -103,7 +103,7 @@
                 <Button x:Name="btnClose" Style="{StaticResource ButtonClose}" Height="48" Width="50" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
-        <Border x:Name="brdVideoCall" Grid.RowSpan="2" Background="Transparent" Visibility="Collapsed">
+        <Border x:Name="brdVideoCall" Grid.RowSpan="2" Background="#000000" Visibility="Collapsed">
             <Border.CacheMode>
                 <BitmapCache RenderAtScale="1"/>
             </Border.CacheMode>
