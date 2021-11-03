@@ -221,7 +221,8 @@ namespace DimensionClient.Library.Controls
 
             List<string> member = new()
             {
-                ClassHelper.UserID
+                ClassHelper.UserID,
+                friendData.UserID
             };
             if (CallService.CreateCall(member, ClassHelper.CallType.Video, out string roomID))
             {
@@ -231,7 +232,7 @@ namespace DimensionClient.Library.Controls
                     {
                         ClassHelper.CallViewManager.UnInitialize();
                     }
-                    ClassHelper.CallViewManager = new CallViewManager(roomID, roomKey, ClassHelper.CallType.Video, member);
+                    ClassHelper.CallViewManager = new CallViewManager(roomID, roomKey, ClassHelper.CallType.Video, member, houseOwner: true);
                     ClassHelper.CallViewManager.Initialize();
                     Dispatcher.Invoke(delegate
                     {

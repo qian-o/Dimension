@@ -103,7 +103,7 @@ namespace DimensionService.Common
             ChatColumnChanged,
             // string chatID
             NewMessage,
-            // string roomID
+            // string userID, CallType callType, string roomID
             CallInvite,
             // string roomID
             OtherDeviceProcessed,

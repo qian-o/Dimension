@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DimensionService.Migrations
 {
     [DbContext(typeof(DimensionContext))]
-    [Migration("20211029024422_InitialCreate")]
+    [Migration("20211103045910_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace DimensionService.Migrations
                     b.Property<bool>("Enabled")
                         .IsConcurrencyToken()
                         .HasColumnType("bit");
+
+                    b.Property<int?>("HouseCallType")
+                        .HasColumnType("int");
 
                     b.Property<int>("HouseOwnerDevice")
                         .HasColumnType("int");

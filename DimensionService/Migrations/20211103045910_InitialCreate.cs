@@ -16,6 +16,7 @@ namespace DimensionService.Migrations
                     HouseOwnerID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     HouseOwnerDevice = table.Column<int>(type: "int", nullable: false),
                     RoomID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HouseCallType = table.Column<int>(type: "int", nullable: true),
                     Roommate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: false)
                 },

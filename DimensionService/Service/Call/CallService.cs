@@ -102,7 +102,9 @@ namespace DimensionService.Service.Call
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == roommate.UserID))
                             {
                                 _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.CallInvite.ToString(),
-                                                                                     arg1: callRoom.RoomID);
+                                                                                     arg1: callRoom.HouseOwnerID,
+                                                                                     arg2: callRoom.HouseCallType,
+                                                                                     arg3: callRoom.RoomID);
                             }
                         }
                     }

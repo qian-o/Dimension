@@ -34,6 +34,7 @@ namespace DimensionService.Dao.CallRoom
                     using DimensionContext context = new();
                     if (context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice) is CallRoomModel callRoom)
                     {
+                        callRoom.HouseCallType = callType;
                         if (enabled)
                         {
                             List<RoommateModel> roommates = new();
@@ -45,13 +46,12 @@ namespace DimensionService.Dao.CallRoom
                                 IsEnter = item == callRoom.HouseOwnerID ? true : null
                             }));
                             callRoom.Roommate = JArray.FromObject(roommates).ToString();
-                            callRoom.Enabled = true;
                         }
                         else
                         {
                             callRoom.Roommate = JArray.FromObject(new List<RoommateModel>()).ToString();
-                            callRoom.Enabled = false;
                         }
+                        callRoom.Enabled = enabled;
                     }
                     context.SaveChanges();
                     saved = true;

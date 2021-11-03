@@ -15,7 +15,7 @@ namespace DimensionClient.Common
             try
             {
                 string result = string.Empty;
-                byte[] dataBytes = Encoding.UTF8.GetBytes(data.ToString());
+                byte[] dataBytes = Encoding.UTF8.GetBytes(data != null ? data.ToString() : string.Empty);
                 WebRequest request = WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json; charset=utf-8";

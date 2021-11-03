@@ -49,6 +49,9 @@ namespace DimensionClient.Common
                 connection.On<string>(ClassHelper.HubMessageType.RemarkInfoChanged.ToString(), Connection_RemarkInfoChanged);
                 connection.On<string>(ClassHelper.HubMessageType.ChatColumnChanged.ToString(), Connection_ChatColumnChanged);
                 connection.On<string>(ClassHelper.HubMessageType.NewMessage.ToString(), Connection_NewMessage);
+                connection.On<string, ClassHelper.CallType, string>(ClassHelper.HubMessageType.CallInvite.ToString(), Connection_CallInvite);
+                connection.On<string>(ClassHelper.HubMessageType.OtherDeviceProcessed.ToString(), Connection_OtherDeviceProcessed);
+                connection.On<string, bool>(ClassHelper.HubMessageType.AcceptCall.ToString(), Connection_AcceptCall);
                 await connection.StartAsync();
             }
             catch (Exception)
@@ -101,6 +104,21 @@ namespace DimensionClient.Common
         private static void Connection_NewMessage(string chatID)
         {
             NewMessageSignalR?.Invoke(chatID);
+        }
+
+        private static void Connection_CallInvite(string userID, ClassHelper.CallType callType, string roomID)
+        {
+
+        }
+
+        private static void Connection_OtherDeviceProcessed(string roomID)
+        {
+
+        }
+
+        private static void Connection_AcceptCall(string userID, bool isAcceptCall)
+        {
+
         }
     }
 }

@@ -30,6 +30,9 @@ namespace DimensionService.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("bit");
 
+                    b.Property<int?>("HouseCallType")
+                        .HasColumnType("int");
+
                     b.Property<int>("HouseOwnerDevice")
                         .HasColumnType("int");
 

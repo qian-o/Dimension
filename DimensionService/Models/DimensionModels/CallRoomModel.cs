@@ -15,6 +15,8 @@ namespace DimensionService.Models.DimensionModels
         public ClassHelper.UseDevice HouseOwnerDevice { get; set; }
         // 房间ID
         public string RoomID { get; set; }
+        // 房间通话类型
+        public ClassHelper.CallType? HouseCallType { get; set; }
         // 室友
         [ConcurrencyCheck]
         public string Roommate { get; set; }
