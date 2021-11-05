@@ -1,0 +1,171 @@
+﻿<Window x:Class="DimensionClient.Component.Windows.InviteCall"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="InviteCallMain" Height="360" Width="290" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Background="Transparent" Loaded="InviteCallMain_Loaded">
+    <Window.Effect>
+        <DropShadowEffect Color="#888888" ShadowDepth="0" Opacity="0.4" />
+    </Window.Effect>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1" ResizeBorderThickness="0" CornerRadius="0" CaptionHeight="370"/>
+    </WindowChrome.WindowChrome>
+    <Grid x:Name="grdMain" Height="350" Width="280">
+        <Grid.RenderTransform>
+            <TranslateTransform/>
+        </Grid.RenderTransform>
+        <Grid Background="#FFFFFF">
+            <Grid.Clip>
+                <RectangleGeometry RadiusX="10" RadiusY="10">
+                    <RectangleGeometry.Rect>
+                        <Rect Height="350" Width="280" />
+                    </RectangleGeometry.Rect>
+                </RectangleGeometry>
+            </Grid.Clip>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,15,0,0">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock FontSize="18" Text="王先生"/>
+                        <TextBlock Margin="0,4,0,0" FontSize="14" Text="Incoming Call"/>
+                    </StackPanel>
+                    <Border x:Name="brdInfo" Background="#FFFFFF">
+                        <Border.RenderTransform>
+                            <ScaleTransform/>
+                        </Border.RenderTransform>
+                        <Border.RenderTransformOrigin>
+                            <Point X="1"/>
+                        </Border.RenderTransformOrigin>
+                    </Border>
+                </Grid>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
+                    <Image x:Name="imgHeadImage" Height="120" Width="120">
+                        <Image.RenderTransform>
+                            <ScaleTransform/>
+                        </Image.RenderTransform>
+                        <Image.Clip>
+                            <EllipseGeometry Center="60,60" RadiusX="60" RadiusY="60"/>
+                        </Image.Clip>
+                        <Image.RenderTransformOrigin>
+                            <Point X="0.5" Y="0.5"/>
+                        </Image.RenderTransformOrigin>
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever" Duration="0:0:2.1">
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0.85" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="0.85" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0.85" To="1" BeginTime="0:0:1" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0.85" To="1" BeginTime="0:0:1" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Border Height="124" Width="124" BorderThickness="2" BorderBrush="#FF6D00" CornerRadius="62">
+                        <Border.RenderTransform>
+                            <ScaleTransform />
+                        </Border.RenderTransform>
+                        <Border.RenderTransformOrigin>
+                            <Point X="0.5" Y="0.5"/>
+                        </Border.RenderTransformOrigin>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever" Duration="0:0:2.1">
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.15" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="1.15" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1.15" To="1" BeginTime="0:0:1" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1.15" To="1" BeginTime="0:0:1" Duration="0:0:1">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </Grid>
+                <UniformGrid Height="64" Rows="1" Columns="2" VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <TextBlock x:Name="txbAudioIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}" Text="&#xe6cb;">
+                            <TextBlock.RenderTransform>
+                                <ScaleTransform ScaleX="0" ScaleY="0"/>
+                            </TextBlock.RenderTransform>
+                            <TextBlock.RenderTransformOrigin>
+                                <Point X="0.5" Y="0.5"/>
+                            </TextBlock.RenderTransformOrigin>
+                        </TextBlock>
+                        <TextBlock x:Name="txbAudio" Margin="0,4,0,0" Text="Audio" Opacity="0">
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform Y="-10"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <TextBlock x:Name="txbDeclineIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}" Text="&#xe6db;">
+                            <TextBlock.RenderTransform>
+                                <ScaleTransform ScaleX="0" ScaleY="0"/>
+                            </TextBlock.RenderTransform>
+                            <TextBlock.RenderTransformOrigin>
+                                <Point X="0.5" Y="0.5"/>
+                            </TextBlock.RenderTransformOrigin>
+                        </TextBlock>
+                        <TextBlock x:Name="txbDecline" Margin="0,4,0,0" Text="Decline" Opacity="0">
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform Y="-10"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </StackPanel>
+                </UniformGrid>
+            </Grid>
+            <Grid x:Name="grbAccept" Grid.Row="1" Background="#FF6D00" WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonUp="GrbAccept_MouseLeftButtonUp" TouchUp="GrbAccept_TouchUp">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock x:Name="txbVideoIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}" Text="&#xe772;">
+                        <TextBlock.RenderTransform>
+                            <ScaleTransform ScaleX="0" ScaleY="0"/>
+                        </TextBlock.RenderTransform>
+                        <TextBlock.RenderTransformOrigin>
+                            <Point X="0.5" Y="0.5"/>
+                        </TextBlock.RenderTransformOrigin>
+                    </TextBlock>
+                    <TextBlock x:Name="txbVideo" Foreground="#2B2C34" FontSize="14" Text="Video" Opacity="0">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="-10"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

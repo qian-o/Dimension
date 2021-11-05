@@ -40,12 +40,6 @@ namespace DimensionClient
             TextBlock.FontFamilyProperty.OverrideMetadata(typeof(TextBlock), new FrameworkPropertyMetadata(fontFamily));
             FrameworkElement.FocusVisualStyleProperty.OverrideMetadata(typeof(Control), new FrameworkPropertyMetadata(defaultValue: null));
 
-            BitmapCache bitmapCache = new(2)
-            {
-                EnableClearType = true
-            };
-            UIElement.CacheModeProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(bitmapCache));
-
             ClassHelper.Dispatcher = Dispatcher;
 
             base.OnStartup(e);
