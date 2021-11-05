@@ -1,9 +1,12 @@
 ﻿<Window x:Class="DimensionClient.Component.Windows.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:DimensionClient.Library.Controls"
-        x:Name="LoginMain" Height="490" Width="370" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="LoginMain_Loaded" Unloaded="LoginMain_Unloaded">
+        x:Name="LoginMain" Height="460" Width="340" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="Transparent" Loaded="LoginMain_Loaded" Unloaded="LoginMain_Unloaded">
+    <Window.Effect>
+        <DropShadowEffect Color="#888888" ShadowDepth="0" Opacity="0.4" />
+    </Window.Effect>
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" GlassFrameThickness="-1" CaptionHeight="450" />
+        <WindowChrome UseAeroCaptionButtons="False" GlassFrameThickness="-1" CaptionHeight="460" />
     </WindowChrome.WindowChrome>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
@@ -14,32 +17,22 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Window.Template>
-        <ControlTemplate TargetType="Window">
-            <Border Padding="20">
-                <Border CornerRadius="5" Background="#FFFFFF">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#888888" BlurRadius="20" ShadowDepth="0" Opacity="0.4" />
-                    </Border.Effect>
-                    <ContentPresenter />
-                </Border>
-            </Border>
-        </ControlTemplate>
-    </Window.Template>
-    <Grid Height="450" Width="330">
+    <Grid Height="450" Width="330" Background="#FFFFFF">
         <Grid.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5">
+            <RectangleGeometry RadiusX="10" RadiusY="10">
                 <RectangleGeometry.Rect>
                     <Rect Height="450" Width="330" />
                 </RectangleGeometry.Rect>
             </RectangleGeometry>
         </Grid.Clip>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.6">
-                <GradientStop Offset="0.0" Color="#F4DCB2"/>
-                <GradientStop Offset="1.0" Color="#F8EEDC"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+        <Border>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" Opacity="0.6">
+                    <GradientStop Offset="0.0" Color="#F4DCB2"/>
+                    <GradientStop Offset="1.0" Color="#F8EEDC"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
         <Grid x:Name="grdNoPasswordLogin" Height="330" Width="260">
             <Grid.RenderTransform>
                 <TransformGroup>
@@ -50,7 +43,7 @@
             <Grid.RenderTransformOrigin>
                 <Point X="0.5" Y="1"/>
             </Grid.RenderTransformOrigin>
-            <Border Background="#FFFFFF" CornerRadius="2">
+            <Border Background="#FFFFFF" CornerRadius="6">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" Color="#D7DAE2"/>
                 </Border.Effect>
@@ -70,7 +63,7 @@
             <Grid.RenderTransformOrigin>
                 <Point X="0.5" Y="1"/>
             </Grid.RenderTransformOrigin>
-            <Border Background="#FFFFFF" CornerRadius="2">
+            <Border Background="#FFFFFF" CornerRadius="6">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="0" Color="#D7DAE2"/>
                 </Border.Effect>

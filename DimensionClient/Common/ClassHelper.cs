@@ -33,7 +33,7 @@ namespace DimensionClient.Common
         // 服务器版本
         public const string serviceVersion = "1.0";
         // 服务器地址 ( http://47.96.133.119, http://localhost:5000 )
-        public const string servicePath = "http://localhost:5000";
+        public const string servicePath = "http://47.96.133.119";
         // 客户端标识
         public static readonly UseDevice device = UseDevice.Client;
         // 程序启动目录

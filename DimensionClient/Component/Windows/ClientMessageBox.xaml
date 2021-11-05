@@ -1,9 +1,12 @@
 ﻿<Window x:Class="DimensionClient.Component.Windows.ClientMessageBox"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Name="ClientMessageBoxMain" Title="ClientMessageBox" Height="226" Width="462" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" Loaded="ClientMessageBoxMain_Loaded">
+        x:Name="ClientMessageBoxMain" Title="ClientMessageBox" Height="196" Width="432" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" Background="Transparent" Loaded="ClientMessageBoxMain_Loaded">
+    <Window.Effect>
+        <DropShadowEffect Color="#888888" ShadowDepth="0" Opacity="0.4" />
+    </Window.Effect>
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" GlassFrameThickness="-1" CaptionHeight="450"/>
+        <WindowChrome UseAeroCaptionButtons="False" GlassFrameThickness="-1" CaptionHeight="196"/>
     </WindowChrome.WindowChrome>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
@@ -14,19 +17,14 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Window.Template>
-        <ControlTemplate TargetType="Window">
-            <Border Padding="20">
-                <Border CornerRadius="5" Background="#FFFFFF">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#888888" BlurRadius="20" ShadowDepth="0" Opacity="0.4" />
-                    </Border.Effect>
-                    <ContentPresenter />
-                </Border>
-            </Border>
-        </ControlTemplate>
-    </Window.Template>
-    <Grid>
+    <Grid Height="186" Width="422" Background="#FFFFFF">
+        <Grid.Clip>
+            <RectangleGeometry RadiusX="5" RadiusY="5">
+                <RectangleGeometry.Rect>
+                    <Rect Height="186" Width="422" />
+                </RectangleGeometry.Rect>
+            </RectangleGeometry>
+        </Grid.Clip>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="146"/>
