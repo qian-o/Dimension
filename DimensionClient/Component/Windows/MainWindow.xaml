@@ -104,9 +104,6 @@
             </StackPanel>
         </Grid>
         <Border x:Name="brdVideoCall" Grid.RowSpan="2" Background="#000000" Visibility="Collapsed">
-            <Border.CacheMode>
-                <BitmapCache RenderAtScale="1"/>
-            </Border.CacheMode>
             <Border x:Name="brdContent">
                 <Border.RenderTransform>
                     <TransformGroup>
