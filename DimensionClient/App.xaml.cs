@@ -1,6 +1,5 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Component.Windows;
-using ManageLiteAV;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -58,8 +57,6 @@ namespace DimensionClient
 
         protected override void OnExit(ExitEventArgs e)
         {
-            ITRTCCloud.destroyTRTCShareInstance();
-
             Environment.Exit(-1);
         }
 
