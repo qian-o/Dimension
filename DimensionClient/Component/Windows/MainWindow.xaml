@@ -38,8 +38,6 @@
                 </Grid>
                 <Frame x:Name="femRouteMain" Grid.Column="1" Margin="14,20,14,14" NavigationUIVisibility="Hidden" Navigated="FemRouteMain_Navigated"/>
             </Grid>
-            <StackPanel x:Name="stpHint" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False"/>
-            <StackPanel x:Name="stpNotification" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top"/>
             <Border x:Name="brdMask" Background="#E6FFFFFF" Visibility="Collapsed">
                 <threading:AsyncBox x:Name="thrLoading" Height="50" Width="50"/>
             </Border>
@@ -103,51 +101,9 @@
                 <Button x:Name="btnClose" Style="{StaticResource ButtonClose}" Height="48" Width="50" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
-        <Border x:Name="brdVideoCall" Grid.RowSpan="2" Background="#000000" Visibility="Collapsed">
-            <Border x:Name="brdContent">
-                <Border.RenderTransform>
-                    <TransformGroup>
-                        <TranslateTransform/>
-                        <ScaleTransform/>
-                    </TransformGroup>
-                </Border.RenderTransform>
-                <Border.RenderTransformOrigin>
-                    <Point X="0.5" Y="0.5"/>
-                </Border.RenderTransformOrigin>
-                <Grid>
-                    <Border x:Name="brdSmallBox">
-                        <Grid x:Name="grdSmallBox" MouseLeftButtonDown="GrdSmallBox_MouseLeftButtonDown">
-                            <Grid.RenderTransform>
-                                <ScaleTransform/>
-                            </Grid.RenderTransform>
-                            <Grid.RenderTransformOrigin>
-                                <Point X="1"/>
-                            </Grid.RenderTransformOrigin>
-                            <Border x:Name="brdSmallBoxMask" Background="#000000"/>
-                        </Grid>
-                    </Border>
-                    <StackPanel x:Name="stpCallControl" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24" Visibility="Collapsed">
-                        <Border x:Name="brdCallYuyin" Height="50" Width="50" Background="#909399" Margin="10,0,10,0" CornerRadius="25">
-                            <Border.RenderTransform>
-                                <TranslateTransform/>
-                            </Border.RenderTransform>
-                            <Image Margin="14" Source="/Library/Image/yuyin.png" />
-                        </Border>
-                        <Border x:Name="brdCallShipin" Height="50" Width="50" Background="#FFFFFF" Margin="10,0,10,0" CornerRadius="25">
-                            <Border.RenderTransform>
-                                <TranslateTransform/>
-                            </Border.RenderTransform>
-                            <Image Margin="14" Source="/Library/Image/shipin.png" />
-                        </Border>
-                        <Border x:Name="brdCallDianhua" Height="50" Width="50" Background="#F56C6C" Margin="10,0,10,0" CornerRadius="25">
-                            <Border.RenderTransform>
-                                <TranslateTransform />
-                            </Border.RenderTransform>
-                            <Image Margin="14" Source="/Library/Image/dianhua.png" />
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Border>
+        <Grid Grid.Row="1" Panel.ZIndex="2">
+            <StackPanel x:Name="stpHint" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False"/>
+            <StackPanel x:Name="stpNotification" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        </Grid>
     </Grid>
 </Window>

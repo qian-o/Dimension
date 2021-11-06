@@ -7,6 +7,7 @@ using DimensionService.Service.Call;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 
 namespace DimensionService.Controllers
 {
@@ -61,6 +62,26 @@ namespace DimensionService.Controllers
             {
                 State = _callService.GetRoomKey(userID, roomID, out RoomKeyModel roomKey, out string message),
                 Data = roomKey,
+                Message = message
+            };
+            return webResult;
+        }
+
+        /// <summary>
+        /// 获取房间人员
+        /// </summary>
+        /// <param name="roomID">房间ID</param>
+        /// <returns></returns>
+        [Route("GetRoomMember")]
+        [HttpGet]
+        public WebResultModel GetRoomMember(string roomID)
+        {
+            Request.Headers.TryGetValue("UserID", out StringValues userID);
+
+            WebResultModel webResult = new()
+            {
+                State = _callService.GetRoomMember(userID, roomID, out List<string> member, out string message),
+                Data = member,
                 Message = message
             };
             return webResult;

@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.VideoCallCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="UserControlMain" Background="#000000" Loaded="UserControlMain_Loaded">
+    <Grid x:Name="grdMain">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <TranslateTransform/>
+                <ScaleTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <Grid.RenderTransformOrigin>
+            <Point X="0.5" Y="0.5"/>
+        </Grid.RenderTransformOrigin>
+        <Image x:Name="imgMainBox" Stretch="UniformToFill"/>
+        <Border x:Name="brdSmallBox">
+            <Grid x:Name="grdSmallBox">
+                <Grid.RenderTransform>
+                    <ScaleTransform/>
+                </Grid.RenderTransform>
+                <Grid.RenderTransformOrigin>
+                    <Point X="1"/>
+                </Grid.RenderTransformOrigin>
+                <Image x:Name="imgSmallBox" Stretch="UniformToFill">
+                    <Image.OpacityMask>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Border Height="{Binding ElementName=grdSmallBox,Path=ActualHeight}" Width="{Binding ElementName=grdSmallBox,Path=ActualWidth}" Background="#000000"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Image.OpacityMask>
+                </Image>
+            </Grid>
+        </Border>
+        <StackPanel x:Name="stpCallControl" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24" Visibility="Collapsed">
+            <Border x:Name="brdCallYuyin" Height="50" Width="50" Background="#909399" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand">
+                <Border.RenderTransform>
+                    <TranslateTransform/>
+                </Border.RenderTransform>
+                <Image Margin="14" Source="/Library/Image/yuyin.png" />
+            </Border>
+            <Border x:Name="brdCallShipin" Height="50" Width="50" Background="#FFFFFF" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand">
+                <Border.RenderTransform>
+                    <TranslateTransform/>
+                </Border.RenderTransform>
+                <Image Margin="14" Source="/Library/Image/shipin.png" />
+            </Border>
+            <Border x:Name="brdCallDianhua" Height="50" Width="50" Background="#F56C6C" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand" MouseLeftButtonUp="BrdCallDianhua_MouseLeftButtonUp" TouchUp="BrdCallDianhua_TouchUp">
+                <Border.RenderTransform>
+                    <TranslateTransform />
+                </Border.RenderTransform>
+                <Image Margin="14" Source="/Library/Image/dianhua.png" />
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

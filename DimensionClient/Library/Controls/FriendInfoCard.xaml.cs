@@ -1,5 +1,4 @@
 ﻿using DimensionClient.Common;
-using DimensionClient.Library.CustomControls;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Call;
 using DimensionClient.Service.Chat;
@@ -57,7 +56,14 @@ namespace DimensionClient.Library.Controls
 
         private void BtnVoiceCall_Click(object sender, RoutedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(VoiceCall);
+            if (ClassHelper.CallViewManager == null)
+            {
+                ThreadPool.QueueUserWorkItem(VoiceCall);
+            }
+            else
+            {
+                ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 1, ClassHelper.FindResource<string>("PleaseEndCall"));
+            }
         }
 
         private void TxtRemark_LostFocus(object sender, RoutedEventArgs e)
@@ -228,19 +234,10 @@ namespace DimensionClient.Library.Controls
             {
                 if (CallService.GetRoomKey(roomID, out GetRoomKeyModel roomKey))
                 {
-                    if (ClassHelper.CallViewManager != null)
+                    if (ClassHelper.CreatingCallManagement(roomID, roomKey, ClassHelper.CallType.Video, member, true))
                     {
-                        ClassHelper.CallViewManager.UnInitialize();
+                        ClassHelper.CallViewManager.Initialize();
                     }
-                    ClassHelper.CallViewManager = new CallViewManager(roomID, roomKey, ClassHelper.CallType.Video, member, houseOwner: true);
-                    ClassHelper.CallViewManager.Initialize();
-                    Dispatcher.Invoke(delegate
-                    {
-                        if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
-                        {
-                            ClassHelper.ToCall(ClassHelper.CallType.Video);
-                        }
-                    });
                 }
             }
 

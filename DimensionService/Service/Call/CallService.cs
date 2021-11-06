@@ -85,6 +85,40 @@ namespace DimensionService.Service.Call
             }
         }
 
+        public bool GetRoomMember(string userID, string roomID, out List<string> member, out string message)
+        {
+            try
+            {
+                bool state = false;
+                member = new List<string>();
+                message = string.Empty;
+                CallRoomModel callRoom = _callRoomDAO.GetCallRoomForRoomID(roomID);
+                if (callRoom.Enabled)
+                {
+                    List<RoommateModel> roommates = JsonConvert.DeserializeObject<List<RoommateModel>>(callRoom.Roommate);
+                    if (roommates.FirstOrDefault(item => item.UserID == userID) is RoommateModel roommate)
+                    {
+                        member.AddRange(from RoommateModel item in roommates
+                                        select item.UserID);
+                        state = true;
+                    }
+                    else
+                    {
+                        message = "您不属于当前房间成员。";
+                    }
+                }
+                else
+                {
+                    message = "房间未启用。";
+                }
+                return state;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public bool NotifyRoommate(string userID, ClassHelper.UseDevice useDevice, out string message)
         {
             try
@@ -107,6 +141,7 @@ namespace DimensionService.Service.Call
                                                                                      arg3: callRoom.RoomID);
                             }
                         }
+                        state = true;
                     }
                 }
                 else
@@ -146,6 +181,7 @@ namespace DimensionService.Service.Call
                                                                                      arg2: data.IsAcceptCall);
                             }
                         }
+                        state = true;
                     }
                 }
                 else

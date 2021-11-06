@@ -62,4 +62,9 @@
     <system:String x:Key="UploadFiles">上传文件</system:String>
     <system:String x:Key="MessageLogging">消息记录</system:String>
     <system:String x:Key="Save">保存</system:String>
+    <system:String x:Key="Answer">接听</system:String>
+    <system:String x:Key="VoiceAnswer">转为语音</system:String>
+    <system:String x:Key="IncomingVoiceCall">发起了语音通话</system:String>
+    <system:String x:Key="IncomingVideoCall">发起了视频通话</system:String>
+    <system:String x:Key="PleaseEndCall">请先结束当前通话。</system:String>
 </ResourceDictionary>

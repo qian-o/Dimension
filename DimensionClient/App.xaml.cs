@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Common;
+using DimensionClient.Component.Windows;
 using ManageLiteAV;
 using System;
 using System.Reflection;
@@ -40,6 +41,16 @@ namespace DimensionClient
             TextBlock.FontFamilyProperty.OverrideMetadata(typeof(TextBlock), new FrameworkPropertyMetadata(fontFamily));
             FrameworkElement.FocusVisualStyleProperty.OverrideMetadata(typeof(Control), new FrameworkPropertyMetadata(defaultValue: null));
 
+            BitmapCache bitmapCache = new()
+            {
+                RenderAtScale = 2,
+                SnapsToDevicePixels = true,
+                EnableClearType = true
+            };
+            UIElement.CacheModeProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(bitmapCache));
+            UIElement.CacheModeProperty.OverrideMetadata(typeof(MainWindow), new FrameworkPropertyMetadata(defaultValue: null));
+            UIElement.CacheModeProperty.OverrideMetadata(typeof(Screenshots), new FrameworkPropertyMetadata(defaultValue: null));
+
             ClassHelper.Dispatcher = Dispatcher;
 
             base.OnStartup(e);
@@ -49,7 +60,7 @@ namespace DimensionClient
         {
             ITRTCCloud.destroyTRTCShareInstance();
 
-            base.OnExit(e);
+            Environment.Exit(-1);
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

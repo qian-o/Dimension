@@ -1,7 +1,7 @@
 ﻿<Window x:Class="DimensionClient.Component.Windows.InviteCall"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Name="InviteCallMain" Height="360" Width="290" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Background="Transparent" Loaded="InviteCallMain_Loaded">
+        x:Name="InviteCallMain" Height="360" Width="290" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" Background="Transparent" Loaded="InviteCallMain_Loaded">
     <Window.Effect>
         <DropShadowEffect Color="#888888" ShadowDepth="0" Opacity="0.4" />
     </Window.Effect>
@@ -27,8 +27,8 @@
             <Grid Grid.Row="0">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,15,0,0">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="18" Text="王先生"/>
-                        <TextBlock Margin="0,4,0,0" FontSize="14" Text="Incoming Call"/>
+                        <TextBlock x:Name="txbNickName" FontSize="18"/>
+                        <TextBlock x:Name="txbCallType" Margin="0,4,0,0" FontSize="14"/>
                     </StackPanel>
                     <Border x:Name="brdInfo" Background="#FFFFFF">
                         <Border.RenderTransform>
@@ -40,7 +40,7 @@
                     </Border>
                 </Grid>
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0">
-                    <Image x:Name="imgHeadImage" Height="120" Width="120">
+                    <Image x:Name="imgHeadImage" Height="120" Width="120" Source="{Binding Converter={StaticResource ImageSourceOnlineConvert}, ConverterParameter=240}">
                         <Image.RenderTransform>
                             <ScaleTransform/>
                         </Image.RenderTransform>
@@ -117,7 +117,7 @@
                     </Border>
                 </Grid>
                 <UniformGrid Height="64" Rows="1" Columns="2" VerticalAlignment="Bottom" WindowChrome.IsHitTestVisibleInChrome="True">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel x:Name="stpAudio" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <TextBlock x:Name="txbAudioIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}" Text="&#xe6cb;">
                             <TextBlock.RenderTransform>
                                 <ScaleTransform ScaleX="0" ScaleY="0"/>
@@ -126,7 +126,7 @@
                                 <Point X="0.5" Y="0.5"/>
                             </TextBlock.RenderTransformOrigin>
                         </TextBlock>
-                        <TextBlock x:Name="txbAudio" Margin="0,4,0,0" Text="Audio" Opacity="0">
+                        <TextBlock x:Name="txbAudio" Margin="0,4,0,0" Text="{DynamicResource VoiceAnswer}" Opacity="0">
                             <TextBlock.RenderTransform>
                                 <TranslateTransform Y="-10"/>
                             </TextBlock.RenderTransform>
@@ -141,7 +141,7 @@
                                 <Point X="0.5" Y="0.5"/>
                             </TextBlock.RenderTransformOrigin>
                         </TextBlock>
-                        <TextBlock x:Name="txbDecline" Margin="0,4,0,0" Text="Decline" Opacity="0">
+                        <TextBlock x:Name="txbDecline" Margin="0,4,0,0" Text="{DynamicResource Refuse}" Opacity="0">
                             <TextBlock.RenderTransform>
                                 <TranslateTransform Y="-10"/>
                             </TextBlock.RenderTransform>
@@ -151,7 +151,7 @@
             </Grid>
             <Grid x:Name="grbAccept" Grid.Row="1" Background="#FF6D00" WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonUp="GrbAccept_MouseLeftButtonUp" TouchUp="GrbAccept_TouchUp">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock x:Name="txbVideoIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}" Text="&#xe772;">
+                    <TextBlock x:Name="txbAcceptIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}">
                         <TextBlock.RenderTransform>
                             <ScaleTransform ScaleX="0" ScaleY="0"/>
                         </TextBlock.RenderTransform>
@@ -159,7 +159,7 @@
                             <Point X="0.5" Y="0.5"/>
                         </TextBlock.RenderTransformOrigin>
                     </TextBlock>
-                    <TextBlock x:Name="txbVideo" Foreground="#2B2C34" FontSize="14" Text="Video" Opacity="0">
+                    <TextBlock x:Name="txbAccept" Foreground="#2B2C34" FontSize="14" Text="{DynamicResource Answer}" Opacity="0">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="-10"/>
                         </TextBlock.RenderTransform>

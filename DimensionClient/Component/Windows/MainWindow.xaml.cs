@@ -1,11 +1,12 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Library.Controls;
-using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;
+using DimensionClient.Models.ResultModels;
+using DimensionClient.Models.ViewModels;
+using DimensionClient.Service.UserManager;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -36,6 +37,7 @@ namespace DimensionClient.Component.Windows
             ClassHelper.AccordingMask += ClassHelper_AccordingMask;
             ClassHelper.DataPassingChanged += ClassHelper_DataPassingChanged;
             ClassHelper.CallChanged += ClassHelper_CallChanged;
+            SignalRClientHelper.CallInviteSignalR += SignalRClientHelper_CallInviteSignalR;
 
             #region 绑定全局属性
             grdInformation.DataContext = ClassHelper.commonView;
@@ -210,14 +212,14 @@ namespace DimensionClient.Component.Windows
             }
         }
 
-        private void ClassHelper_CallChanged(ClassHelper.CallType callType)
+        private void ClassHelper_CallChanged(ClassHelper.CallType callType, bool isEnter)
         {
             switch (callType)
             {
                 case ClassHelper.CallType.Voice:
                     break;
                 case ClassHelper.CallType.Video:
-                    VideoCall();
+                    VideoCall(isEnter);
                     break;
                 case ClassHelper.CallType.ManyVoice:
                     break;
@@ -225,6 +227,35 @@ namespace DimensionClient.Component.Windows
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void SignalRClientHelper_CallInviteSignalR(string userID, ClassHelper.CallType callType, string roomID)
+        {
+            if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: userID))
+            {
+                switch (callType)
+                {
+                    case ClassHelper.CallType.Voice:
+                    case ClassHelper.CallType.Video:
+                        InviteCallViewModel viewModel = new()
+                        {
+                            FriendDetails = friendDetails,
+                            CallType = callType,
+                            RoomID = roomID
+                        };
+                        Dispatcher.Invoke(delegate
+                        {
+                            InviteCall inviteCall = new(viewModel);
+                            inviteCall.Show();
+                        });
+                        break;
+                    case ClassHelper.CallType.ManyVoice:
+                    case ClassHelper.CallType.ManyVideo:
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -323,35 +354,29 @@ namespace DimensionClient.Component.Windows
             Border border = (Border)sender;
             ClassHelper.SwitchRoute((ClassHelper.PageType)Enum.Parse(typeof(ClassHelper.PageType), $"{border.Name[3..]}Page"));
         }
-        private void VideoCall()
+        private void VideoCall(bool isEnter)
         {
-            Dispatcher.Invoke(async delegate
+            Dispatcher.Invoke(delegate
             {
-                brdVideoCall.Visibility = Visibility.Visible;
-                brdVideoCall.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallOpacity"));
-                brdContent.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallContent"));
-                stpCallControl.Visibility = Visibility.Collapsed;
-                await Task.Delay(800);
-                stpCallControl.Visibility = Visibility.Visible;
-                brdCallYuyin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallYuyin"));
-                brdCallShipin.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallShipin"));
-                brdCallDianhua.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallDianhua"));
-                if (ClassHelper.CallViewManager.Video.TryGetValue(ClassHelper.UserID, out CallVideoImage videoImage))
+                if (isEnter)
                 {
-                    videoImage.OpacityMask = new VisualBrush(brdSmallBoxMask);
-                    grdSmallBox.Children.Add(videoImage);
+                    VideoCallCard videoCallCard = new();
+                    Grid.SetRowSpan(videoCallCard, 2);
+                    Panel.SetZIndex(videoCallCard, 1);
+                    grdMain.Children.Add(videoCallCard);
+                }
+                else
+                {
+                    foreach (UIElement item in grdMain.Children)
+                    {
+                        if (item is VideoCallCard callCard)
+                        {
+                            callCard.UnInitializeCard();
+                        }
+                    }
                 }
             });
         }
         #endregion
-
-        private void GrdSmallBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            brdSmallBox.Padding = new Thickness(20);
-            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Right;
-            grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
-            brdSmallBoxMask.CornerRadius = new CornerRadius(50);
-            grdSmallBox.BeginStoryboard(ClassHelper.FindResource<Storyboard>("VideoCallSmallBox"));
-        }
     }
 }

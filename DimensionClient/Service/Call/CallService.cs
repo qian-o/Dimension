@@ -42,6 +42,20 @@ namespace DimensionClient.Service.Call
             }
         }
 
+        public static bool GetRoomMember(string roomID, out List<string> member)
+        {
+            member = new List<string>();
+            if (ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/GetRoomMember?RoomID={roomID}", HttpMethod.Get, out JObject responseObj))
+            {
+                member = JsonConvert.DeserializeObject<List<string>>(responseObj["Data"].ToString());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static bool NotifyRoommate()
         {
             return ClassHelper.ServerRequest($"{ClassHelper.servicePath}/api/Call/NotifyRoommate", HttpMethod.Post, out JObject _);

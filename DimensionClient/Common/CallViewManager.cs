@@ -1,19 +1,15 @@
-﻿using DimensionClient.Library.CustomControls;
+﻿using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
-using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Call;
 using ManageLiteAV;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace DimensionClient.Common
 {
-    public class CallViewManager : ITRTCCloudCallback, ITRTCVideoRenderCallback, ITRTCLogCallback
+    public class CallViewManager : ITRTCCloudCallback, ITRTCLogCallback
     {
         private readonly string _roomID;
         private readonly GetRoomKeyModel _roomKey;
@@ -21,7 +17,7 @@ namespace DimensionClient.Common
         private readonly bool _houseOwner;
 
         private ITRTCCloud cloud;
-        public Dictionary<string, CallVideoImage> Video { get; private set; } = new Dictionary<string, CallVideoImage>();
+        public List<CallVideoDataModel> Video { get; private set; } = new List<CallVideoDataModel>();
 
         public CallViewManager(string roomID, GetRoomKeyModel roomKey, ClassHelper.CallType callType, List<string> member, bool houseOwner = false)
         {
@@ -30,44 +26,52 @@ namespace DimensionClient.Common
             _callType = callType;
             _houseOwner = houseOwner;
 
-            ClassHelper.Dispatcher.Invoke(delegate
+            foreach (string item in member)
             {
-                foreach (string item in member)
+                CallVideoDataModel callVideoData = new()
                 {
-                    Video.Add(item, new CallVideoImage(new CallVideoImageViewModel()));
-                }
-            });
+                    UserID = item
+                };
+                Video.Add(callVideoData);
+            }
         }
 
         public void Initialize()
         {
-            cloud = ITRTCCloud.getTRTCShareInstance();
-            TRTCParams tRTCParams = new()
+            Task.Run(() =>
             {
-                sdkAppId = ClassHelper.callAppID,
-                userId = ClassHelper.UserID,
-                userSig = _roomKey.UserSig,
-                privateMapKey = _roomKey.PrivateMapKey,
-                strRoomId = _roomID
-            };
+                cloud = ITRTCCloud.getTRTCShareInstance();
+                TRTCParams tRTCParams = new()
+                {
+                    sdkAppId = ClassHelper.callAppID,
+                    userId = ClassHelper.UserID,
+                    userSig = _roomKey.UserSig,
+                    privateMapKey = _roomKey.PrivateMapKey,
+                    strRoomId = _roomID
+                };
 
-            cloud.addCallback(this);
+                cloud.addCallback(this);
 
-            cloud.setLocalVideoRenderCallback(TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, this);
-
-            cloud.enterRoom(ref tRTCParams, _callType == ClassHelper.CallType.Video ? TRTCAppScene.TRTCAppSceneVideoCall : TRTCAppScene.TRTCAppSceneAudioCall);
+                cloud.enterRoom(ref tRTCParams, _callType == ClassHelper.CallType.Video ? TRTCAppScene.TRTCAppSceneVideoCall : TRTCAppScene.TRTCAppSceneAudioCall);
+                ClassHelper.ToCall(_callType, true);
+            });
         }
 
         public void UnInitialize()
         {
-            cloud.exitRoom();
-            ITRTCCloud.destroyTRTCShareInstance();
-            cloud.Dispose();
-            cloud = null;
-            if (_houseOwner)
+            Task.Run(() =>
             {
-                CallService.DissolutionRoom();
-            }
+                cloud.exitRoom();
+                ITRTCCloud.destroyTRTCShareInstance();
+                cloud.Dispose();
+                cloud = null;
+                if (_houseOwner)
+                {
+                    CallService.DissolutionRoom();
+                }
+                ClassHelper.CallViewManager = null;
+                ClassHelper.ToCall(_callType, false);
+            });
         }
 
         #region ITRTCCloudCallback
@@ -120,14 +124,22 @@ namespace DimensionClient.Common
         {
             if (result >= 0)
             {
-                TRTCRenderParams renderParams = new()
+                if (_callType == ClassHelper.CallType.Video)
                 {
-                    rotation = TRTCVideoRotation.TRTCVideoRotation0,
-                    fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit,
-                    mirrorType = TRTCVideoMirrorType.TRTCVideoMirrorType_Disable
-                };
-                cloud.setLocalRenderParams(ref renderParams);
-                cloud.startLocalPreview(IntPtr.Zero);
+                    TRTCRenderParams renderParams = new()
+                    {
+                        rotation = TRTCVideoRotation.TRTCVideoRotation0,
+                        fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit,
+                        mirrorType = TRTCVideoMirrorType.TRTCVideoMirrorType_Disable
+                    };
+                    cloud.setLocalRenderParams(ref renderParams);
+                    cloud.startLocalPreview(IntPtr.Zero);
+                    if (Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoData)
+                    {
+                        callVideoData.IsEnter = true;
+                        cloud.setLocalVideoRenderCallback(TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, callVideoData);
+                    }
+                }
 
                 cloud.startLocalAudio(TRTCAudioQuality.TRTCAudioQualityDefault);
 
@@ -136,11 +148,6 @@ namespace DimensionClient.Common
                     CallService.NotifyRoommate();
                 }
             }
-        }
-
-        public void onError(TXLiteAVError errCode, string errMsg, IntPtr arg)
-        {
-            ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 1, errMsg);
         }
 
         public void onExitRoom(int reason)
@@ -335,12 +342,22 @@ namespace DimensionClient.Common
 
         public void onUserEnter(string userId)
         {
-
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            {
+                callVideoData.IsEnter = true;
+            }
         }
 
         public void onUserExit(string userId, int reason)
         {
-
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            {
+                callVideoData.IsEnter = false;
+            }
+            if (!Video.Any(item => item.UserID != ClassHelper.UserID && item.IsEnter != false))
+            {
+                UnInitialize();
+            }
         }
 
         public void onUserSubStreamAvailable(string userId, bool available)
@@ -352,8 +369,11 @@ namespace DimensionClient.Common
         {
             if (available)
             {
-                cloud.startRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, IntPtr.Zero);
-                cloud.setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, this);
+                if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+                {
+                    cloud.startRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, IntPtr.Zero);
+                    cloud.setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, callVideoData);
+                }
             }
         }
 
@@ -366,39 +386,10 @@ namespace DimensionClient.Common
         {
 
         }
-        #endregion
 
-        #region ITRTCVideoRenderCallback
-        public void onRenderVideoFrame(string userId, TRTCVideoStreamType streamType, TRTCVideoFrame frame)
+        public void onError(TXLiteAVError errCode, string errMsg, IntPtr arg)
         {
-            try
-            {
-                if (Video.TryGetValue(string.IsNullOrEmpty(userId) ? ClassHelper.UserID : userId, out CallVideoImage videoImage))
-                {
-                    lock (videoImage)
-                    {
-                        if (videoImage.CallVideoData.Writeable == null)
-                        {
-                            videoImage.Dispatcher.Invoke(delegate
-                            {
-                                videoImage.CallVideoData.Writeable = new WriteableBitmap((int)frame.width, (int)frame.height, 96, 96, PixelFormats.Pbgra32, null);
-                                videoImage.CallVideoData.Int32Rect = new Int32Rect(0, 0, (int)frame.width, (int)frame.height);
-                            });
-                        }
-                        videoImage.Dispatcher.Invoke(delegate
-                        {
-                            videoImage.CallVideoData.Writeable.Lock();
-                            Marshal.Copy(frame.data, 0, videoImage.CallVideoData.Writeable.BackBuffer, frame.data.Length);
-                            videoImage.CallVideoData.Writeable.AddDirtyRect(videoImage.CallVideoData.Int32Rect);
-                            videoImage.CallVideoData.Writeable.Unlock();
-                        });
-                    }
-                }
-            }
-            catch (TaskCanceledException)
-            {
-                // 任务取消，不算异常。
-            }
+            ClassHelper.MessageAlert(ClassHelper.MainWindow.GetType(), 3, errMsg);
         }
         #endregion
 

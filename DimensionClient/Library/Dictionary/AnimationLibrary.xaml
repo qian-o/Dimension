@@ -1,17 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Storyboard x:Key="VideoCallOpacity">
+    <Storyboard x:Key="VideoCallOpacity_Show">
         <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.6"/>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallContent">
+    <Storyboard x:Key="VideoCallOpacity_Hide">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.6"/>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallMain_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].Y" From="-40" To="0" Duration="0:0:0.6"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX" From="0.8" To="1" Duration="0:0:0.6"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleY" From="0.8" To="1" Duration="0:0:0.6"/>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallYuyin">
+    <Storyboard x:Key="VideoCallMain_Hide">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].Y" From="0" To="-40" Duration="0:0:0.6"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleX" From="1" To="0.8" Duration="0:0:0.6"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].ScaleY" From="1" To="0.8" Duration="0:0:0.6"/>
+    </Storyboard>
+
+    <Storyboard x:Key="VideoCallYuyin_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -19,7 +29,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallShipin">
+    <Storyboard x:Key="VideoCallShipin_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="40" To="0" Duration="0:0:0.4">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -27,7 +37,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallDianhua">
+    <Storyboard x:Key="VideoCallDianhua_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="60" To="0" Duration="0:0:0.6">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -35,7 +45,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="VideoCallSmallBox">
+    <Storyboard x:Key="VideoCallSmallBox_Shrink">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0.2" Duration="0:0:0.8">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -48,7 +58,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallShowMain">
+    <Storyboard x:Key="InviteCallMain_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="360" To="0" Duration="0:0:1">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -61,7 +71,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallHideMain">
+    <Storyboard x:Key="InviteCallMain_Hide">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="360" Duration="0:0:1">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
@@ -74,7 +84,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallShowInfo">
+    <Storyboard x:Key="InviteCallInfo_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0" Duration="0:0:1">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseIn"/>
@@ -82,7 +92,7 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallHideInfo">
+    <Storyboard x:Key="InviteCallInfo_Hide">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1" Duration="0:0:1">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseIn"/>
@@ -90,22 +100,22 @@
         </DoubleAnimation>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallShowIcon">
+    <Storyboard x:Key="InviteCallIcon_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1" Duration="0:0:0.5"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0" To="1" Duration="0:0:0.5"/>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallHideIcon">
+    <Storyboard x:Key="InviteCallIcon_Hide">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="0" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1" To="0" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallShowHint">
+    <Storyboard x:Key="InviteCallHint_Show">
         <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="-10" To="0" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
     </Storyboard>
 
-    <Storyboard x:Key="InviteCallHideHint">
+    <Storyboard x:Key="InviteCallHint_Hide">
         <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5"/>
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="-10" Duration="0:0:0.5"/>
     </Storyboard>

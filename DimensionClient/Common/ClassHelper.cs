@@ -1,6 +1,7 @@
 ﻿using DimensionClient.Component.Pages;
 using DimensionClient.Component.Windows;
 using DimensionClient.Models;
+using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
@@ -25,7 +26,7 @@ namespace DimensionClient.Common
     public delegate void AccordingMaskEvent(bool show, bool loading);
     public delegate void RouteEvent(ClassHelper.PageType pageName);
     public delegate void DataPassing(ClassHelper.DataPassingType dataType, object data);
-    public delegate void CallEvent(ClassHelper.CallType callType);
+    public delegate void CallEvent(ClassHelper.CallType callType, bool isEnter);
 
     public static class ClassHelper
     {
@@ -57,6 +58,8 @@ namespace DimensionClient.Common
         public const int wmHotKey = 0x312;
         // 通话房间AppID
         public const uint callAppID = 1400587228;
+        // 通话回调锁
+        public static readonly object CallViewManagerLock = new();
         #endregion
 
         #region 变量
@@ -428,12 +431,13 @@ namespace DimensionClient.Common
         }
 
         /// <summary>
-        /// 进行通话
+        /// 通话
         /// </summary>
         /// <param name="callType">通话类别</param>
-        public static void ToCall(CallType callType)
+        /// <param name="isEnter">进行通话</param>
+        public static void ToCall(CallType callType, bool isEnter)
         {
-            CallChanged?.Invoke(callType);
+            CallChanged?.Invoke(callType, isEnter);
         }
 
         /// <summary>
@@ -749,6 +753,32 @@ namespace DimensionClient.Common
                 GlobalDeleteAtom(GlobalFindAtom(HotKeySetting));
             }
             return UnregisterHotKey(ptr, HotKey);
+        }
+
+        /// <summary>
+        /// 创建通话房间
+        /// </summary>
+        /// <param name="roomID">房间ID</param>
+        /// <param name="roomKey">房间密钥</param>
+        /// <param name="callType">通话类型</param>
+        /// <param name="member">房间人员</param>
+        /// <param name="houseOwner">是否为房主</param>
+        /// <returns></returns>
+        public static bool CreatingCallManagement(string roomID, GetRoomKeyModel roomKey, CallType callType, List<string> member, bool houseOwner)
+        {
+            lock (CallViewManagerLock)
+            {
+                if (CallViewManager == null)
+                {
+                    CallViewManager = new CallViewManager(roomID, roomKey, callType, member, houseOwner: houseOwner);
+                    return true;
+                }
+                else
+                {
+                    MessageAlert(typeof(MainWindow), 1, FindResource<string>("PleaseEndCall"));
+                    return false;
+                }
+            }
         }
     }
 }

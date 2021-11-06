@@ -1,4 +1,5 @@
 ﻿using DimensionClient.Component.Windows;
+using DimensionClient.Service.UserManager;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -12,6 +13,7 @@ namespace DimensionClient.Common
     public delegate void RemarkInfoChanged(string friendID);
     public delegate void ChatColumnChanged(string friendID);
     public delegate void NewMessage(string chatID);
+    public delegate void CallInvite(string userID, ClassHelper.CallType callType, string roomID);
 
     public static class SignalRClientHelper
     {
@@ -30,6 +32,8 @@ namespace DimensionClient.Common
         public static event ChatColumnChanged ChatColumnChangedSignalR;
         // 新消息
         public static event NewMessage NewMessageSignalR;
+        // 通话邀请
+        public static event CallInvite CallInviteSignalR;
         #endregion
 
         public static async void InitializeConnection()
@@ -108,7 +112,10 @@ namespace DimensionClient.Common
 
         private static void Connection_CallInvite(string userID, ClassHelper.CallType callType, string roomID)
         {
-
+            if (UserManagerService.FriendValidation(userID, true))
+            {
+                CallInviteSignalR?.Invoke(userID, callType, roomID);
+            }
         }
 
         private static void Connection_OtherDeviceProcessed(string roomID)
