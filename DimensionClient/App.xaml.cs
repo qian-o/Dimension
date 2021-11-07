@@ -57,6 +57,14 @@ namespace DimensionClient
 
         protected override void OnExit(ExitEventArgs e)
         {
+            if (ClassHelper.CallViewManager != null)
+            {
+                ClassHelper.CallViewManager.UnInitialize();
+
+                // 由于卸载为异步操作，强制主线程睡一秒，释放资源。
+                Thread.Sleep(1000);
+            }
+
             Environment.Exit(-1);
         }
 
