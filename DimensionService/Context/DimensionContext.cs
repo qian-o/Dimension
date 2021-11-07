@@ -16,6 +16,7 @@ namespace DimensionService.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // 阿里云 47.96.133.119 密码 Wangxi55
+            // 127.0.0.1
             optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=Dimension;Persist Security Info=True;User ID=sa;Password=Wangxi55");
 
             base.OnConfiguring(optionsBuilder);

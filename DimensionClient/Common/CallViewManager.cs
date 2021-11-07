@@ -222,12 +222,22 @@ namespace DimensionClient.Common
 
         public void onRemoteUserEnterRoom(string userId)
         {
-
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            {
+                callVideoData.IsEnter = true;
+            }
         }
 
         public void onRemoteUserLeaveRoom(string userId, int reason)
         {
-
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            {
+                callVideoData.IsEnter = false;
+            }
+            if (!Video.Any(item => item.UserID != ClassHelper.UserID && item.IsEnter != false))
+            {
+                UnInitialize();
+            }
         }
 
         public void onRemoteVideoStatusUpdated(string userId, TRTCVideoStreamType streamType, TRTCAVStatusType status, TRTCAVStatusChangeReason reason, IntPtr extrainfo)
@@ -342,22 +352,12 @@ namespace DimensionClient.Common
 
         public void onUserEnter(string userId)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
-            {
-                callVideoData.IsEnter = true;
-            }
+
         }
 
         public void onUserExit(string userId, int reason)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
-            {
-                callVideoData.IsEnter = false;
-            }
-            if (!Video.Any(item => item.UserID != ClassHelper.UserID && item.IsEnter != false))
-            {
-                UnInitialize();
-            }
+
         }
 
         public void onUserSubStreamAvailable(string userId, bool available)
