@@ -1540,4 +1540,26 @@
         <controls:MessageFriend DataContext="{Binding}"/>
     </DataTemplate>
 
+    <Style x:Key="BorderCallGradual" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="Disabled">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#FFFFFF" To="#909399" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#909399" To="#FFFFFF" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

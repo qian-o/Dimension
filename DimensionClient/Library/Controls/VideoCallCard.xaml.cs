@@ -59,6 +59,34 @@ namespace DimensionClient.Library.Controls
             }
         }
 
+        #region 麦克风开关(鼠标,触控)
+        private void BrdCallYuyin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.StylusDevice == null)
+            {
+                BrdCallYuyin_PointerUp();
+            }
+        }
+        private void BrdCallYuyin_TouchUp(object sender, TouchEventArgs e)
+        {
+            BrdCallYuyin_PointerUp();
+        }
+        #endregion
+
+        #region 摄像头开关(鼠标,触控)
+        private void BrdCallShipin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.StylusDevice == null)
+            {
+                BrdCallShipin_PointerUp();
+            }
+        }
+        private void BrdCallShipin_TouchUp(object sender, TouchEventArgs e)
+        {
+            BrdCallShipin_PointerUp();
+        }
+        #endregion
+
         #region 挂断电话(鼠标,触控)
         private void BrdCallDianhua_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -89,6 +117,40 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 执行事件
+        private async void BrdCallYuyin_PointerUp()
+        {
+            brdCallYuyin.IsEnabled = false;
+            if (brdCallYuyin.Tag.ToString() == "Enable")
+            {
+                ClassHelper.CallViewManager.MicrophoneSwitch(false);
+                brdCallYuyin.Tag = "Disabled";
+            }
+            else
+            {
+                ClassHelper.CallViewManager.MicrophoneSwitch(true);
+                brdCallYuyin.Tag = "Enable";
+            }
+
+            await Task.Delay(1000);
+            brdCallYuyin.IsEnabled = true;
+        }
+        private async void BrdCallShipin_PointerUp()
+        {
+            brdCallShipin.IsEnabled = false;
+            if (brdCallShipin.Tag.ToString() == "Enable")
+            {
+                ClassHelper.CallViewManager.CameraSwitch(false);
+                brdCallShipin.Tag = "Disabled";
+            }
+            else
+            {
+                ClassHelper.CallViewManager.CameraSwitch(true);
+                brdCallShipin.Tag = "Enable";
+            }
+
+            await Task.Delay(1000);
+            brdCallShipin.IsEnabled = true;
+        }
         private static void BrdCallDianhua_PointerUp()
         {
             ClassHelper.CallViewManager.UnInitialize();

@@ -33,13 +33,13 @@
             </Grid>
         </Border>
         <StackPanel x:Name="stpCallControl" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,24" Visibility="Collapsed">
-            <Border x:Name="brdCallYuyin" Height="50" Width="50" Background="#909399" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand">
+            <Border x:Name="brdCallYuyin" Style="{StaticResource BorderCallGradual}" Height="50" Width="50" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand" Tag="Enable" MouseLeftButtonUp="BrdCallYuyin_MouseLeftButtonUp" TouchUp="BrdCallYuyin_TouchUp">
                 <Border.RenderTransform>
                     <TranslateTransform/>
                 </Border.RenderTransform>
                 <Image Margin="14" Source="/Library/Image/yuyin.png" />
             </Border>
-            <Border x:Name="brdCallShipin" Height="50" Width="50" Background="#FFFFFF" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand">
+            <Border x:Name="brdCallShipin" Style="{StaticResource BorderCallGradual}" Height="50" Width="50" Margin="10,0,10,0" CornerRadius="25" Cursor="Hand" Tag="Enable" MouseLeftButtonUp="BrdCallShipin_MouseLeftButtonUp" TouchUp="BrdCallShipin_TouchUp">
                 <Border.RenderTransform>
                     <TranslateTransform/>
                 </Border.RenderTransform>
