@@ -58,6 +58,19 @@
         </DoubleAnimation>
     </Storyboard>
 
+    <Storyboard x:Key="VideoCallSmallBox_Enlarged">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0.2" To="1" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0.2" To="1" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
     <Storyboard x:Key="InviteCallMain_Show">
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="360" To="0" Duration="0:0:1">
             <DoubleAnimation.EasingFunction>

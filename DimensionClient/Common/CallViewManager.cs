@@ -36,6 +36,9 @@ namespace DimensionClient.Common
             }
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public void Initialize()
         {
             Task.Run(() =>
@@ -57,6 +60,9 @@ namespace DimensionClient.Common
             });
         }
 
+        /// <summary>
+        /// 卸载
+        /// </summary>
         public void UnInitialize()
         {
             Task.Run(() =>
@@ -72,6 +78,24 @@ namespace DimensionClient.Common
                 ClassHelper.CallViewManager = null;
                 ClassHelper.ToCall(_callType, false);
             });
+        }
+
+        /// <summary>
+        /// 摄像头开关
+        /// </summary>
+        /// <param name="state">开关</param>
+        public void CameraSwitch(bool state)
+        {
+            cloud.muteLocalVideo(TRTCVideoStreamType.TRTCVideoStreamTypeBig, state);
+        }
+
+        /// <summary>
+        /// 麦克风开关
+        /// </summary>
+        /// <param name="state">开关</param>
+        public void MicrophoneSwitch(bool state)
+        {
+            cloud.muteLocalAudio(state);
         }
 
         #region ITRTCCloudCallback
@@ -124,25 +148,28 @@ namespace DimensionClient.Common
         {
             if (result >= 0)
             {
-                if (_callType == ClassHelper.CallType.Video)
+                if (Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoData)
                 {
-                    TRTCRenderParams renderParams = new()
+                    callVideoData.IsEnter = true;
+
+                    callVideoData.IsAudio = true;
+                    cloud.startLocalAudio(TRTCAudioQuality.TRTCAudioQualityDefault);
+
+                    if (_callType == ClassHelper.CallType.Video)
                     {
-                        rotation = TRTCVideoRotation.TRTCVideoRotation0,
-                        fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit,
-                        mirrorType = TRTCVideoMirrorType.TRTCVideoMirrorType_Disable
-                    };
-                    cloud.setLocalRenderParams(ref renderParams);
-                    cloud.startLocalPreview(IntPtr.Zero);
-                    if (Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoData)
-                    {
-                        callVideoData.IsEnter = true;
+                        TRTCRenderParams renderParams = new()
+                        {
+                            rotation = TRTCVideoRotation.TRTCVideoRotation0,
+                            fillMode = TRTCVideoFillMode.TRTCVideoFillMode_Fit,
+                            mirrorType = TRTCVideoMirrorType.TRTCVideoMirrorType_Disable
+                        };
+                        cloud.setLocalRenderParams(ref renderParams);
+
+                        callVideoData.IsVideo = true;
+                        cloud.startLocalPreview(IntPtr.Zero);
                         cloud.setLocalVideoRenderCallback(TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, callVideoData);
                     }
                 }
-
-                cloud.startLocalAudio(TRTCAudioQuality.TRTCAudioQualityDefault);
-
                 if (_houseOwner)
                 {
                     CallService.NotifyRoommate();
@@ -347,7 +374,10 @@ namespace DimensionClient.Common
 
         public void onUserAudioAvailable(string userId, bool available)
         {
-
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            {
+                callVideoData.IsAudio = available;
+            }
         }
 
         public void onUserEnter(string userId)
@@ -367,12 +397,18 @@ namespace DimensionClient.Common
 
         public void onUserVideoAvailable(string userId, bool available)
         {
-            if (available)
+            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
             {
-                if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+                callVideoData.IsVideo = available;
+                if (available)
                 {
                     cloud.startRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig, IntPtr.Zero);
                     cloud.setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, callVideoData);
+                }
+                else
+                {
+                    cloud.stopRemoteView(userId, TRTCVideoStreamType.TRTCVideoStreamTypeBig);
+                    cloud.setRemoteVideoRenderCallback(userId, TRTCVideoPixelFormat.TRTCVideoPixelFormat_BGRA32, TRTCVideoBufferType.TRTCVideoBufferType_Buffer, null);
                 }
             }
         }

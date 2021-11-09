@@ -1,6 +1,7 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +25,7 @@ namespace DimensionClient.Library.Controls
         private readonly Storyboard videoCallOpacityHide = ClassHelper.FindResource<Storyboard>("VideoCallOpacity_Hide");
         private readonly Storyboard videoCallMainHide = ClassHelper.FindResource<Storyboard>("VideoCallMain_Hide");
         private readonly Storyboard videoCallSmallBoxShrink = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Shrink");
+        private readonly Storyboard videoCallSmallBoxEnlarged = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Enlarged");
 
         public VideoCallCard()
         {
@@ -40,24 +42,20 @@ namespace DimensionClient.Library.Controls
             brdCallYuyin.BeginStoryboard(videoCallYuyinShow);
             brdCallShipin.BeginStoryboard(videoCallShipinShow);
             brdCallDianhua.BeginStoryboard(videoCallDianhuaShow);
-            foreach (CallVideoDataModel item in ClassHelper.CallViewManager.Video)
+
+            if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoSmall)
             {
-                if (item.UserID == ClassHelper.UserID)
+                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Source = callVideoSmall, Path = new PropertyPath(nameof(callVideoSmall.Writeable)) });
+            }
+
+            if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallVideoDataModel callVideoMain)
+            {
+                if (callVideoMain.IsVideo)
                 {
-                    imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Source = item, Path = new PropertyPath(nameof(item.Writeable)) });
+                    Lessen();
                 }
-                else
-                {
-                    if (item.Writeable != null)
-                    {
-                        Lessen();
-                    }
-                    else
-                    {
-                        item.PropertyChanged += CallVideoData_PropertyChanged;
-                    }
-                    imgMainBox.SetBinding(Image.SourceProperty, new Binding { Source = item, Path = new PropertyPath(nameof(item.Writeable)) });
-                }
+                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Source = callVideoMain, Path = new PropertyPath(nameof(callVideoMain.Writeable)) });
+                callVideoMain.PropertyChanged += CallVideoMain_PropertyChanged;
             }
         }
 
@@ -75,11 +73,18 @@ namespace DimensionClient.Library.Controls
         }
         #endregion
 
-        private void CallVideoData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void CallVideoMain_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Writeable")
+            if (sender is CallVideoDataModel callVideoData)
             {
-                Lessen();
+                if (callVideoData.IsVideo)
+                {
+                    Dispatcher.Invoke(() => Lessen());
+                }
+                else
+                {
+                    Dispatcher.Invoke(() => Amplification());
+                }
             }
         }
 
@@ -107,6 +112,16 @@ namespace DimensionClient.Library.Controls
             imgSmallBox.Stretch = Stretch.Uniform;
             ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(50);
             grdSmallBox.BeginStoryboard(videoCallSmallBoxShrink);
+        }
+        private async void Amplification()
+        {
+            brdSmallBox.Padding = new Thickness(0);
+            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            grdSmallBox.VerticalAlignment = VerticalAlignment.Stretch;
+            imgSmallBox.Stretch = Stretch.UniformToFill;
+            grdSmallBox.BeginStoryboard(videoCallSmallBoxEnlarged);
+            await Task.Delay(800);
+            ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(0);
         }
         #endregion
     }
