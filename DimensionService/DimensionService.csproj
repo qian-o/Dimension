@@ -87,12 +87,12 @@
 		<PackageReference Include="aliyun-net-sdk-core" Version="1.5.10" />
 		<PackageReference Include="CHSPinYinConv" Version="1.0.0" />
 		<PackageReference Include="CHTCHSConv" Version="1.0.0" />
-		<PackageReference Include="log4net" Version="2.0.12" />
-		<PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.11" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
+		<PackageReference Include="log4net" Version="2.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="5.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.12" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.12">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -104,7 +104,7 @@
 		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-		<PackageReference Include="TencentCloudSDK" Version="3.0.393" />
+		<PackageReference Include="TencentCloudSDK" Version="3.0.409" />
 	</ItemGroup>
 
 </Project>
