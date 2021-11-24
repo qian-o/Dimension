@@ -26,6 +26,7 @@ namespace DimensionClient.Library.Controls
         private readonly Storyboard videoCallMainHide = ClassHelper.FindResource<Storyboard>("VideoCallMain_Hide");
         private readonly Storyboard videoCallSmallBoxShrink = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Shrink");
         private readonly Storyboard videoCallSmallBoxEnlarged = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Enlarged");
+        private bool isSwitch = false;
 
         public VideoCallCard()
         {
@@ -45,7 +46,8 @@ namespace DimensionClient.Library.Controls
 
             if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoSmall)
             {
-                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Source = callVideoSmall, Path = new PropertyPath(nameof(callVideoSmall.Writeable)) });
+                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callVideoSmall.Writeable)) });
+                imgSmallBox.DataContext = callVideoSmall;
             }
 
             if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallVideoDataModel callVideoMain)
@@ -54,7 +56,8 @@ namespace DimensionClient.Library.Controls
                 {
                     Lessen();
                 }
-                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Source = callVideoMain, Path = new PropertyPath(nameof(callVideoMain.Writeable)) });
+                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callVideoMain.Writeable)) });
+                imgMainBox.DataContext = callVideoMain;
                 callVideoMain.PropertyChanged += CallVideoMain_PropertyChanged;
             }
         }
@@ -98,6 +101,20 @@ namespace DimensionClient.Library.Controls
         private void BrdCallDianhua_TouchUp(object sender, TouchEventArgs e)
         {
             BrdCallDianhua_PointerUp();
+        }
+        #endregion
+
+        #region 切换画面(鼠标,触控)
+        private void GrdSmallBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.StylusDevice == null)
+            {
+                GrdSmallBox_PointerUp();
+            }
+        }
+        private void GrdSmallBox_TouchUp(object sender, TouchEventArgs e)
+        {
+            GrdSmallBox_PointerUp();
         }
         #endregion
 
@@ -155,6 +172,15 @@ namespace DimensionClient.Library.Controls
         {
             ClassHelper.CallViewManager.UnInitialize();
         }
+        private void GrdSmallBox_PointerUp()
+        {
+            if (isSwitch)
+            {
+                CallVideoDataModel callVideoData = imgSmallBox.DataContext as CallVideoDataModel;
+                imgSmallBox.DataContext = imgMainBox.DataContext;
+                imgMainBox.DataContext = callVideoData;
+            }
+        }
         public async void UnInitializeCard()
         {
             BeginStoryboard(videoCallOpacityHide);
@@ -168,6 +194,7 @@ namespace DimensionClient.Library.Controls
         }
         private void Lessen()
         {
+            isSwitch = true;
             brdSmallBox.Padding = new Thickness(20);
             grdSmallBox.HorizontalAlignment = HorizontalAlignment.Right;
             grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
@@ -177,6 +204,7 @@ namespace DimensionClient.Library.Controls
         }
         private async void Amplification()
         {
+            isSwitch = false;
             brdSmallBox.Padding = new Thickness(0);
             grdSmallBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             grdSmallBox.VerticalAlignment = VerticalAlignment.Stretch;

@@ -2,6 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Name="UserControlMain" Background="#000000" Loaded="UserControlMain_Loaded">
+    <UserControl.CacheMode>
+        <BitmapCache/>
+    </UserControl.CacheMode>
     <Grid x:Name="grdMain">
         <Grid.RenderTransform>
             <TransformGroup>
@@ -14,7 +17,7 @@
         </Grid.RenderTransformOrigin>
         <Image x:Name="imgMainBox" Stretch="UniformToFill"/>
         <Border x:Name="brdSmallBox">
-            <Grid x:Name="grdSmallBox">
+            <Grid x:Name="grdSmallBox" MouseLeftButtonUp="GrdSmallBox_MouseLeftButtonUp" TouchUp="GrdSmallBox_TouchUp">
                 <Grid.RenderTransform>
                     <ScaleTransform/>
                 </Grid.RenderTransform>
