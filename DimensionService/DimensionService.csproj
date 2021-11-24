@@ -107,4 +107,10 @@
 		<PackageReference Include="TencentCloudSDK" Version="3.0.409" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Log4net.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

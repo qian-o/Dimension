@@ -26,7 +26,7 @@ namespace DimensionService
                     {
                         webBuilder.ConfigureLogging((context, options) =>
                         {
-                            options.AddLog4Net(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "log4net.config"));
+                            options.AddLog4Net(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Log4net.config"));
                         });
                         webBuilder.UseDefaultServiceProvider(options => options.ValidateScopes = false);
                         webBuilder.UseStartup<Startup>();

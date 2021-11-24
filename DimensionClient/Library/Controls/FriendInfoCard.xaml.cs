@@ -230,11 +230,11 @@ namespace DimensionClient.Library.Controls
                 ClassHelper.UserID,
                 friendData.UserID
             };
-            if (CallService.CreateCall(member, ClassHelper.CallType.Video, out string roomID))
+            if (CallService.CreateCall(member, ClassHelper.CallType.Voice, out string roomID))
             {
                 if (CallService.GetRoomKey(roomID, out GetRoomKeyModel roomKey))
                 {
-                    if (ClassHelper.CreatingCallManagement(roomID, roomKey, ClassHelper.CallType.Video, member, true))
+                    if (ClassHelper.CreatingCallManagement(roomID, roomKey, ClassHelper.CallType.Voice, member, true))
                     {
                         ClassHelper.CallViewManager.Initialize();
                     }
