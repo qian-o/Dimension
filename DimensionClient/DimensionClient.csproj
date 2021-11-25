@@ -79,7 +79,7 @@
 		<None Remove="Library\Image\shipin.png" />
 		<None Remove="Library\Image\yuyin.png" />
 		<None Remove="Library\Image\图片.png" />
-		<None Remove="log4net.config" />
+		<None Remove="Log4net.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -87,7 +87,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Log4net.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 
