@@ -104,7 +104,7 @@
 		<PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
-		<PackageReference Include="TencentCloudSDK" Version="3.0.409" />
+		<PackageReference Include="TencentCloudSDK" Version="3.0.416" />
 	</ItemGroup>
 
 </Project>
