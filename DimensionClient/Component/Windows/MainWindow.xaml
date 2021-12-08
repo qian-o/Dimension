@@ -101,6 +101,7 @@
                 <Button x:Name="btnClose" Style="{StaticResource ButtonClose}" Height="48" Width="50" Click="BtnClose_Click"/>
             </StackPanel>
         </Grid>
+        <controls:CallMenu Grid.RowSpan="2"/>
         <Grid Grid.Row="1" Panel.ZIndex="2">
             <StackPanel x:Name="stpHint" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" IsHitTestVisible="False"/>
             <StackPanel x:Name="stpNotification" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top"/>

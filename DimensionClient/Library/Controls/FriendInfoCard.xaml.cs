@@ -1,9 +1,7 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
-using DimensionClient.Service.Call;
 using DimensionClient.Service.Chat;
 using DimensionClient.Service.UserManager;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,7 +56,7 @@ namespace DimensionClient.Library.Controls
         {
             if (ClassHelper.CallViewManager == null)
             {
-                ThreadPool.QueueUserWorkItem(VoiceCall);
+                ClassHelper.TransferringData(typeof(CallMenu), ClassHelper.DataPassingType.SelectCall, friendData.UserID);
             }
             else
             {
@@ -220,28 +218,6 @@ namespace DimensionClient.Library.Controls
                 ClassHelper.ChatFriendID = friendData.UserID;
                 ClassHelper.SwitchRoute(ClassHelper.PageType.MessageCenterPage);
             };
-        }
-        private void VoiceCall(object data)
-        {
-            ClassHelper.ShowMask(true);
-
-            List<string> member = new()
-            {
-                ClassHelper.UserID,
-                friendData.UserID
-            };
-            if (CallService.CreateCall(member, ClassHelper.CallType.Voice, out string roomID))
-            {
-                if (CallService.GetRoomKey(roomID, out GetRoomKeyModel roomKey))
-                {
-                    if (ClassHelper.CreatingCallManagement(roomID, roomKey, ClassHelper.CallType.Voice, member, true))
-                    {
-                        ClassHelper.CallViewManager.Initialize();
-                    }
-                }
-            }
-
-            ClassHelper.ShowMask(false);
         }
         #endregion
     }

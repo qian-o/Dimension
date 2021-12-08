@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace DimensionClient.Models
 {
-    public class CallVideoDataModel : ModelBase, ITRTCVideoRenderCallback
+    public class CallViewDataModel : ModelBase, ITRTCVideoRenderCallback
     {
         private readonly object dataObject = new();
         private WriteableBitmap writeable;

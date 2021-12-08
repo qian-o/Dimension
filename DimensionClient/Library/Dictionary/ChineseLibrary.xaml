@@ -67,4 +67,6 @@
     <system:String x:Key="IncomingVoiceCall">发起了语音通话</system:String>
     <system:String x:Key="IncomingVideoCall">发起了视频通话</system:String>
     <system:String x:Key="PleaseEndCall">请先结束当前通话。</system:String>
+    <system:String x:Key="VoiceTalkBlank">语 音 通 话</system:String>
+    <system:String x:Key="VideoTalkBlank">视 频 通 话</system:String>
 </ResourceDictionary>

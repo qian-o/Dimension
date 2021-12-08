@@ -217,6 +217,7 @@ namespace DimensionClient.Component.Windows
             switch (callType)
             {
                 case ClassHelper.CallType.Voice:
+                    VoiceCall(isEnter);
                     break;
                 case ClassHelper.CallType.Video:
                     VideoCall(isEnter);
@@ -353,6 +354,16 @@ namespace DimensionClient.Component.Windows
         {
             Border border = (Border)sender;
             ClassHelper.SwitchRoute((ClassHelper.PageType)Enum.Parse(typeof(ClassHelper.PageType), $"{border.Name[3..]}Page"));
+        }
+        private void VoiceCall(bool isEnter)
+        {
+            Dispatcher.Invoke(delegate
+            {
+                if (isEnter)
+                {
+
+                }
+            });
         }
         private void VideoCall(bool isEnter)
         {

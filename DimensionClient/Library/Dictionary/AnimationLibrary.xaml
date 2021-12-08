@@ -133,4 +133,30 @@
         <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="-10" Duration="0:0:0.5"/>
     </Storyboard>
 
+    <Storyboard x:Key="CallMenu_Show">
+        <DoubleAnimation Storyboard.TargetName="grdMain" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="grdCallMenu" Storyboard.TargetProperty="RenderTransform.Y" From="140" To="0" Duration="0:0:0.8">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <Storyboard x:Key="CallMenu_Hide">
+        <DoubleAnimation Storyboard.TargetName="grdMain" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="grdCallMenu" Storyboard.TargetProperty="RenderTransform.Y" From="0" To="140" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
 </ResourceDictionary>

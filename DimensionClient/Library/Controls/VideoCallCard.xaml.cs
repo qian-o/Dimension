@@ -44,21 +44,21 @@ namespace DimensionClient.Library.Controls
             brdCallShipin.BeginStoryboard(videoCallShipinShow);
             brdCallDianhua.BeginStoryboard(videoCallDianhuaShow);
 
-            if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoSmall)
+            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callViewSmall)
             {
-                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callVideoSmall.Writeable)) });
-                imgSmallBox.DataContext = callVideoSmall;
+                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewSmall.Writeable)) });
+                imgSmallBox.DataContext = callViewSmall;
             }
 
-            if (ClassHelper.CallViewManager.Video.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallVideoDataModel callVideoMain)
+            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallViewDataModel callViewMain)
             {
-                if (callVideoMain.IsVideo)
+                if (callViewMain.IsVideo)
                 {
                     Lessen();
                 }
-                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callVideoMain.Writeable)) });
-                imgMainBox.DataContext = callVideoMain;
-                callVideoMain.PropertyChanged += CallVideoMain_PropertyChanged;
+                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewMain.Writeable)) });
+                imgMainBox.DataContext = callViewMain;
+                callViewMain.PropertyChanged += CallViewMain_PropertyChanged;
             }
         }
 
@@ -118,11 +118,11 @@ namespace DimensionClient.Library.Controls
         }
         #endregion
 
-        private void CallVideoMain_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void CallViewMain_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (sender is CallVideoDataModel callVideoData)
+            if (sender is CallViewDataModel callViewData)
             {
-                if (callVideoData.IsVideo)
+                if (callViewData.IsVideo)
                 {
                     Dispatcher.Invoke(() => Lessen());
                 }
@@ -176,7 +176,7 @@ namespace DimensionClient.Library.Controls
         {
             if (isSwitch)
             {
-                CallVideoDataModel callVideoData = imgSmallBox.DataContext as CallVideoDataModel;
+                CallViewDataModel callVideoData = imgSmallBox.DataContext as CallViewDataModel;
                 imgSmallBox.DataContext = imgMainBox.DataContext;
                 imgMainBox.DataContext = callVideoData;
             }

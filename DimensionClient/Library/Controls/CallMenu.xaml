@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="DimensionClient.Library.Controls.CallMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid x:Name="grdMain" Background="Transparent" MouseLeftButtonUp="GrdMain_MouseLeftButtonUp" TouchUp="GrdMain_TouchUp">
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Setter Property="Opacity" Value="0"/>
+                <Style.Triggers>
+                    <Trigger Property="Opacity" Value="0">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        <Border Background="#FFFFFF" Opacity="0.4"/>
+        <Grid x:Name="grdCallMenu" Height="140" Width="400" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
+            <Border Background="#FFFFFF" CornerRadius="10,10,0,0">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#C0C4CC" Opacity="0.2"/>
+                </Border.Effect>
+            </Border>
+            <UniformGrid Rows="2" Margin="20,10,20,10">
+                <Button Style="{StaticResource ButtonSuccess}" Content="{DynamicResource VoiceTalkBlank}" Tag="Voice" Click="BtnHandle_Click"/>
+                <Button Style="{StaticResource ButtonPrimary}" Content="{DynamicResource VideoTalkBlank}" Tag="Video" Click="BtnHandle_Click"/>
+            </UniformGrid>
+        </Grid>
+    </Grid>
+</UserControl>

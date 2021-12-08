@@ -197,7 +197,8 @@ namespace DimensionClient.Common
             SelectFriend,
             ScreenCapture,
             Paste,
-            MessageFocus
+            MessageFocus,
+            SelectCall
         }
         // 通话类别
         public enum CallType

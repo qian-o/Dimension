@@ -17,7 +17,7 @@ namespace DimensionClient.Common
         private readonly bool _houseOwner;
 
         private ITRTCCloud cloud;
-        public List<CallVideoDataModel> Video { get; private set; } = new List<CallVideoDataModel>();
+        public List<CallViewDataModel> CallViews { get; private set; } = new List<CallViewDataModel>();
 
         public CallViewManager(string roomID, GetRoomKeyModel roomKey, ClassHelper.CallType callType, List<string> member, bool houseOwner = false)
         {
@@ -28,11 +28,11 @@ namespace DimensionClient.Common
 
             foreach (string item in member)
             {
-                CallVideoDataModel callVideoData = new()
+                CallViewDataModel callVideoData = new()
                 {
                     UserID = item
                 };
-                Video.Add(callVideoData);
+                CallViews.Add(callVideoData);
             }
         }
 
@@ -148,7 +148,7 @@ namespace DimensionClient.Common
         {
             if (result >= 0)
             {
-                if (Video.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallVideoDataModel callVideoData)
+                if (CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callVideoData)
                 {
                     callVideoData.IsEnter = true;
 
@@ -249,7 +249,7 @@ namespace DimensionClient.Common
 
         public void onRemoteUserEnterRoom(string userId)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            if (CallViews.FirstOrDefault(item => item.UserID == userId) is CallViewDataModel callVideoData)
             {
                 callVideoData.IsEnter = true;
             }
@@ -257,11 +257,11 @@ namespace DimensionClient.Common
 
         public void onRemoteUserLeaveRoom(string userId, int reason)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            if (CallViews.FirstOrDefault(item => item.UserID == userId) is CallViewDataModel callVideoData)
             {
                 callVideoData.IsEnter = false;
             }
-            if (!Video.Any(item => item.UserID != ClassHelper.UserID && item.IsEnter != false))
+            if (!CallViews.Any(item => item.UserID != ClassHelper.UserID && item.IsEnter != false))
             {
                 UnInitialize();
             }
@@ -374,7 +374,7 @@ namespace DimensionClient.Common
 
         public void onUserAudioAvailable(string userId, bool available)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            if (CallViews.FirstOrDefault(item => item.UserID == userId) is CallViewDataModel callVideoData)
             {
                 callVideoData.IsAudio = available;
             }
@@ -397,7 +397,7 @@ namespace DimensionClient.Common
 
         public void onUserVideoAvailable(string userId, bool available)
         {
-            if (Video.FirstOrDefault(item => item.UserID == userId) is CallVideoDataModel callVideoData)
+            if (CallViews.FirstOrDefault(item => item.UserID == userId) is CallViewDataModel callVideoData)
             {
                 callVideoData.IsVideo = available;
                 if (available)
