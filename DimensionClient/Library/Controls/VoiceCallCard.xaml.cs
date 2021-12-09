@@ -1,5 +1,6 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,6 +46,7 @@ namespace DimensionClient.Library.Controls
                     Answer();
                 }
                 imgFriend.DataContext = callViewFriend.UserID;
+                callViewFriend.PropertyChanged += CallViewFriend_PropertyChanged;
             }
 
             BeginStoryboard(callOpacityShow);
@@ -87,6 +89,17 @@ namespace DimensionClient.Library.Controls
             BrdCallDianhua_PointerUp();
         }
         #endregion
+
+        private void CallViewFriend_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is CallViewDataModel callViewData)
+            {
+                if (callViewData.IsEnter == true)
+                {
+                    Dispatcher.Invoke(() => Answer());
+                }
+            }
+        }
 
         private void SignalRClientHelper_AcceptCallSignalR(string userID, bool isAcceptCall)
         {
