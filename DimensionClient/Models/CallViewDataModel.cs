@@ -13,6 +13,7 @@ namespace DimensionClient.Models
         private readonly object dataObject = new();
         private WriteableBitmap writeable;
         private Int32Rect int32Rect;
+        private bool? isEnter;
         private bool isVideo;
         private bool isAudio;
 
@@ -50,7 +51,15 @@ namespace DimensionClient.Models
         /// <summary>
         /// 是否进入房间
         /// </summary>
-        public bool? IsEnter { get; set; }
+        public bool? IsEnter
+        {
+            get => isEnter;
+            set
+            {
+                isEnter = value;
+                OnPropertyChanged(nameof(IsEnter));
+            }
+        }
 
         /// <summary>
         /// 是否显示视频

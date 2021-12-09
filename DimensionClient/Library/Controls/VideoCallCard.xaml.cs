@@ -17,15 +17,15 @@ namespace DimensionClient.Library.Controls
     /// </summary>
     public partial class VideoCallCard : UserControl
     {
-        private readonly Storyboard videoCallOpacityShow = ClassHelper.FindResource<Storyboard>("VideoCallOpacity_Show");
-        private readonly Storyboard videoCallMainShow = ClassHelper.FindResource<Storyboard>("VideoCallMain_Show");
-        private readonly Storyboard videoCallYuyinShow = ClassHelper.FindResource<Storyboard>("VideoCallYuyin_Show");
-        private readonly Storyboard videoCallShipinShow = ClassHelper.FindResource<Storyboard>("VideoCallShipin_Show");
-        private readonly Storyboard videoCallDianhuaShow = ClassHelper.FindResource<Storyboard>("VideoCallDianhua_Show");
-        private readonly Storyboard videoCallOpacityHide = ClassHelper.FindResource<Storyboard>("VideoCallOpacity_Hide");
-        private readonly Storyboard videoCallMainHide = ClassHelper.FindResource<Storyboard>("VideoCallMain_Hide");
-        private readonly Storyboard videoCallSmallBoxShrink = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Shrink");
-        private readonly Storyboard videoCallSmallBoxEnlarged = ClassHelper.FindResource<Storyboard>("VideoCallSmallBox_Enlarged");
+        private readonly Storyboard callOpacityShow = ClassHelper.FindResource<Storyboard>("CallOpacity_Show");
+        private readonly Storyboard callMainShow = ClassHelper.FindResource<Storyboard>("CallMain_Show");
+        private readonly Storyboard callYuyinShow = ClassHelper.FindResource<Storyboard>("CallYuyin_Show");
+        private readonly Storyboard callShipinShow = ClassHelper.FindResource<Storyboard>("CallShipin_Show");
+        private readonly Storyboard callDianhuaShow = ClassHelper.FindResource<Storyboard>("CallDianhua_Show");
+        private readonly Storyboard callOpacityHide = ClassHelper.FindResource<Storyboard>("CallOpacity_Hide");
+        private readonly Storyboard callMainHide = ClassHelper.FindResource<Storyboard>("CallMain_Hide");
+        private readonly Storyboard callSmallBoxShrink = ClassHelper.FindResource<Storyboard>("CallSmallBox_Shrink");
+        private readonly Storyboard callSmallBoxEnlarged = ClassHelper.FindResource<Storyboard>("CallSmallBox_Enlarged");
         private bool isSwitch = false;
 
         public VideoCallCard()
@@ -35,15 +35,6 @@ namespace DimensionClient.Library.Controls
 
         private async void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
-            BeginStoryboard(videoCallOpacityShow);
-            grdMain.BeginStoryboard(videoCallMainShow);
-            stpCallControl.Visibility = Visibility.Collapsed;
-            await Task.Delay(800);
-            stpCallControl.Visibility = Visibility.Visible;
-            brdCallYuyin.BeginStoryboard(videoCallYuyinShow);
-            brdCallShipin.BeginStoryboard(videoCallShipinShow);
-            brdCallDianhua.BeginStoryboard(videoCallDianhuaShow);
-
             if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callViewSmall)
             {
                 imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewSmall.Writeable)) });
@@ -60,6 +51,14 @@ namespace DimensionClient.Library.Controls
                 imgMainBox.DataContext = callViewMain;
                 callViewMain.PropertyChanged += CallViewMain_PropertyChanged;
             }
+
+            BeginStoryboard(callOpacityShow);
+            grdMain.BeginStoryboard(callMainShow);
+            await Task.Delay(800);
+            stpCallControl.Visibility = Visibility.Visible;
+            brdCallYuyin.BeginStoryboard(callYuyinShow);
+            brdCallShipin.BeginStoryboard(callShipinShow);
+            brdCallDianhua.BeginStoryboard(callDianhuaShow);
         }
 
         #region 麦克风开关(鼠标,触控)
@@ -183,8 +182,8 @@ namespace DimensionClient.Library.Controls
         }
         public async void UnInitializeCard()
         {
-            BeginStoryboard(videoCallOpacityHide);
-            grdMain.BeginStoryboard(videoCallMainHide);
+            BeginStoryboard(callOpacityHide);
+            grdMain.BeginStoryboard(callMainHide);
             await Task.Delay(800);
             Visibility = Visibility.Collapsed;
             if (VisualTreeHelper.GetParent(this) is Grid grid)
@@ -200,7 +199,7 @@ namespace DimensionClient.Library.Controls
             grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
             imgSmallBox.Stretch = Stretch.Uniform;
             ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(50);
-            grdSmallBox.BeginStoryboard(videoCallSmallBoxShrink);
+            grdSmallBox.BeginStoryboard(callSmallBoxShrink);
         }
         private async void Amplification()
         {
@@ -209,7 +208,7 @@ namespace DimensionClient.Library.Controls
             grdSmallBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             grdSmallBox.VerticalAlignment = VerticalAlignment.Stretch;
             imgSmallBox.Stretch = Stretch.UniformToFill;
-            grdSmallBox.BeginStoryboard(videoCallSmallBoxEnlarged);
+            grdSmallBox.BeginStoryboard(callSmallBoxEnlarged);
             await Task.Delay(800);
             ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(0);
         }

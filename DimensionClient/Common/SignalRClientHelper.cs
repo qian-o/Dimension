@@ -14,6 +14,8 @@ namespace DimensionClient.Common
     public delegate void ChatColumnChanged(string friendID);
     public delegate void NewMessage(string chatID);
     public delegate void CallInvite(string userID, ClassHelper.CallType callType, string roomID);
+    public delegate void OtherDeviceProcessed(string roomID);
+    public delegate void AcceptCall(string userID, bool isAcceptCall);
 
     public static class SignalRClientHelper
     {
@@ -34,6 +36,10 @@ namespace DimensionClient.Common
         public static event NewMessage NewMessageSignalR;
         // 通话邀请
         public static event CallInvite CallInviteSignalR;
+        // 其他设备处理
+        public static event OtherDeviceProcessed OtherDeviceProcessedSignalR;
+        // 是否应答通话
+        public static event AcceptCall AcceptCallSignalR;
         #endregion
 
         public static async void InitializeConnection()
@@ -125,7 +131,7 @@ namespace DimensionClient.Common
 
         private static void Connection_AcceptCall(string userID, bool isAcceptCall)
         {
-
+            AcceptCallSignalR?.Invoke(userID, isAcceptCall);
         }
     }
 }

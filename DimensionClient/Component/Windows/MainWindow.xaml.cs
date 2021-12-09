@@ -361,7 +361,20 @@ namespace DimensionClient.Component.Windows
             {
                 if (isEnter)
                 {
-
+                    VoiceCallCard voiceCallCard = new();
+                    Grid.SetRowSpan(voiceCallCard, 2);
+                    Panel.SetZIndex(voiceCallCard, 1);
+                    grdMain.Children.Add(voiceCallCard);
+                }
+                else
+                {
+                    foreach (UIElement item in grdMain.Children)
+                    {
+                        if (item is VoiceCallCard callCard)
+                        {
+                            callCard.UnInitializeCard();
+                        }
+                    }
                 }
             });
         }
