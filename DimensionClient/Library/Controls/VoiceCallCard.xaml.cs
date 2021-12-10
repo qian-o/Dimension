@@ -107,15 +107,11 @@ namespace DimensionClient.Library.Controls
             {
                 Dispatcher.Invoke(async delegate
                 {
-                    if (isAcceptCall)
-                    {
-                        Answer();
-                    }
-                    else
+                    if (!isAcceptCall)
                     {
                         BeginStoryboard(voiceCallReject);
                         await Task.Delay(500);
-                        UnInitializeCard();
+                        ClassHelper.CallViewManager.UnInitialize();
                     }
                 });
             }

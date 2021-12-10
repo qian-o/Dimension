@@ -35,6 +35,8 @@ namespace DimensionClient.Library.Controls
 
         private async void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
+            SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
+
             if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callViewSmall)
             {
                 imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewSmall.Writeable)) });
@@ -129,6 +131,20 @@ namespace DimensionClient.Library.Controls
                 {
                     Dispatcher.Invoke(() => Amplification());
                 }
+            }
+        }
+
+        private void SignalRClientHelper_AcceptCallSignalR(string userID, bool isAcceptCall)
+        {
+            if (ClassHelper.CallViewManager.CallViews.Any(item => item.UserID == userID))
+            {
+                Dispatcher.Invoke(delegate
+                {
+                    if (!isAcceptCall)
+                    {
+                        ClassHelper.CallViewManager.UnInitialize();
+                    }
+                });
             }
         }
 
