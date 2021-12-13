@@ -153,7 +153,7 @@ namespace DimensionClient.Library.Controls
         private void Answer()
         {
             BeginStoryboard(voiceCallAnswer);
-            imgFriend.BeginStoryboard(voiceCallFriendAnswer);
+            brdFriend.BeginStoryboard(voiceCallFriendAnswer);
         }
         #endregion
     }

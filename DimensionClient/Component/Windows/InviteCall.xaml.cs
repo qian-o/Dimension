@@ -3,6 +3,7 @@ using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.Call;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace DimensionClient.Component.Windows
@@ -70,26 +70,13 @@ namespace DimensionClient.Component.Windows
             showHint.Begin(txbAccept);
         }
 
-        #region 接受邀请(鼠标,触控)
-        private void GrbAccept_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.StylusDevice == null)
-            {
-                GrbAccept_PointerUp();
-            }
-        }
-        private void GrbAccept_TouchUp(object sender, TouchEventArgs e)
-        {
-            GrbAccept_PointerUp();
-        }
-        #endregion
-
-        #region 执行事件
-        private void GrbAccept_PointerUp()
+        private void GrbAccept_PointerUp(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem(JoinRoom);
             CloseAnimation();
         }
+
+        #region 执行事件
         private async void CloseAnimation()
         {
             hideInfo.Begin(brdInfo);

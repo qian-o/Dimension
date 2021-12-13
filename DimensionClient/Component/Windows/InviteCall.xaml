@@ -1,6 +1,6 @@
 ﻿<Window x:Class="DimensionClient.Component.Windows.InviteCall"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:common="clr-namespace:DimensionClient.Common"
         x:Name="InviteCallMain" Height="360" Width="290" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" Background="Transparent" Loaded="InviteCallMain_Loaded">
     <Window.Effect>
         <DropShadowEffect Color="#888888" ShadowDepth="0" Opacity="0.4" />
@@ -149,7 +149,7 @@
                     </StackPanel>
                 </UniformGrid>
             </Grid>
-            <Grid x:Name="grbAccept" Grid.Row="1" Background="#FF6D00" WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonUp="GrbAccept_MouseLeftButtonUp" TouchUp="GrbAccept_TouchUp">
+            <Grid x:Name="grbAccept" Grid.Row="1" Background="#FF6D00" WindowChrome.IsHitTestVisibleInChrome="True" common:PointerEventHelper.PointerUp="GrbAccept_PointerUp">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock x:Name="txbAcceptIcon" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource ElementIcon}">
                         <TextBlock.RenderTransform>

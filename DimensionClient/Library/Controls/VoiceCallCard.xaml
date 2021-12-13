@@ -69,7 +69,7 @@
                 <EllipseGeometry Center="50,50" RadiusX="50" RadiusY="50"/>
             </Grid.Clip>
             <Image x:Name="imgFriend" Source="{Binding Converter={StaticResource HeadPortraitConvert}, ConverterParameter=200}"/>
-            <Border Background="#80303133">
+            <Border x:Name="brdFriend" Background="#80303133">
                 <controls:Waiting Foreground="#C0C4CC"/>
             </Border>
         </Grid>
