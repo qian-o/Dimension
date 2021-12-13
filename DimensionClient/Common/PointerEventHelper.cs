@@ -18,16 +18,16 @@ namespace DimensionClient.Common
             lock (pointerUpEvents)
             {
                 PointerEventModel pointer = PointerEventModel.Instance(handler);
-                pointerUpEvents.Add(pointer);
                 element.MouseLeftButtonUp += pointer.MouseButtonEvent;
                 element.TouchUp += pointer.TouchEvent;
+                pointerUpEvents.Add(pointer);
             }
         }
         public static void RemovePointerUpHandler(this UIElement element, EventHandler handler)
         {
             lock (pointerUpEvents)
             {
-                if (pointerUpEvents.Find(item => item.EventHandler == handler) is PointerEventModel pointer)
+                if (pointerUpEvents.Find(item => item.EventHandler.Equals(handler)) is PointerEventModel pointer)
                 {
                     element.MouseLeftButtonUp -= pointer.MouseButtonEvent;
                     element.TouchUp -= pointer.TouchEvent;
@@ -45,16 +45,16 @@ namespace DimensionClient.Common
             lock (pointerDownEvents)
             {
                 PointerEventModel pointer = PointerEventModel.Instance(handler);
-                pointerDownEvents.Add(pointer);
                 element.MouseLeftButtonDown += pointer.MouseButtonEvent;
                 element.TouchDown += pointer.TouchEvent;
+                pointerDownEvents.Add(pointer);
             }
         }
         public static void RemovePointerDownHandler(this UIElement element, EventHandler handler)
         {
             lock (pointerDownEvents)
             {
-                if (pointerDownEvents.Find(item => item.EventHandler == handler) is PointerEventModel pointer)
+                if (pointerDownEvents.Find(item => item.EventHandler.Equals(handler)) is PointerEventModel pointer)
                 {
                     element.MouseLeftButtonDown -= pointer.MouseButtonEvent;
                     element.TouchDown -= pointer.TouchEvent;
