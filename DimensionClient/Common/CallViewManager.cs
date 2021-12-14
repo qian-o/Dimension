@@ -43,6 +43,7 @@ namespace DimensionClient.Common
         {
             Task.Run(() =>
             {
+                ClassHelper.ToCall(_callType, true);
                 cloud = ITRTCCloud.getTRTCShareInstance();
                 TRTCParams tRTCParams = new()
                 {
@@ -56,7 +57,6 @@ namespace DimensionClient.Common
                 cloud.addCallback(this);
 
                 cloud.enterRoom(ref tRTCParams, _callType == ClassHelper.CallType.Video ? TRTCAppScene.TRTCAppSceneVideoCall : TRTCAppScene.TRTCAppSceneAudioCall);
-                ClassHelper.ToCall(_callType, true);
             });
         }
 
@@ -67,6 +67,7 @@ namespace DimensionClient.Common
         {
             Task.Run(() =>
             {
+                ClassHelper.ToCall(_callType, false);
                 cloud.exitRoom();
                 ITRTCCloud.destroyTRTCShareInstance();
                 cloud.Dispose();
@@ -76,7 +77,6 @@ namespace DimensionClient.Common
                     CallService.DissolutionRoom();
                 }
                 ClassHelper.CallViewManager = null;
-                ClassHelper.ToCall(_callType, false);
             });
         }
 
@@ -86,7 +86,22 @@ namespace DimensionClient.Common
         /// <param name="state">开关</param>
         public void CameraSwitch(bool state)
         {
-            cloud.muteLocalVideo(TRTCVideoStreamType.TRTCVideoStreamTypeBig, !state);
+            if (CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callVideoData)
+            {
+                if (callVideoData.IsVideo != state)
+                {
+                    callVideoData.IsVideo = state;
+                    if (state)
+                    {
+                        cloud.startLocalPreview(IntPtr.Zero);
+                    }
+                    else
+                    {
+                        cloud.stopLocalPreview();
+                    }
+                    cloud.muteLocalVideo(TRTCVideoStreamType.TRTCVideoStreamTypeBig, !state);
+                }
+            }
         }
 
         /// <summary>
@@ -95,7 +110,14 @@ namespace DimensionClient.Common
         /// <param name="state">开关</param>
         public void MicrophoneSwitch(bool state)
         {
-            cloud.muteLocalAudio(!state);
+            if (CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callVideoData)
+            {
+                if (callVideoData.IsAudio != state)
+                {
+                    callVideoData.IsAudio = state;
+                    cloud.muteLocalAudio(!state);
+                }
+            }
         }
 
         #region ITRTCCloudCallback

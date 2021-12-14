@@ -31,29 +31,26 @@ namespace DimensionClient.Library.Controls
         public VideoCallCard()
         {
             InitializeComponent();
+
+            SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
+            foreach (CallViewDataModel itemCall in ClassHelper.CallViewManager.CallViews)
+            {
+                if (itemCall.UserID == ClassHelper.UserID)
+                {
+                    imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(itemCall.Writeable)) });
+                    imgSmallBox.DataContext = itemCall;
+                }
+                else
+                {
+                    imgMainBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(itemCall.Writeable)) });
+                    imgMainBox.DataContext = itemCall;
+                }
+                itemCall.PropertyChanged += ItemCall_PropertyChanged;
+            }
         }
 
         private async void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
-            SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
-
-            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callViewSmall)
-            {
-                imgSmallBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewSmall.Writeable)) });
-                imgSmallBox.DataContext = callViewSmall;
-            }
-
-            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallViewDataModel callViewMain)
-            {
-                if (callViewMain.IsVideo)
-                {
-                    Lessen();
-                }
-                imgMainBox.SetBinding(Image.SourceProperty, new Binding { Path = new PropertyPath(nameof(callViewMain.Writeable)) });
-                imgMainBox.DataContext = callViewMain;
-                callViewMain.PropertyChanged += CallViewMain_PropertyChanged;
-            }
-
             BeginStoryboard(callOpacityShow);
             grdMain.BeginStoryboard(callMainShow);
             await Task.Delay(800);
@@ -118,25 +115,43 @@ namespace DimensionClient.Library.Controls
             }
         }
 
-        private void CallViewMain_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ItemCall_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender is CallViewDataModel callViewData)
             {
-                if (callViewData.IsVideo)
-                {
-                    Dispatcher.Invoke(() => Lessen());
-                }
-                else
+                if (e.PropertyName == nameof(callViewData.IsVideo))
                 {
                     Dispatcher.Invoke(delegate
                     {
-                        CallViewDataModel callView = imgSmallBox.DataContext as CallViewDataModel;
-                        if (callViewData == callView)
+                        if (!ClassHelper.CallViewManager.CallViews.Any(item => item.IsVideo))
                         {
-                            imgSmallBox.DataContext = imgMainBox.DataContext;
-                            imgMainBox.DataContext = callView;
+                            isSwitch = false;
+                            imgMainBox.Visibility = Visibility.Collapsed;
+                            brdSmallBox.Visibility = Visibility.Collapsed;
                         }
-                        Amplification();
+                        else
+                        {
+                            brdSmallBox.Visibility = Visibility.Visible;
+                            if (!ClassHelper.CallViewManager.CallViews.Any(item => !item.IsVideo))
+                            {
+                                imgMainBox.Visibility = Visibility.Visible;
+                                Lessen();
+                            }
+                            else
+                            {
+                                imgMainBox.Visibility = Visibility.Collapsed;
+                                if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.IsVideo) is CallViewDataModel call)
+                                {
+                                    CallViewDataModel callView = imgSmallBox.DataContext as CallViewDataModel;
+                                    if (callView != call)
+                                    {
+                                        imgSmallBox.DataContext = imgMainBox.DataContext;
+                                        imgMainBox.DataContext = callView;
+                                    }
+                                    Amplification();
+                                }
+                            }
+                        }
                     });
                 }
             }
