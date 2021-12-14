@@ -70,6 +70,7 @@ namespace DimensionClient.Component.Windows
             showHint.Begin(txbAccept);
         }
 
+        // 接受邀请
         private void GrbAccept_PointerUp(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem(JoinRoom);

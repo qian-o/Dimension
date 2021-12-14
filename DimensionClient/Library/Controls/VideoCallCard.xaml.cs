@@ -1,12 +1,12 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -63,61 +63,60 @@ namespace DimensionClient.Library.Controls
             brdCallDianhua.BeginStoryboard(callDianhuaShow);
         }
 
-        #region 麦克风开关(鼠标,触控)
-        private void BrdCallYuyin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        // 是否静音
+        private async void BrdCallYuyin_PointerUp(object sender, EventArgs e)
         {
-            if (e.StylusDevice == null)
+            brdCallYuyin.IsEnabled = false;
+            if (brdCallYuyin.Tag.ToString() == "Enable")
             {
-                BrdCallYuyin_PointerUp();
+                ClassHelper.CallViewManager.MicrophoneSwitch(false);
+                brdCallYuyin.Tag = "Disabled";
             }
-        }
-        private void BrdCallYuyin_TouchUp(object sender, TouchEventArgs e)
-        {
-            BrdCallYuyin_PointerUp();
-        }
-        #endregion
+            else
+            {
+                ClassHelper.CallViewManager.MicrophoneSwitch(true);
+                brdCallYuyin.Tag = "Enable";
+            }
 
-        #region 摄像头开关(鼠标,触控)
-        private void BrdCallShipin_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.StylusDevice == null)
-            {
-                BrdCallShipin_PointerUp();
-            }
+            await Task.Delay(1000);
+            brdCallYuyin.IsEnabled = true;
         }
-        private void BrdCallShipin_TouchUp(object sender, TouchEventArgs e)
-        {
-            BrdCallShipin_PointerUp();
-        }
-        #endregion
 
-        #region 挂断电话(鼠标,触控)
-        private void BrdCallDianhua_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        // 是否开启摄像头
+        private async void BrdCallShipin_PointerUp(object sender, EventArgs e)
         {
-            if (e.StylusDevice == null)
+            brdCallShipin.IsEnabled = false;
+            if (brdCallShipin.Tag.ToString() == "Enable")
             {
-                BrdCallDianhua_PointerUp();
+                ClassHelper.CallViewManager.CameraSwitch(false);
+                brdCallShipin.Tag = "Disabled";
             }
-        }
-        private void BrdCallDianhua_TouchUp(object sender, TouchEventArgs e)
-        {
-            BrdCallDianhua_PointerUp();
-        }
-        #endregion
+            else
+            {
+                ClassHelper.CallViewManager.CameraSwitch(true);
+                brdCallShipin.Tag = "Enable";
+            }
 
-        #region 切换画面(鼠标,触控)
-        private void GrdSmallBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+            await Task.Delay(1000);
+            brdCallShipin.IsEnabled = true;
+        }
+
+        // 挂断电话
+        private void BrdCallDianhua_PointerUp(object sender, EventArgs e)
         {
-            if (e.StylusDevice == null)
+            ClassHelper.CallViewManager.UnInitialize();
+        }
+
+        // 大小画面切换
+        private void GrdSmallBox_PointerUp(object sender, EventArgs e)
+        {
+            if (isSwitch)
             {
-                GrdSmallBox_PointerUp();
+                CallViewDataModel callView = imgSmallBox.DataContext as CallViewDataModel;
+                imgSmallBox.DataContext = imgMainBox.DataContext;
+                imgMainBox.DataContext = callView;
             }
         }
-        private void GrdSmallBox_TouchUp(object sender, TouchEventArgs e)
-        {
-            GrdSmallBox_PointerUp();
-        }
-        #endregion
 
         private void CallViewMain_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -129,7 +128,16 @@ namespace DimensionClient.Library.Controls
                 }
                 else
                 {
-                    Dispatcher.Invoke(() => Amplification());
+                    Dispatcher.Invoke(delegate
+                    {
+                        CallViewDataModel callView = imgSmallBox.DataContext as CallViewDataModel;
+                        if (callViewData == callView)
+                        {
+                            imgSmallBox.DataContext = imgMainBox.DataContext;
+                            imgMainBox.DataContext = callView;
+                        }
+                        Amplification();
+                    });
                 }
             }
         }
@@ -149,52 +157,25 @@ namespace DimensionClient.Library.Controls
         }
 
         #region 执行事件
-        private async void BrdCallYuyin_PointerUp()
+        private void Lessen()
         {
-            brdCallYuyin.IsEnabled = false;
-            if (brdCallYuyin.Tag.ToString() == "Enable")
-            {
-                ClassHelper.CallViewManager.MicrophoneSwitch(false);
-                brdCallYuyin.Tag = "Disabled";
-            }
-            else
-            {
-                ClassHelper.CallViewManager.MicrophoneSwitch(true);
-                brdCallYuyin.Tag = "Enable";
-            }
-
-            await Task.Delay(1000);
-            brdCallYuyin.IsEnabled = true;
+            isSwitch = true;
+            brdSmallBox.Padding = new Thickness(20);
+            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Right;
+            grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
+            imgSmallBox.Stretch = Stretch.Uniform;
+            ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(50);
+            grdSmallBox.BeginStoryboard(callSmallBoxShrink);
         }
-        private async void BrdCallShipin_PointerUp()
+        private void Amplification()
         {
-            brdCallShipin.IsEnabled = false;
-            if (brdCallShipin.Tag.ToString() == "Enable")
-            {
-                ClassHelper.CallViewManager.CameraSwitch(false);
-                brdCallShipin.Tag = "Disabled";
-            }
-            else
-            {
-                ClassHelper.CallViewManager.CameraSwitch(true);
-                brdCallShipin.Tag = "Enable";
-            }
-
-            await Task.Delay(1000);
-            brdCallShipin.IsEnabled = true;
-        }
-        private static void BrdCallDianhua_PointerUp()
-        {
-            ClassHelper.CallViewManager.UnInitialize();
-        }
-        private void GrdSmallBox_PointerUp()
-        {
-            if (isSwitch)
-            {
-                CallViewDataModel callVideoData = imgSmallBox.DataContext as CallViewDataModel;
-                imgSmallBox.DataContext = imgMainBox.DataContext;
-                imgMainBox.DataContext = callVideoData;
-            }
+            isSwitch = false;
+            brdSmallBox.Padding = new Thickness(0);
+            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            grdSmallBox.VerticalAlignment = VerticalAlignment.Stretch;
+            imgSmallBox.Stretch = Stretch.UniformToFill;
+            ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(0);
+            grdSmallBox.BeginStoryboard(callSmallBoxEnlarged);
         }
         public async void UnInitializeCard()
         {
@@ -206,27 +187,6 @@ namespace DimensionClient.Library.Controls
             {
                 grid.Children.Remove(this);
             }
-        }
-        private void Lessen()
-        {
-            isSwitch = true;
-            brdSmallBox.Padding = new Thickness(20);
-            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Right;
-            grdSmallBox.VerticalAlignment = VerticalAlignment.Top;
-            imgSmallBox.Stretch = Stretch.Uniform;
-            ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(50);
-            grdSmallBox.BeginStoryboard(callSmallBoxShrink);
-        }
-        private async void Amplification()
-        {
-            isSwitch = false;
-            brdSmallBox.Padding = new Thickness(0);
-            grdSmallBox.HorizontalAlignment = HorizontalAlignment.Stretch;
-            grdSmallBox.VerticalAlignment = VerticalAlignment.Stretch;
-            imgSmallBox.Stretch = Stretch.UniformToFill;
-            grdSmallBox.BeginStoryboard(callSmallBoxEnlarged);
-            await Task.Delay(800);
-            ((imgSmallBox.OpacityMask as VisualBrush).Visual as Border).CornerRadius = new CornerRadius(0);
         }
         #endregion
     }

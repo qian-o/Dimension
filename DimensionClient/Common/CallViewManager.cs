@@ -86,7 +86,7 @@ namespace DimensionClient.Common
         /// <param name="state">开关</param>
         public void CameraSwitch(bool state)
         {
-            cloud.muteLocalVideo(TRTCVideoStreamType.TRTCVideoStreamTypeBig, state);
+            cloud.muteLocalVideo(TRTCVideoStreamType.TRTCVideoStreamTypeBig, !state);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace DimensionClient.Common
         /// <param name="state">开关</param>
         public void MicrophoneSwitch(bool state)
         {
-            cloud.muteLocalAudio(state);
+            cloud.muteLocalAudio(!state);
         }
 
         #region ITRTCCloudCallback
