@@ -29,25 +29,24 @@ namespace DimensionClient.Library.Controls
         public VoiceCallCard()
         {
             InitializeComponent();
+
+            foreach (CallViewDataModel itemCall in ClassHelper.CallViewManager.CallViews)
+            {
+                if (itemCall.UserID == ClassHelper.UserID)
+                {
+                    imgHeadImage.DataContext = itemCall;
+                }
+                else
+                {
+                    imgFriend.DataContext = itemCall;
+                }
+                itemCall.PropertyChanged += ItemCall_PropertyChanged;
+            }
         }
 
         private async void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
             SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
-
-            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID == ClassHelper.UserID) is CallViewDataModel callViewUser)
-            {
-                imgHeadImage.DataContext = callViewUser.UserID;
-            }
-            if (ClassHelper.CallViewManager.CallViews.FirstOrDefault(item => item.UserID != ClassHelper.UserID) is CallViewDataModel callViewFriend)
-            {
-                if (callViewFriend.IsEnter == true)
-                {
-                    Answer();
-                }
-                imgFriend.DataContext = callViewFriend.UserID;
-                callViewFriend.PropertyChanged += CallViewFriend_PropertyChanged;
-            }
 
             BeginStoryboard(callOpacityShow);
             grdMain.BeginStoryboard(callMainShow);
@@ -90,13 +89,16 @@ namespace DimensionClient.Library.Controls
         }
         #endregion
 
-        private void CallViewFriend_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ItemCall_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (sender is CallViewDataModel callViewData)
             {
-                if (callViewData.IsEnter == true)
+                if (e.PropertyName == nameof(callViewData.IsEnter) && callViewData.UserID != ClassHelper.UserID)
                 {
-                    Dispatcher.Invoke(() => Answer());
+                    if (callViewData.IsEnter == true)
+                    {
+                        Dispatcher.Invoke(() => Answer());
+                    }
                 }
             }
         }

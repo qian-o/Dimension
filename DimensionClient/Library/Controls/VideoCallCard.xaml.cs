@@ -32,7 +32,6 @@ namespace DimensionClient.Library.Controls
         {
             InitializeComponent();
 
-            SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
             foreach (CallViewDataModel itemCall in ClassHelper.CallViewManager.CallViews)
             {
                 if (itemCall.UserID == ClassHelper.UserID)
@@ -51,6 +50,8 @@ namespace DimensionClient.Library.Controls
 
         private async void UserControlMain_Loaded(object sender, RoutedEventArgs e)
         {
+            SignalRClientHelper.AcceptCallSignalR += SignalRClientHelper_AcceptCallSignalR;
+
             BeginStoryboard(callOpacityShow);
             grdMain.BeginStoryboard(callMainShow);
             await Task.Delay(800);
@@ -58,6 +59,11 @@ namespace DimensionClient.Library.Controls
             brdCallYuyin.BeginStoryboard(callYuyinShow);
             brdCallShipin.BeginStoryboard(callShipinShow);
             brdCallDianhua.BeginStoryboard(callDianhuaShow);
+        }
+
+        private void UserControlMain_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SignalRClientHelper.AcceptCallSignalR -= SignalRClientHelper_AcceptCallSignalR;
         }
 
         // 是否静音

@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:common="clr-namespace:DimensionClient.Common"
              mc:Ignorable="d" d:DesignHeight="630" d:DesignWidth="1060"
-             x:Name="UserControlMain" Background="	#2A2C33" Loaded="UserControlMain_Loaded">
+             x:Name="UserControlMain" Background="	#2A2C33" Loaded="UserControlMain_Loaded" Unloaded="UserControlMain_Unloaded">
     <UserControl.CacheMode>
         <BitmapCache/>
     </UserControl.CacheMode>
