@@ -34,11 +34,11 @@ namespace DimensionClient.Library.Controls
             {
                 if (itemCall.UserID == ClassHelper.UserID)
                 {
-                    imgHeadImage.DataContext = itemCall;
+                    imgHeadImage.DataContext = itemCall.UserID;
                 }
                 else
                 {
-                    imgFriend.DataContext = itemCall;
+                    imgFriend.DataContext = itemCall.UserID;
                 }
                 itemCall.PropertyChanged += ItemCall_PropertyChanged;
             }

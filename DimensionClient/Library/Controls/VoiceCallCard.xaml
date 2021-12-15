@@ -20,12 +20,12 @@
         </Grid.RenderTransformOrigin>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image x:Name="imgHeadImage" Height="120" Width="120" Source="{Binding Converter={StaticResource HeadPortraitConvert}, ConverterParameter=240}">
-                <Image.RenderTransform>
-                    <ScaleTransform/>
-                </Image.RenderTransform>
                 <Image.Clip>
                     <EllipseGeometry Center="60,60" RadiusX="60" RadiusY="60"/>
                 </Image.Clip>
+                <Image.RenderTransform>
+                    <ScaleTransform/>
+                </Image.RenderTransform>
             </Image>
             <Border Height="124" Width="124" BorderThickness="2" BorderBrush="#0084E0" CornerRadius="62">
                 <Border.RenderTransform>
