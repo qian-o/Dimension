@@ -5,6 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Library/Dictionary/StyleLibrary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/ColorDictionary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/ConverterLibrary.xaml"/>
                 <ResourceDictionary Source="Library/Dictionary/DataTemplateSelectorLibrary.xaml"/>
