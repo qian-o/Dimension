@@ -51,13 +51,13 @@ namespace DimensionClient.Common
         public const uint wmSystemMenu = 0xa4;
         public static readonly CommonViewModel commonView = new();
         // AES私人密钥
-        public const string privateKey = "";
+        public const string privateKey = "wangxi1234567890";
         public const int currentSettings = -1;
         public const int registrySettings = -2;
         // 热键消息
         public const int wmHotKey = 0x312;
         // 通话房间AppID
-        public const uint callAppID = 0;
+        public const uint callAppID = 1400587228;
         // 通话回调锁
         public static readonly object CallViewManagerLock = new();
         #endregion
