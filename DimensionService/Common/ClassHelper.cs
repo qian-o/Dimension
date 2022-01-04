@@ -54,17 +54,17 @@ namespace DimensionService.Common
         // 排序
         public const string friendGroup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
         // 阿里短信认证信息
-        private static readonly IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "LTAI4G8MBL2LJo58XoQUBXZJ", "5eAkTpANw59o4up40zv48ac7HKAC2S");
+        private static readonly IClientProfile profile = DefaultProfile.GetProfile("", "", "");
         // 阿里发送短信
         private static readonly DefaultAcsClient client = new(profile);
         // 腾讯API认证ID
-        private const string secretID = "AKIDb3FBrHRKxJPEn68qITN0MTLwGK8fvve7";
+        private const string secretID = "";
         // 腾讯API认证Key
-        private const string secretKey = "D9pENGte9NO8bniNlsiJeiW4MO9droUt";
+        private const string secretKey = "";
         // 通话房间AppID
-        public const uint callAppID = 1400587228;
+        public const uint callAppID = 0;
         // 通话房间AppKey
-        public const string callAppKey = "b49d32b0b97e1e743eb3d680fa370ef83e02db12db0ee9a08a5779ae2a9b8528";
+        public const string callAppKey = "";
         #endregion
 
         #region 变量
