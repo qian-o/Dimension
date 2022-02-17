@@ -15,7 +15,6 @@ namespace DimensionClient.Common
                 HttpClient request = new();
                 if (dimension)
                 {
-                    request.DefaultRequestHeaders.Add("Service-Version", ClassHelper.serviceVersion);
                     request.DefaultRequestHeaders.Add("UserID", ClassHelper.UserID);
                     request.DefaultRequestHeaders.Add("Token", ClassHelper.Token);
                     request.DefaultRequestHeaders.Add("Device", ClassHelper.device.ToString());
@@ -38,7 +37,6 @@ namespace DimensionClient.Common
                 HttpClient httpClient = new();
                 if (dimension)
                 {
-                    httpClient.DefaultRequestHeaders.Add("Service-Version", ClassHelper.serviceVersion);
                     httpClient.DefaultRequestHeaders.Add("UserID", ClassHelper.UserID);
                     httpClient.DefaultRequestHeaders.Add("Token", ClassHelper.Token);
                     httpClient.DefaultRequestHeaders.Add("Device", ClassHelper.device.ToString());
@@ -59,7 +57,6 @@ namespace DimensionClient.Common
                 using HttpClient httpClient = new();
                 if (dimension)
                 {
-                    httpClient.DefaultRequestHeaders.Add("Service-Version", ClassHelper.serviceVersion);
                     httpClient.DefaultRequestHeaders.Add("UserID", ClassHelper.UserID);
                     httpClient.DefaultRequestHeaders.Add("Token", ClassHelper.Token);
                     httpClient.DefaultRequestHeaders.Add("Device", ClassHelper.device.ToString());

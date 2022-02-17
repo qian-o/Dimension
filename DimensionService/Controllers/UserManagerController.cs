@@ -9,7 +9,6 @@ using Microsoft.Extensions.Primitives;
 
 namespace DimensionService.Controllers
 {
-    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     [AuthorizedActionFilter]

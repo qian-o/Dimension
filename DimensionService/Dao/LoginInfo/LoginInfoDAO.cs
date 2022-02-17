@@ -32,7 +32,7 @@ namespace DimensionService.Dao.LoginInfo
             return context.LoginInfo.Where(item => item.UserID == userID && item.UseDevice == useDevice && item.Effective).FirstOrDefault();
         }
 
-        public bool CheckToken(string userID, string token, ClassHelper.UseDevice useDevice)
+        public static bool CheckToken(string userID, string token, ClassHelper.UseDevice useDevice)
         {
             using DimensionContext db = new();
             return db.LoginInfo.Where(item => item.UserID == userID && item.Token == token && item.Effective && item.UseDevice == useDevice).Any();

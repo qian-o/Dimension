@@ -28,28 +28,6 @@ namespace DimensionClient.Common
             log.Info(GetExInfo(method, location, msg));
         }
 
-        /// <summary>
-        /// 输出警告日志到Log4Net
-        /// </summary>
-        /// <param name="t">类型</param>
-        /// <param name="ex">信息</param>
-        public static void WriteWarnLog(Type t, string method, string location, string msg)
-        {
-            ILog log = LogManager.GetLogger(t);
-            log.Warn(GetExInfo(method, location, msg));
-        }
-
-        /// <summary>
-        /// 输出Debug信息到Log4Net
-        /// </summary>
-        /// <param name="t">类型</param>
-        /// <param name="ex">信息</param>
-        public static void WriteDebugLog(Type t, string method, string location, string msg)
-        {
-            ILog log = LogManager.GetLogger(t);
-            log.Debug(GetExInfo(method, location, msg));
-        }
-
         private static string GetExInfo(string method, string location, string msg)
         {
             return new StringBuilder()

@@ -7,18 +7,28 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Platforms>x64;ARM64</Platforms>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageId>Dimension</PackageId>
+		<Version>1.5</Version>
+		<Authors>王先生</Authors>
+		<Company>个人</Company>
+		<Product>DimensionService</Product>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <NoWarn>1701;1702;CS1591;CA2254</NoWarn>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DocumentationFile>bin\Debug\DimensionService.xml</DocumentationFile>
-		<NoWarn>1701;1702;1591;IDE0058</NoWarn>
-		<OutputPath>bin\Debug\</OutputPath>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <NoWarn>1701;1702;CS1591;CA2254</NoWarn>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DocumentationFile>bin\Release\DimensionService.xml</DocumentationFile>
-		<NoWarn>1701;1702;1591;IDE0058</NoWarn>
-		<OutputPath>bin\Release\</OutputPath>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+	  <NoWarn>1701;1702;CS1591;CA2254</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+	  <NoWarn>1701;1702;CS1591;CA2254</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -94,7 +104,6 @@
 		<PackageReference Include="log4net" Version="2.0.14" />
 		<PackageReference Include="Microsoft.AspNetCore.ConcurrencyLimiter" Version="6.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>

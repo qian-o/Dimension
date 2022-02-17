@@ -14,28 +14,16 @@ using DimensionService.Service.Chat;
 using DimensionService.Service.Hitokoto;
 using DimensionService.Service.UserManager;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 
 namespace DimensionService
 {
-    public class Startup
+    public static class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(this IServiceCollection services)
         {
             services.Configure<FormOptions>(options =>
             {
@@ -46,27 +34,20 @@ namespace DimensionService
             {
                 options.Filters.Add<WebApiActionFilter>();
                 options.Filters.Add<WebApiExceptionFilter>();
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-            })
-            .AddNewtonsoftJson(options =>
+            }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
             });
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DimensionService", Version = "v1" });
-
-                // Set the comments path for the Swagger JSON and UI.
-                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
+                c.SwaggerDoc(assembly.Name, new OpenApiInfo
+                {
+                    Title = assembly.Name,
+                    Version = assembly.Version.ToString()
+                });
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.Name}.xml"));
             });
 
             services.AddCors(options =>
@@ -78,20 +59,6 @@ namespace DimensionService
                     p.AllowAnyMethod();
                     p.AllowCredentials();
                 });
-            });
-
-            services.AddQueuePolicy(options =>
-            {
-                options.MaxConcurrentRequests = 500;
-                options.RequestQueueLimit = 15000;
-            });
-
-            services.AddApiVersioning(options =>
-            {
-                options.ReportApiVersions = true;
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ApiVersionReader = new HeaderApiVersionReader("Service-Version");
             });
 
             services.AddSignalR();
@@ -111,30 +78,28 @@ namespace DimensionService
             services.AddScoped<ICallRoomDAO, CallRoomDAO>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void ConfigureApp(this WebApplication app)
         {
 #if DEBUG
+            AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DimensionService v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/{assembly.Name}/swagger.json", assembly.Name));
 #else
             app.UseHttpsRedirection();
 #endif
 
             app.UseCors("CorsPolicy");
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseMiddleware<SignalRQueryStringAuthMiddleware>();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<InformHub>("/InformHub");
-            });
+            app.MapControllers();
+            app.MapHub<InformHub>("/InformHub");
         }
     }
 }

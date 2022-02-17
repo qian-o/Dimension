@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace DimensionService.Controllers
 {
-    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class SignalRController : ControllerBase

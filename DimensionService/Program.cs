@@ -1,28 +1,15 @@
+using DimensionService;
 using DimensionService.Common;
 
-namespace DimensionService
+ClassHelper.UpdateHitokoto();
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureLogging((context, options) =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            ClassHelper.UpdateHitokoto();
+    options.AddLog4Net(Path.Combine(AppContext.BaseDirectory, "log4net.config"));
+});
+builder.Services.ConfigureServices();
 
-            CreateHostBuilder(args).Build().Run();
-        }
+WebApplication app = builder.Build();
+app.ConfigureApp();
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                    .ConfigureWebHostDefaults(webBuilder =>
-                    {
-                        webBuilder.ConfigureLogging((context, options) =>
-                        {
-                            options.AddLog4Net(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "log4net.config"));
-                        });
-                        webBuilder.UseDefaultServiceProvider(options => options.ValidateScopes = false);
-                        webBuilder.UseStartup<Startup>();
-                    });
-        }
-    }
-}
+app.Run();

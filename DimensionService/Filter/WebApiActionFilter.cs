@@ -18,7 +18,7 @@ namespace DimensionService.Filter
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _logger.ControllerLog("OnActionExecuting", context.ActionDescriptor.RouteValues["controller"], context.ActionDescriptor.RouteValues["action"], JObject.FromObject(context.ActionArguments));
+            _logger.ControllerLog(context.HttpContext.Connection.RemoteIpAddress.ToString(), $"{context.ActionDescriptor.RouteValues["controller"]}{context.ActionDescriptor.RouteValues["action"]}", JObject.FromObject(context.ActionArguments));
 
             base.OnActionExecuting(context);
         }

@@ -18,14 +18,13 @@ namespace DimensionService.Filter.Authorized
                 string action = context.ActionDescriptor.RouteValues["action"];
                 if (action is not "UserLogin" and not "GetVerificationCode" and not "PhoneNumberLogin" and not "GetAttachments" and not "GetHeadPortraits")
                 {
-                    LoginInfoDAO loginInfo = new();
                     WebResultModel webResult = new()
                     {
                         State = false
                     };
                     if (context.HttpContext.Request.Headers.TryGetValue("UserID", out StringValues userID) && context.HttpContext.Request.Headers.TryGetValue("Token", out StringValues token) && context.HttpContext.Request.Headers.TryGetValue("Device", out StringValues useDevice))
                     {
-                        if (!loginInfo.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
+                        if (!LoginInfoDAO.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
                         {
                             webResult.Message = "登录已失效";
                         }

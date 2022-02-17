@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DimensionService.Controllers
 {
-    [ApiVersionNeutral]
     [Route("api/[controller]")]
     [ApiController]
     [AuthorizedActionFilter]

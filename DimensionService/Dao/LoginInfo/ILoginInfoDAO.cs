@@ -21,7 +21,5 @@ namespace DimensionService.Dao.LoginInfo
         /// <param name="useDevice">登录设备</param>
         /// <returns></returns>
         LoginInfoModel ValidLoginInfo(string userID, ClassHelper.UseDevice useDevice);
-
-        bool CheckToken(string userID, string token, ClassHelper.UseDevice useDevice);
     }
 }

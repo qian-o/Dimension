@@ -27,8 +27,6 @@ namespace DimensionClient.Common
     public static class ClassHelper
     {
         #region 常量
-        // 服务器版本
-        public const string serviceVersion = "1.0";
         // 服务器地址 ( http://47.96.133.119, http://localhost:5000 )
         public const string servicePath = "http://47.96.133.119";
         // 客户端标识
