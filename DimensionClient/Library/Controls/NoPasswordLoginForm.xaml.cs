@@ -4,9 +4,7 @@ using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.UserManager;
-using System;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -98,7 +96,7 @@ namespace DimensionClient.Library.Controls
                 });
                 for (int i = 60; i > 0; i--)
                 {
-                    noPasswordLoginView.GetCode = i.ToString(ClassHelper.cultureInfo);
+                    noPasswordLoginView.GetCode = i.ToString();
                     Thread.Sleep(950);
                 }
                 noPasswordLoginView.GetCode = ClassHelper.FindResource<string>("GetCode");

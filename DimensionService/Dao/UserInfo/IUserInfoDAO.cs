@@ -1,5 +1,4 @@
 ﻿using DimensionService.Models.DimensionModels;
-using System.Collections.Generic;
 
 namespace DimensionService.Dao.UserInfo
 {

@@ -2,10 +2,6 @@
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Call;
 using ManageLiteAV;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DimensionClient.Common
 {

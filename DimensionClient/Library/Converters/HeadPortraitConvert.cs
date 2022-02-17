@@ -1,5 +1,4 @@
 ﻿using DimensionClient.Common;
-using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -13,7 +12,7 @@ namespace DimensionClient.Library.Converters
             int height = 0;
             if (parameter != null)
             {
-                height = System.Convert.ToInt32(parameter, ClassHelper.cultureInfo);
+                height = System.Convert.ToInt32(parameter);
             }
             string uri = $"{ClassHelper.servicePath}/api/Attachment/GetHeadPortraits/{value}";
             uri += height != 0 ? $"?height={height}" : string.Empty;

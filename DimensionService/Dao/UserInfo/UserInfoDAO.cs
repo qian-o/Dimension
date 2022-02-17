@@ -4,9 +4,6 @@ using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
 using DimensionService.Models.DimensionModels.FriendInfoModels;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Dao.UserInfo
 {

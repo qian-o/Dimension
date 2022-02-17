@@ -2,8 +2,6 @@
 using DimensionClient.Service.UserManager;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Threading.Tasks;
 
 namespace DimensionClient.Common
 {
@@ -126,7 +124,7 @@ namespace DimensionClient.Common
 
         private static void Connection_OtherDeviceProcessed(string roomID)
         {
-
+            OtherDeviceProcessedSignalR?.Invoke(roomID);
         }
 
         private static void Connection_AcceptCall(string userID, bool isAcceptCall)

@@ -6,8 +6,6 @@ using DimensionService.Models.ResultModels;
 using DimensionService.Service.Call;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
 
 namespace DimensionService.Controllers
 {

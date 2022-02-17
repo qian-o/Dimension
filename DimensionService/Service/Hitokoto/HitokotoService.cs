@@ -1,8 +1,6 @@
 ﻿using DimensionService.Common;
 using DimensionService.Models.ResultModels;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
 
 namespace DimensionService.Service.Hitokoto
 {

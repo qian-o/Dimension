@@ -1,6 +1,4 @@
-﻿using DimensionClient.Common;
-using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 
 namespace DimensionClient.Library.Converters
@@ -9,7 +7,7 @@ namespace DimensionClient.Library.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double originalWidth = System.Convert.ToDouble(value, ClassHelper.cultureInfo);
+            double originalWidth = System.Convert.ToDouble(value);
             double width = Math.Round(originalWidth, 2);
             if (originalWidth > width)
             {

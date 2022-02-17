@@ -1,5 +1,4 @@
 ﻿using DimensionService.Common;
-using System;
 
 namespace DimensionService.Models
 {

@@ -8,9 +8,6 @@ using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Service.Call
 {

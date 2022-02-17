@@ -4,9 +4,6 @@ using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.UserManager;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -196,7 +193,7 @@ namespace DimensionClient.Component.Windows
             {
                 ThicknessAnimation thicknessAnimation = new()
                 {
-                    To = new Thickness(0, Convert.ToInt32(grid.Tag, ClassHelper.cultureInfo), 0, 0),
+                    To = new Thickness(0, Convert.ToInt32(grid.Tag), 0, 0),
                     Duration = new TimeSpan(0, 0, 0, 0, 300),
                     EasingFunction = new BackEase { EasingMode = EasingMode.EaseInOut }
                 };

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionClient.Models.ResultModels
+﻿namespace DimensionClient.Models.ResultModels
 {
     public class GetUserInfoModel
     {

@@ -1,5 +1,4 @@
 ﻿using DimensionService.Common;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels

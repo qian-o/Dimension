@@ -1,14 +1,11 @@
 ﻿using DimensionService.Common;
 using DimensionService.Dao.UserInfo;
 using DimensionService.Models.DimensionModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace DimensionService.Service.Attachment
 {

@@ -2,7 +2,6 @@
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -59,7 +58,7 @@ namespace DimensionClient.Library.Controls
             if (DataContext is ChatMessagesModel chatMessages)
             {
                 imgHead.DataContext = chatMessages.SenderID;
-                txbTime.Text = chatMessages.CreateTime.ToString("t", ClassHelper.cultureInfo);
+                txbTime.Text = chatMessages.CreateTime.ToString("t");
                 switch (chatMessages.MessageType)
                 {
                     case ClassHelper.MessageType.Text:

@@ -6,7 +6,6 @@ using DimensionService.Models.ResultModels;
 using DimensionService.Service.Chat;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
 
 namespace DimensionService.Controllers
 {

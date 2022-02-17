@@ -2,7 +2,6 @@
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
 using DimensionClient.Service.UserManager;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

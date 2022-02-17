@@ -1,5 +1,4 @@
-﻿using DimensionClient.Common;
-using DimensionClient.Models.ViewModels;
+﻿using DimensionClient.Models.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -35,7 +34,7 @@ namespace DimensionClient.Library.Controls
                     {
                         image.Changed += (a, b) =>
                         {
-                            if (((ImageSource)a).ToString(ClassHelper.cultureInfo) == dynamic.ImagePath.ToString(ClassHelper.cultureInfo))
+                            if (((ImageSource)a).ToString() == dynamic.ImagePath.ToString())
                             {
                                 data.Show1 = true;
                                 data.Show2 = false;
@@ -55,7 +54,7 @@ namespace DimensionClient.Library.Controls
                     {
                         image.Changed += (a, b) =>
                         {
-                            if (((ImageSource)a).ToString(ClassHelper.cultureInfo) == dynamic.ImagePath.ToString(ClassHelper.cultureInfo))
+                            if (((ImageSource)a).ToString() == dynamic.ImagePath.ToString())
                             {
                                 data.Show1 = false;
                                 data.Show2 = true;

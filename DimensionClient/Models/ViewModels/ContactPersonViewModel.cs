@@ -1,6 +1,5 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
-using System.Collections.Generic;
 
 namespace DimensionClient.Models.ViewModels
 {

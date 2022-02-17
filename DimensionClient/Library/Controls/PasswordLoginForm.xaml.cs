@@ -4,8 +4,6 @@ using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using DimensionClient.Service.UserManager;
-using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -116,7 +114,7 @@ namespace DimensionClient.Library.Controls
         private void TxbDelete_PointerUp(object sender)
         {
             TextBlock textBlock = sender as TextBlock;
-            int id = Convert.ToInt32(textBlock.Tag, ClassHelper.cultureInfo);
+            int id = Convert.ToInt32(textBlock.Tag);
             MessageBoxButtonModel rightButton = new()
             {
                 Action = new Action(() =>
@@ -144,7 +142,7 @@ namespace DimensionClient.Library.Controls
             });
             string password = string.Empty;
             DateTime dateTime = DateTime.Now;
-            string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(dateTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
+            string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(dateTime)).Substring(4, 16).ToUpper();
             Dispatcher.Invoke(delegate
             {
                 password = pstPassword.Password;

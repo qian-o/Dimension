@@ -6,15 +6,10 @@ using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Chat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -154,7 +149,7 @@ namespace DimensionClient.Library.Controls
                     default:
                         break;
                 }
-                txbLastTime.Text = chatMessages.CreateTime.ToString("t", cultureInfo);
+                txbLastTime.Text = chatMessages.CreateTime.ToString("t");
             }
         }
 
@@ -337,7 +332,7 @@ namespace DimensionClient.Library.Controls
                                         Dispatcher.Invoke(delegate
                                         {
                                             using MemoryStream memoryStream = new();
-                                            string extend = new FileInfo(chatImage.PathUri.LocalPath).Extension.ToLower(cultureInfo);
+                                            string extend = new FileInfo(chatImage.PathUri.LocalPath).Extension.ToLower();
                                             File.OpenRead(chatImage.PathUri.LocalPath).CopyTo(memoryStream);
                                             BitmapSource bitmapSource = new BitmapImage(chatImage.PathUri);
                                             dataContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", $"{GetRandomString(10)}{extend}");

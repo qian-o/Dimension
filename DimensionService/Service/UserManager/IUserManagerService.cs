@@ -1,7 +1,6 @@
 ﻿using DimensionService.Models.DimensionModels;
 using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
-using System.Collections.Generic;
 
 namespace DimensionService.Service.UserManager
 {

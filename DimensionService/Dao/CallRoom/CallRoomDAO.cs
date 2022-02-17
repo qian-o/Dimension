@@ -5,8 +5,6 @@ using DimensionService.Models.DimensionModels.CallRoomModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Dao.CallRoom
 {

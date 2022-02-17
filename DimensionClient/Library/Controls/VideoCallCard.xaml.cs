@@ -1,9 +1,6 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models;
-using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

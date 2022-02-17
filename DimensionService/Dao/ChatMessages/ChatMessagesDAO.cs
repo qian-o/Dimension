@@ -1,8 +1,6 @@
 ﻿using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Dao.ChatMessages
 {

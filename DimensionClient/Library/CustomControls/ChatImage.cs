@@ -1,6 +1,6 @@
 ﻿using DimensionClient.Common;
-using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -114,7 +114,7 @@ namespace DimensionClient.Library.CustomControls
                 }
                 if (PathUri.IsAbsoluteUri)
                 {
-                    if (PathUri.AbsoluteUri.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
+                    if (PathUri.AbsoluteUri.ToLower().Contains(".gif", StringComparison.CurrentCulture))
                     {
                         AnimationBehavior.SetSourceUri(image, PathUri);
                     }
@@ -152,8 +152,8 @@ namespace DimensionClient.Library.CustomControls
                         }
                     }
                     string path = PathUri.OriginalString;
-                    Uri uri = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert").Convert(path, typeof(string), path.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture) ? null : image.MaxHeight * 2, ClassHelper.cultureInfo) as Uri;
-                    if (path.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
+                    Uri uri = ClassHelper.FindResource<IValueConverter>("SourceOnlineConvert").Convert(path, typeof(string), path.ToLower().Contains(".gif", StringComparison.CurrentCulture) ? null : image.MaxHeight * 2, CultureInfo.CurrentCulture) as Uri;
+                    if (path.ToLower().Contains(".gif", StringComparison.CurrentCulture))
                     {
                         AnimationBehavior.SetSourceUri(image, uri);
                     }
@@ -170,7 +170,7 @@ namespace DimensionClient.Library.CustomControls
             if (PathUri != null)
             {
                 string path = PathUri.IsAbsoluteUri ? PathUri.LocalPath : $"{ClassHelper.servicePath}/api/Attachment/GetAttachments/{PathUri.OriginalString}";
-                if (path.ToLower(ClassHelper.cultureInfo).Contains(".gif", StringComparison.CurrentCulture))
+                if (path.ToLower().Contains(".gif", StringComparison.CurrentCulture))
                 {
                     AnimationBehavior.SetSourceUri(image, null);
                 }

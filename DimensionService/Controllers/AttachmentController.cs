@@ -2,9 +2,7 @@
 using DimensionService.Filter.Authorized;
 using DimensionService.Models;
 using DimensionService.Service.Attachment;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DimensionService.Controllers
 {

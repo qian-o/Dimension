@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DimensionClient.Models.ResultModels
+﻿namespace DimensionClient.Models.ResultModels
 {
     public class FriendSortModel
     {

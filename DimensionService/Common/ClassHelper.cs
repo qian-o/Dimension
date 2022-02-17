@@ -11,19 +11,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TencentCloud.Common;
 using TencentCloud.Common.Profile;
 using TencentCloud.Trtc.V20190722;
@@ -159,8 +155,8 @@ namespace DimensionService.Common
         ///<returns></returns>
         public static string GetRandomString(int length)
         {
-            byte[] b = new byte[4];
-            new RNGCryptoServiceProvider().GetBytes(b);
+            byte[] b = new byte[32];
+            RandomNumberGenerator.Create().GetBytes(b);
             Random random = new(BitConverter.ToInt32(b, 0));
             string str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string returnStr = string.Empty;
@@ -208,18 +204,12 @@ namespace DimensionService.Common
         public static string AesEncrypt(string str, string aesKey)
         {
             string data = string.Empty;
-            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey) && aesKey.Length == 16)
+            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey))
             {
                 byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
-                RijndaelManaged rm = new()
-                {
-                    Key = Encoding.UTF8.GetBytes(aesKey),
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                };
-
-                ICryptoTransform cTransform = rm.CreateEncryptor();
-                byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+                Aes aes = Aes.Create();
+                aes.Key = Encoding.UTF8.GetBytes(aesKey);
+                byte[] resultArray = aes.EncryptEcb(toEncryptArray, PaddingMode.PKCS7);
                 data = Convert.ToBase64String(resultArray, 0, resultArray.Length);
             }
             return data;
@@ -234,17 +224,12 @@ namespace DimensionService.Common
         public static string AesDecrypt(string str, string aesKey)
         {
             string data = string.Empty;
-            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey) && aesKey.Length == 16)
+            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey))
             {
                 byte[] toEncryptArray = Convert.FromBase64String(str);
-                RijndaelManaged rm = new()
-                {
-                    Key = Encoding.UTF8.GetBytes(aesKey),
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                };
-                ICryptoTransform cTransform = rm.CreateDecryptor();
-                byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+                Aes aes = Aes.Create();
+                aes.Key = Encoding.UTF8.GetBytes(aesKey);
+                byte[] resultArray = aes.DecryptEcb(toEncryptArray, PaddingMode.PKCS7);
                 data = Encoding.UTF8.GetString(resultArray);
             }
             return data;

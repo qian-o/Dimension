@@ -3,13 +3,8 @@ using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.UserInfo;
 using DimensionService.Models;
 using DimensionService.Models.DimensionModels.FriendInfoModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DimensionService.Hubs
 {

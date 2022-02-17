@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionClient.Common
+﻿namespace DimensionClient.Common
 {
     public static class DateTimeHelper
     {

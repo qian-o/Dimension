@@ -1,6 +1,5 @@
 ﻿using DimensionService.Common;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace DimensionService.Filter

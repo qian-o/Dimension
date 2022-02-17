@@ -1,6 +1,4 @@
-﻿using DimensionClient.Common;
-using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -10,8 +8,8 @@ namespace DimensionClient.Library.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool state = System.Convert.ToBoolean(value, ClassHelper.cultureInfo);
-            if (parameter != null && System.Convert.ToInt32(parameter, ClassHelper.cultureInfo) == 0)
+            bool state = System.Convert.ToBoolean(value);
+            if (parameter != null && System.Convert.ToInt32(parameter) == 0)
             {
                 state = !state;
             }

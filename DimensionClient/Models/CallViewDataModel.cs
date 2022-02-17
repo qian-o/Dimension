@@ -1,7 +1,6 @@
 ﻿using DimensionClient.Common;
 using ManageLiteAV;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;

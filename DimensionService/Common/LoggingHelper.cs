@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using System.IO;
+﻿using Newtonsoft.Json.Linq;
 
 namespace DimensionService.Common
 {

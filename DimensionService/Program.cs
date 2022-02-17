@@ -1,11 +1,4 @@
 using DimensionService.Common;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Memory;
-using System;
-using System.IO;
 
 namespace DimensionService
 {
@@ -14,7 +7,6 @@ namespace DimensionService
         public static void Main(string[] args)
         {
             ClassHelper.UpdateHitokoto();
-            Configuration.Default.MemoryAllocator = ArrayPoolMemoryAllocator.CreateWithAggressivePooling();
 
             CreateHostBuilder(args).Build().Run();
         }

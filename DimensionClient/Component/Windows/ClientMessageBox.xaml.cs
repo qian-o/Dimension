@@ -1,8 +1,6 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models;
-using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -82,7 +80,7 @@ namespace DimensionClient.Component.Windows
         private async void BtnValid_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            CloseType = (ClassHelper.MessageBoxCloseType)Convert.ToInt32(button.Tag, ClassHelper.cultureInfo);
+            CloseType = (ClassHelper.MessageBoxCloseType)Convert.ToInt32(button.Tag);
             grdMask.Visibility = Visibility.Visible;
             button.IsEnabled = false;
             switch (CloseType)

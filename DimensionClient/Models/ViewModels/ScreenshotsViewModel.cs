@@ -1,5 +1,4 @@
 ﻿using DimensionClient.Common;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace DimensionClient.Models.ViewModels

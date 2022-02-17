@@ -2,8 +2,11 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net5.0-windows</TargetFramework>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>disable</Nullable>
 		<UseWPF>true</UseWPF>
+		<PlatformTarget>x64</PlatformTarget>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
@@ -11,15 +14,17 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<NoWarn>1701;1702;IDE0058;MC3005</NoWarn>
 		<OutputPath>bin\Debug\</OutputPath>
-		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<NoWarn>1701;1702;IDE0058;MC3005</NoWarn>
 		<OutputPath>bin\Release\</OutputPath>
-		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<SupportedPlatform Include="windows7.0" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Remove="client.db" />
 		<None Remove="Library\Font\element-icons.ttf" />
@@ -92,10 +97,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="log4net" Version="2.0.13" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.12">
+		<PackageReference Include="log4net" Version="2.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

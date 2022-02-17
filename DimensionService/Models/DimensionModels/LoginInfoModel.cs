@@ -1,6 +1,5 @@
 ﻿using DimensionService.Common;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DimensionService.Models.DimensionModels
 {

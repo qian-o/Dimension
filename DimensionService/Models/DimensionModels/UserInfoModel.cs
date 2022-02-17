@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionService.Models.DimensionModels
+﻿namespace DimensionService.Models.DimensionModels
 {
     public class UserInfoModel
     {

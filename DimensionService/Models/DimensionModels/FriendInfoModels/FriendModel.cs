@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionService.Models.DimensionModels.FriendInfoModels
+﻿namespace DimensionService.Models.DimensionModels.FriendInfoModels
 {
     public class FriendModel
     {

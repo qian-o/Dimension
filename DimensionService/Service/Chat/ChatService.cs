@@ -11,9 +11,6 @@ using DimensionService.Models.DimensionModels.FriendInfoModels;
 using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Service.Chat
 {

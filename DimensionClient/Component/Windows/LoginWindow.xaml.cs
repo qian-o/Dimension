@@ -1,6 +1,5 @@
 ﻿using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;

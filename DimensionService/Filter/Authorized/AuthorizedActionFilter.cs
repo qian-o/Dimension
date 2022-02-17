@@ -1,12 +1,10 @@
 ﻿using DimensionService.Common;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
-using System;
 using System.Diagnostics;
 
 namespace DimensionService.Filter.Authorized

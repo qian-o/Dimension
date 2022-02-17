@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionClient.Models
+﻿namespace DimensionClient.Models
 {
     public class MessageBoxButtonModel
     {

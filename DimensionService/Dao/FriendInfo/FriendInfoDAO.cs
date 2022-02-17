@@ -5,9 +5,6 @@ using DimensionService.Models.DimensionModels.FriendInfoModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DimensionService.Dao.FriendInfo
 {

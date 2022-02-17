@@ -1,5 +1,4 @@
 ﻿using DimensionClient.Common;
-using System.Collections.Generic;
 
 namespace DimensionClient.Models.ViewModels
 {

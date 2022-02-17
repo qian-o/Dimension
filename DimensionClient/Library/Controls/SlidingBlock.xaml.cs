@@ -1,6 +1,4 @@
-﻿using DimensionClient.Common;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace DimensionClient.Library.Controls
@@ -23,7 +21,7 @@ namespace DimensionClient.Library.Controls
         public static void OnSlidingBlockStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SlidingBlock slidingBlock = (SlidingBlock)d;
-            if (Convert.ToBoolean(e.NewValue, ClassHelper.cultureInfo))
+            if (Convert.ToBoolean(e.NewValue))
             {
                 slidingBlock.brdSelect.Tag = "1";
                 slidingBlock.ccnLeft.Tag = "1";

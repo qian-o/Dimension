@@ -1,5 +1,4 @@
 ﻿using DimensionService.Models.DimensionModels.FriendInfoModels;
-using System.Collections.Generic;
 
 namespace DimensionService.Dao.FriendInfo
 {

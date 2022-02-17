@@ -1,5 +1,4 @@
 ﻿using DimensionClient.Common;
-using System;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -9,7 +8,7 @@ namespace DimensionClient.Library.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            int gender = System.Convert.ToInt32(values[0], ClassHelper.cultureInfo);
+            int gender = System.Convert.ToInt32(values[0]);
             DateTime? birthday = values[1] as DateTime?;
             string data = string.Empty;
             if (gender != 0)

@@ -1,6 +1,5 @@
 ﻿using DimensionService.Common;
 using DimensionService.Models.DimensionModels;
-using System;
 
 namespace DimensionService.Dao.LoginInfo
 {

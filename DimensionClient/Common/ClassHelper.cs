@@ -4,11 +4,7 @@ using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -41,8 +37,6 @@ namespace DimensionClient.Common
         public static readonly string programPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
         // 程序缓存目录
         public static readonly string cachePath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Cache");
-        // 区域设置
-        public static readonly CultureInfo cultureInfo = new("zh-cn");
         // 手机号正则验证
         public const string phoneVerify = @"^1[0-9]{10}$";
         // 邮箱正则验证
@@ -454,14 +448,14 @@ namespace DimensionClient.Common
             responseObj = null;
             try
             {
-                string returnStr = mode == HttpMethod.Get ? HttpHelper.SendGet(url, true) : HttpHelper.SendPost(url, requestObj, true);
+                string returnStr = mode == HttpMethod.Get ? HttpHelper.SendGet(url, true).Result : HttpHelper.SendPost(url, requestObj, true).Result;
                 if (string.IsNullOrEmpty(returnStr))
                 {
                     MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));
                     return false;
                 }
                 responseObj = JObject.Parse(returnStr);
-                if (Convert.ToBoolean(responseObj["State"], cultureInfo))
+                if (Convert.ToBoolean(responseObj["State"]))
                 {
                     return true;
                 }
@@ -490,14 +484,14 @@ namespace DimensionClient.Common
             fileName = string.Empty;
             try
             {
-                string returnStr = HttpHelper.SendUpload(url, dataContent, true);
+                string returnStr = HttpHelper.SendUpload(url, dataContent, true).Result;
                 if (string.IsNullOrEmpty(returnStr))
                 {
                     MessageAlert(null, 3, FindResource<string>("ServerConnectionFailed"));
                     return false;
                 }
                 JObject responseObj = JObject.Parse(returnStr);
-                if (Convert.ToBoolean(responseObj["State"], cultureInfo))
+                if (Convert.ToBoolean(responseObj["State"]))
                 {
                     fileName = responseObj["Data"].ToString();
                     return true;
@@ -522,7 +516,7 @@ namespace DimensionClient.Common
         /// <returns></returns>
         public static string TimeStamp(DateTime dateTime)
         {
-            return ((dateTime.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString(cultureInfo);
+            return ((dateTime.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString();
         }
 
         /// <summary>
@@ -534,18 +528,12 @@ namespace DimensionClient.Common
         public static string AesEncrypt(string str, string aesKey)
         {
             string data = string.Empty;
-            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey) && aesKey.Length == 16)
+            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey))
             {
                 byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
-                RijndaelManaged rm = new()
-                {
-                    Key = Encoding.UTF8.GetBytes(aesKey),
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                };
-
-                ICryptoTransform cTransform = rm.CreateEncryptor();
-                byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+                Aes aes = Aes.Create();
+                aes.Key = Encoding.UTF8.GetBytes(aesKey);
+                byte[] resultArray = aes.EncryptEcb(toEncryptArray, PaddingMode.PKCS7);
                 data = Convert.ToBase64String(resultArray, 0, resultArray.Length);
             }
             return data;
@@ -560,17 +548,12 @@ namespace DimensionClient.Common
         public static string AesDecrypt(string str, string aesKey)
         {
             string data = string.Empty;
-            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey) && aesKey.Length == 16)
+            if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(aesKey))
             {
                 byte[] toEncryptArray = Convert.FromBase64String(str);
-                RijndaelManaged rm = new()
-                {
-                    Key = Encoding.UTF8.GetBytes(aesKey),
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                };
-                ICryptoTransform cTransform = rm.CreateDecryptor();
-                byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
+                Aes aes = Aes.Create();
+                aes.Key = Encoding.UTF8.GetBytes(aesKey);
+                byte[] resultArray = aes.DecryptEcb(toEncryptArray, PaddingMode.PKCS7);
                 data = Encoding.UTF8.GetString(resultArray);
             }
             return data;
@@ -583,8 +566,8 @@ namespace DimensionClient.Common
         ///<returns></returns>
         public static string GetRandomString(int length)
         {
-            byte[] b = new byte[4];
-            new RNGCryptoServiceProvider().GetBytes(b);
+            byte[] b = new byte[32];
+            RandomNumberGenerator.Create().GetBytes(b);
             Random random = new(BitConverter.ToInt32(b, 0));
             string str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string returnStr = string.Empty;
@@ -608,7 +591,7 @@ namespace DimensionClient.Common
             StringBuilder sb = new();
             for (int i = 0; i < newBuffer.Length; i++)
             {
-                sb.Append(newBuffer[i].ToString("x2", cultureInfo));
+                sb.Append(newBuffer[i].ToString("x2"));
             }
             return sb.ToString();
         }
@@ -720,7 +703,7 @@ namespace DimensionClient.Common
         {
             return bytes.Aggregate(
                 new StringBuilder(),
-                (sb, b) => sb.Append(b.ToString("X2", cultureInfo)),
+                (sb, b) => sb.Append(b.ToString("X2")),
                 sb => sb.ToString());
         }
 

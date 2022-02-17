@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DimensionService.Models.ResultModels
+﻿namespace DimensionService.Models.ResultModels
 {
     public class FriendDetailsModel
     {

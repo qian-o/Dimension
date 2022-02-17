@@ -1,9 +1,6 @@
 ﻿using DimensionService.Common;
 using DimensionService.Dao.LoginInfo;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Threading.Tasks;
 
 namespace DimensionService.Middleware
 {
