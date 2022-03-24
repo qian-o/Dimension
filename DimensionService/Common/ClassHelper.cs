@@ -50,19 +50,19 @@ namespace DimensionService.Common
         // 排序
         public const string friendGroup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
         // 阿里短信认证信息
-        private static readonly IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "LTAI5t858ZYahG6qpHBYBvtQ", "PZ6D3xDmuAWVGMr5BhGTZZNrMZZNZp");
+        private static readonly IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "", "");
         // 阿里发送短信
         private static readonly DefaultAcsClient client = new(profile);
         // 腾讯API认证ID
-        private const string secretID = "AKIDylIZaKnzvaz6xYruhDSQ7ZkMmyub2FCt";
+        private const string secretID = "";
         // 腾讯API认证Key
-        private const string secretKey = "TgfOr43mFSQ8bonW0ECvPdbKn0xf7KGv";
+        private const string secretKey = "";
         // 通话房间AppID
         public const uint callAppID = 1400587228;
         // 通话房间AppKey
-        public const string callAppKey = "b49d32b0b97e1e743eb3d680fa370ef83e02db12db0ee9a08a5779ae2a9b8528";
+        public const string callAppKey = "";
         // SQL Server连接字符串
-        public const string connection = "Data Source=localhost;Initial Catalog=Dimension;Persist Security Info=True;User ID=sa;Password=Wangxi55";
+        public const string connection = "";
         #endregion
 
         #region 变量
