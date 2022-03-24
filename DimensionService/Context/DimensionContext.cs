@@ -1,4 +1,5 @@
-﻿using DimensionService.Models.DimensionModels;
+﻿using DimensionService.Common;
+using DimensionService.Models.DimensionModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DimensionService.Context
@@ -15,7 +16,7 @@ namespace DimensionService.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=Dimension;Persist Security Info=True;User ID=sa;Password=Wangxi55");
+            optionsBuilder.UseSqlServer(ClassHelper.connection);
 
             base.OnConfiguring(optionsBuilder);
         }

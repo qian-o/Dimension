@@ -61,6 +61,8 @@ namespace DimensionService.Common
         public const uint callAppID = 1400587228;
         // 通话房间AppKey
         public const string callAppKey = "b49d32b0b97e1e743eb3d680fa370ef83e02db12db0ee9a08a5779ae2a9b8528";
+        // SQL Server连接字符串
+        public const string connection = "Data Source=localhost;Initial Catalog=Dimension;Persist Security Info=True;User ID=sa;Password=Wangxi55";
         #endregion
 
         #region 变量
