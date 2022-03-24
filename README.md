@@ -1,5 +1,6 @@
 # Dimension
-# 基于 .NET 6 搭建的WPF程序和ASP.NET API服务。  
+# 基于 .NET 6 的在线音视频聊天项目
+# 使用WPF和ASP.NET API开发
 **后台部署说明**  
 1. 修改DimensionService.Common命名空间下 ClassHelper类  
 ![image](https://user-images.githubusercontent.com/84434846/159858628-cfcd7669-fae3-41b6-bd74-700e117c8870.png)  
