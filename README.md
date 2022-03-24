@@ -19,6 +19,16 @@
 3.音视频在线通话  
 4.聊天（图片、文字、富文本）  
 5.截屏（多显示器不同dpi支持）  
+# 界面展示
+![image](https://user-images.githubusercontent.com/84434846/159876575-a9593d87-2b90-40b5-bd25-55f3d37518bc.png)  
+![image](https://user-images.githubusercontent.com/84434846/159877738-b3197b00-5688-4a08-ab7f-52518da680ac.png)  
+![image](https://user-images.githubusercontent.com/84434846/159876681-7482d993-3818-4863-90f9-c68725bb1449.png)  
+![image](https://user-images.githubusercontent.com/84434846/159876750-6db8f92a-50b0-4a9e-b41e-53a2ce323cc6.png)  
+![image](https://user-images.githubusercontent.com/84434846/159876843-9048b0a7-44bf-48ba-9e9b-a0839d02418e.png)  
+![image](https://user-images.githubusercontent.com/84434846/159876933-8d07724e-100d-4c87-ab61-0db73fc47dbf.png)
+![image](https://user-images.githubusercontent.com/84434846/159877246-c5b08b3a-86f8-4dac-a20e-8d9d6988dd45.png)
+![image](https://user-images.githubusercontent.com/84434846/159877348-10285152-ae67-4e44-8fd9-9ea9e0cfddff.png)
+
 # 功能演示
 作者太懒，以后再写！  
 我还是提供的测试账号和程序地址吧。  
