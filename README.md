@@ -1,23 +1,23 @@
 # Dimension
 # 基于 .NET 6 的在线音视频聊天项目
-# 使用WPF和ASP.NET API开发
+# WPF和ASP.NET API开发
 # 使用第三方依赖介绍
 **公用依赖**  
 1. log4net 日志记录。
 2. SignalR 用于服务器与客户端的通讯手段，该项目用于好友申请、消息提示、公告、聊天和音视频通话等一系列通知。
 3. EntityFrameworkCore 操作数据库的ORM工具，服务端使用SqlServer，客户端使用Sqlite。
-4. Newtonsoft.Json 序列化和反序列化json。
+4. Newtonsoft.Json 序列化和反序列化JSON。
 
 **服务端**  
 1. TencentCloudSDK 操作腾讯云服务API，该项目用于管理通话房间。
 2. aliyun-net-sdk-core 操作阿里云服务API，该项目用于短信服务。
 3. CHSPinYinConv 获取中文拼音。
 4. Portable.BouncyCastle TRTC加密使用。
-5. SixLabors.ImageSharp 处理图片，因在linux上使用Drawing不理想，效果很差。
+5. SixLabors.ImageSharp 操作图片，因c#中操作图片需要微软的GDI绘图，但在linux上操作需要mono的libgdiplus库，处理效果并不理想。
 
 **WPF端**  
-1. TXLiteAV TRTC需要使用的依赖。
-2. XamlAnimatedGif 播放GIF，因效率问题，个人改动作者源码后重新打包使用。
+1. TXLiteAV 操作腾讯云的TRTC服务，本地设备音视频推流、获取房间内其他用户音视频数据。
+2. XamlAnimatedGif 播放GIF，因设备效率问题，改动作者源码后重新打包使用。
 源库：https://github.com/XamlAnimatedGif/XamlAnimatedGif 问题：https://github.com/XamlAnimatedGif/XamlAnimatedGif/issues/160
 
 **后台部署说明**  
