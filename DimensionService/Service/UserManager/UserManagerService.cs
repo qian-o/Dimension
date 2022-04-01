@@ -40,7 +40,7 @@ namespace DimensionService.Service.UserManager
                 message = string.Empty;
                 UserInfoModel userInfo = null;
                 // 手机号
-                if (Regex.IsMatch(data.LoginName, ClassHelper.phoneVerify))
+                if (Regex.IsMatch(data.LoginName, Constants.PHONE_VERIFY))
                 {
                     if (_userInfoDAO.UserInfoFindForPhoneNumber(data.LoginName, true) is UserInfoModel user)
                     {
@@ -52,7 +52,7 @@ namespace DimensionService.Service.UserManager
                     }
                 }
                 // 邮箱
-                else if (Regex.IsMatch(data.LoginName, ClassHelper.emailVerify))
+                else if (Regex.IsMatch(data.LoginName, Constants.EMAIL_VERIFY))
                 {
                     if (_userInfoDAO.UserInfoFindForEmail(data.LoginName, true) is UserInfoModel user)
                     {
@@ -83,7 +83,7 @@ namespace DimensionService.Service.UserManager
                     }
                     else
                     {
-                        string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
+                        string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(Constants.CurrentCultureInfo);
                         if (ClassHelper.AesDecrypt(data.Password, aesKey) != userInfo.Password)
                         {
                             message = "密码错误。";
@@ -245,7 +245,7 @@ namespace DimensionService.Service.UserManager
                     Personalized = item.Personalized,
                     OnLine = item.OnLine
                 }));
-                foreach (char item in ClassHelper.friendGroup)
+                foreach (char item in Constants.FRIEND_GROUP)
                 {
                     friendSorts.Add(new FriendSortModel
                     {

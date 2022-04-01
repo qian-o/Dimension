@@ -21,7 +21,7 @@ namespace DimensionService.Service.Attachment
         public async Task<bool> UploadAttachment(IFormFile file, string fileName)
         {
             using Stream stream = file.OpenReadStream();
-            await ClassHelper.WriteFileAsync(stream, Path.Combine(ClassHelper.attachmentsPath, fileName));
+            await ClassHelper.WriteFileAsync(stream, Path.Combine(AppPath.AttachmentsPath, fileName));
             stream.Close();
             return true;
         }
@@ -32,13 +32,13 @@ namespace DimensionService.Service.Attachment
             {
                 fileName = "404.png";
             }
-            string filePath = Path.Combine(ClassHelper.attachmentsPath, fileName);
+            string filePath = Path.Combine(AppPath.AttachmentsPath, fileName);
             if (!File.Exists(filePath))
             {
-                filePath = Path.Combine(ClassHelper.attachmentsPath, "404.png");
+                filePath = Path.Combine(AppPath.AttachmentsPath, "404.png");
             }
             FileInfo fileInfo = new(filePath);
-            string ext = fileInfo.Extension.ToLower(ClassHelper.cultureInfo);
+            string ext = fileInfo.Extension.ToLower(Constants.CurrentCultureInfo);
             Stream ms = null;
             if (ext.Contains("jpg") || ext.Contains("png"))
             {

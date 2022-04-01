@@ -30,26 +30,8 @@ namespace DimensionService.Common
 {
     public static partial class ClassHelper
     {
+
         #region 常量
-        public static readonly char[] constant = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        // 手机号正则验证
-        public const string phoneVerify = @"^1[0-9]{10}$";
-        // 邮箱正则验证
-        public const string emailVerify = @"^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$";
-        // 中英文正则验证
-        public const string chineseAndEnglishVerify = @"^[a-zA-Z\u4e00-\u9fa5]$";
-        // 中文正则验证
-        public const string chineseVerify = @"^[\u4e00-\u9fa5]$";
-        // 附件路径
-        public static readonly string attachmentsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Library", "Attachments");
-        // 一言句子路径
-        public static readonly string sentencesPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Library", "Sentences");
-        // 模板路径
-        public static readonly string templatesPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Library", "Templates");
-        // 区域设置
-        public static readonly CultureInfo cultureInfo = new("zh-cn");
-        // 排序
-        public const string friendGroup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
         // 阿里短信认证信息
         private static readonly IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "", "");
         // 阿里发送短信
@@ -87,7 +69,7 @@ namespace DimensionService.Common
             Random random = new();
             for (int i = 0; i < Length; i++)
             {
-                newRandom.Append(constant[random.Next(10)]);
+                newRandom.Append(Constants.NUMBERS[random.Next(10)]);
             }
             return newRandom.ToString();
         }
@@ -124,7 +106,7 @@ namespace DimensionService.Common
             StringBuilder sb = new();
             for (int i = 0; i < newBuffer.Length; i++)
             {
-                sb.Append(newBuffer[i].ToString("x2", cultureInfo));
+                sb.Append(newBuffer[i].ToString("x2", Constants.CurrentCultureInfo));
             }
             return sb.ToString();
         }
@@ -136,7 +118,7 @@ namespace DimensionService.Common
         /// <returns></returns>
         public static string TimeStamp(DateTime dateTime)
         {
-            return ((dateTime.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString(cultureInfo);
+            return ((dateTime.ToUniversalTime().Ticks - 621355968000000000) / 10000000).ToString(Constants.CurrentCultureInfo);
         }
 
         /// <summary>
@@ -214,7 +196,7 @@ namespace DimensionService.Common
         public static void UpdateHitokoto()
         {
             List<HitokotoModel> hitokotos = new();
-            DirectoryInfo folder = new(sentencesPath);
+            DirectoryInfo folder = new(AppPath.SentencesPath);
             foreach (FileInfo file in folder.GetFiles("*.json"))
             {
                 using FileStream stream = file.OpenRead();
@@ -235,7 +217,7 @@ namespace DimensionService.Common
         public static bool SendVerificationCode(string verifyAccount, string code, out string message)
         {
             bool state = false;
-            if (Regex.IsMatch(verifyAccount, phoneVerify))
+            if (Regex.IsMatch(verifyAccount, Constants.PHONE_VERIFY))
             {
                 if (Debugger.IsAttached)
                 {
@@ -247,7 +229,7 @@ namespace DimensionService.Common
                     state = SendSms(verifyAccount, code, out message);
                 }
             }
-            else if (Regex.IsMatch(verifyAccount, emailVerify))
+            else if (Regex.IsMatch(verifyAccount, Constants.EMAIL_VERIFY))
             {
                 state = SendMail(verifyAccount, code, out message);
             }
@@ -327,7 +309,7 @@ namespace DimensionService.Common
                 IsBodyHtml = true,
                 Priority = MailPriority.Normal
             };
-            string path = Path.Combine(templatesPath, "HTML");
+            string path = Path.Combine(AppPath.TemplatesPath, "HTML");
             using StreamReader streamReader = new(Path.Combine(path, "verify.html"));
             string contentBody = streamReader.ReadToEnd();
             contentBody = Regex.Replace(contentBody, "验证码位置", code);
@@ -357,9 +339,9 @@ namespace DimensionService.Common
         public static char PinyinFirst(char c)
         {
             string str = c.ToString();
-            if (Regex.IsMatch(str, chineseAndEnglishVerify))
+            if (Regex.IsMatch(str, Constants.CHINESE_AND_ENGLISH_VERIFY))
             {
-                if (Regex.IsMatch(str, chineseVerify))
+                if (Regex.IsMatch(str, Constants.CHINESE_VERIFY))
                 {
                     c = ChineseConverter.Convert(str, ChineseConversionDirection.TraditionalToSimplified)[0];
                     ChineseChar chineseChar = new(c);
@@ -367,7 +349,7 @@ namespace DimensionService.Common
                 }
                 else
                 {
-                    return char.ToUpper(c, cultureInfo);
+                    return char.ToUpper(c, Constants.CurrentCultureInfo);
                 }
             }
             else
