@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Filter.Authorized;
 using DimensionService.Models;
 using DimensionService.Models.RequestModels;
@@ -33,7 +34,7 @@ namespace DimensionService.Controllers
             Request.Headers.TryGetValue("UserID", out StringValues userID);
             data.UserID = userID;
             Request.Headers.TryGetValue("Device", out StringValues useDevice);
-            data.UseDevice = (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice);
+            data.UseDevice = (UseDevice)Enum.Parse(typeof(UseDevice), useDevice);
 
             WebResultModel webResult = new()
             {
@@ -97,7 +98,7 @@ namespace DimensionService.Controllers
 
             WebResultModel webResult = new()
             {
-                State = _callService.NotifyRoommate(userID, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice), out string message),
+                State = _callService.NotifyRoommate(userID, (UseDevice)Enum.Parse(typeof(UseDevice), useDevice), out string message),
                 Data = null,
                 Message = message
             };
@@ -116,7 +117,7 @@ namespace DimensionService.Controllers
             Request.Headers.TryGetValue("UserID", out StringValues userID);
             data.UserID = userID;
             Request.Headers.TryGetValue("Device", out StringValues useDevice);
-            data.UseDevice = (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice);
+            data.UseDevice = (UseDevice)Enum.Parse(typeof(UseDevice), useDevice);
 
             WebResultModel webResult = new()
             {
@@ -140,7 +141,7 @@ namespace DimensionService.Controllers
 
             WebResultModel webResult = new()
             {
-                State = _callService.DissolutionRoom(userID, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice), out string message),
+                State = _callService.DissolutionRoom(userID, (UseDevice)Enum.Parse(typeof(UseDevice), useDevice), out string message),
                 Data = null,
                 Message = message
             };

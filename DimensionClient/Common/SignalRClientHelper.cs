@@ -1,4 +1,5 @@
-﻿using DimensionClient.Component.Windows;
+﻿using Dimension.Domain;
+using DimensionClient.Component.Windows;
 using DimensionClient.Service.UserManager;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -11,7 +12,7 @@ namespace DimensionClient.Common
     public delegate void RemarkInfoChanged(string friendID);
     public delegate void ChatColumnChanged(string friendID);
     public delegate void NewMessage(string chatID);
-    public delegate void CallInvite(string userID, ClassHelper.CallType callType, string roomID);
+    public delegate void CallInvite(string userID, CallType callType, string roomID);
     public delegate void OtherDeviceProcessed(string roomID);
     public delegate void AcceptCall(string userID, bool isAcceptCall);
 
@@ -49,17 +50,17 @@ namespace DimensionClient.Common
                     .WithAutomaticReconnect(new[] { TimeSpan.Zero, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30) })
                     .Build();
                 connection.Closed += Connection_Closed;
-                connection.On<string, string>(ClassHelper.HubMessageType.Notification.ToString(), Connection_Notification);
-                connection.On<string, bool>(ClassHelper.HubMessageType.FriendOnline.ToString(), Connection_FriendOnline);
-                connection.On<string>(ClassHelper.HubMessageType.NewFriend.ToString(), Connection_NewFriend);
-                connection.On<string, string, bool>(ClassHelper.HubMessageType.FriendChanged.ToString(), Connection_FriendChanged);
-                connection.On<bool>(ClassHelper.HubMessageType.OnlineStatus.ToString(), Connection_OnlineStatus);
-                connection.On<string>(ClassHelper.HubMessageType.RemarkInfoChanged.ToString(), Connection_RemarkInfoChanged);
-                connection.On<string>(ClassHelper.HubMessageType.ChatColumnChanged.ToString(), Connection_ChatColumnChanged);
-                connection.On<string>(ClassHelper.HubMessageType.NewMessage.ToString(), Connection_NewMessage);
-                connection.On<string, ClassHelper.CallType, string>(ClassHelper.HubMessageType.CallInvite.ToString(), Connection_CallInvite);
-                connection.On<string>(ClassHelper.HubMessageType.OtherDeviceProcessed.ToString(), Connection_OtherDeviceProcessed);
-                connection.On<string, bool>(ClassHelper.HubMessageType.AcceptCall.ToString(), Connection_AcceptCall);
+                connection.On<string, string>(HubMessageType.Notification.ToString(), Connection_Notification);
+                connection.On<string, bool>(HubMessageType.FriendOnline.ToString(), Connection_FriendOnline);
+                connection.On<string>(HubMessageType.NewFriend.ToString(), Connection_NewFriend);
+                connection.On<string, string, bool>(HubMessageType.FriendChanged.ToString(), Connection_FriendChanged);
+                connection.On<bool>(HubMessageType.OnlineStatus.ToString(), Connection_OnlineStatus);
+                connection.On<string>(HubMessageType.RemarkInfoChanged.ToString(), Connection_RemarkInfoChanged);
+                connection.On<string>(HubMessageType.ChatColumnChanged.ToString(), Connection_ChatColumnChanged);
+                connection.On<string>(HubMessageType.NewMessage.ToString(), Connection_NewMessage);
+                connection.On<string, CallType, string>(HubMessageType.CallInvite.ToString(), Connection_CallInvite);
+                connection.On<string>(HubMessageType.OtherDeviceProcessed.ToString(), Connection_OtherDeviceProcessed);
+                connection.On<string, bool>(HubMessageType.AcceptCall.ToString(), Connection_AcceptCall);
                 await connection.StartAsync();
             }
             catch (Exception)
@@ -114,7 +115,7 @@ namespace DimensionClient.Common
             NewMessageSignalR?.Invoke(chatID);
         }
 
-        private static void Connection_CallInvite(string userID, ClassHelper.CallType callType, string roomID)
+        private static void Connection_CallInvite(string userID, CallType callType, string roomID)
         {
             if (UserManagerService.FriendValidation(userID, true))
             {

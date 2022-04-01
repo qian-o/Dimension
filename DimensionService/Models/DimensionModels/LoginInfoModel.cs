@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace DimensionService.Models.DimensionModels
@@ -15,7 +16,7 @@ namespace DimensionService.Models.DimensionModels
         // 是否有效
         public bool Effective { get; set; }
         // 登录设备
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
         // 创建时间
         public DateTime CreateTime { get; set; }
         // 更新时间

@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
@@ -75,7 +76,7 @@ namespace DimensionService.Dao.UserInfo
                 Friends = JArray.FromObject(new List<FriendModel>()).ToString(),
                 NewFriends = JArray.FromObject(new List<NewFriendModel>()).ToString()
             });
-            foreach (ClassHelper.UseDevice item in Enum.GetValues(typeof(ClassHelper.UseDevice)))
+            foreach (UseDevice item in Enum.GetValues(typeof(UseDevice)))
             {
                 context.CallRoom.Add(new CallRoomModel
                 {

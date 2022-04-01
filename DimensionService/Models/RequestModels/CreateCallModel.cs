@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels
@@ -14,9 +15,9 @@ namespace DimensionService.Models.RequestModels
 
         [Display(Name = "通讯类型")]
         [Required(ErrorMessage = "通讯类型不能为空")]
-        public ClassHelper.CallType CallType { get; set; }
+        public CallType CallType { get; set; }
 
         [Display(Name = "使用设备")]
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
     }
 }

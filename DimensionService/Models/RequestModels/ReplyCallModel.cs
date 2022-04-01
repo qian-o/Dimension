@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels
@@ -17,6 +18,6 @@ namespace DimensionService.Models.RequestModels
         public bool IsAcceptCall { get; set; }
 
         [Display(Name = "使用设备")]
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
     }
 }

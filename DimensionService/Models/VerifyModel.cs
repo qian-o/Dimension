@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 
 namespace DimensionService.Models
 {
@@ -9,7 +10,7 @@ namespace DimensionService.Models
         // 验证码
         public string VerifyCode { get; set; }
         // 使用设备
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
         // 过期时间
         public DateTime ExpiresTime { get; set; }
     }

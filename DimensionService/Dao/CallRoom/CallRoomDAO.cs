@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;
@@ -10,7 +11,7 @@ namespace DimensionService.Dao.CallRoom
 {
     public class CallRoomDAO : ICallRoomDAO
     {
-        public CallRoomModel GetCallRoomForHouseOwner(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice)
+        public CallRoomModel GetCallRoomForHouseOwner(string houseOwnerID, UseDevice houseOwnerDevice)
         {
             using DimensionContext context = new();
             return context.CallRoom.FirstOrDefault(item => item.HouseOwnerID == houseOwnerID && item.HouseOwnerDevice == houseOwnerDevice);
@@ -22,7 +23,7 @@ namespace DimensionService.Dao.CallRoom
             return context.CallRoom.FirstOrDefault(item => item.RoomID == roomID);
         }
 
-        public bool UpdateCallRoom(string houseOwnerID, ClassHelper.UseDevice houseOwnerDevice, ClassHelper.CallType? callType, List<string> member, bool enabled)
+        public bool UpdateCallRoom(string houseOwnerID, UseDevice houseOwnerDevice, CallType? callType, List<string> member, bool enabled)
         {
             bool saved = false;
             while (!saved)

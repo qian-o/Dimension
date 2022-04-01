@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.UserManager;
@@ -27,7 +28,7 @@ namespace DimensionClient.Library.Controls
                 imgHead.DataContext = newFriendBrief.HeadPortrait;
                 txbNickName.Text = newFriendBrief.NickName;
                 txbVerifyInfo.Text = newFriendBrief.VerifyInfo;
-                if (newFriendBrief.FriendType == ClassHelper.NewFriendType.Verify && newFriendBrief.Passed == null)
+                if (newFriendBrief.FriendType == NewFriendType.Verify && newFriendBrief.Passed == null)
                 {
                     brdAgree.Visibility = Visibility.Visible;
                     txbState.Visibility = Visibility.Collapsed;

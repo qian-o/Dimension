@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace DimensionService.Filter.Authorized
                     };
                     if (context.HttpContext.Request.Headers.TryGetValue("UserID", out StringValues userID) && context.HttpContext.Request.Headers.TryGetValue("Token", out StringValues token) && context.HttpContext.Request.Headers.TryGetValue("Device", out StringValues useDevice))
                     {
-                        if (!LoginInfoDAO.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
+                        if (!LoginInfoDAO.CheckToken(userID, token, (UseDevice)Enum.Parse(typeof(UseDevice), useDevice)))
                         {
                             webResult.Message = "登录已失效";
                         }

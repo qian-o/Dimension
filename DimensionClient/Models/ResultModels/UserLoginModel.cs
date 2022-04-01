@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 
 namespace DimensionClient.Models.ResultModels
 {
@@ -8,7 +9,7 @@ namespace DimensionClient.Models.ResultModels
         public string UserID { get; set; }
         public string Token { get; set; }
         public bool Effective { get; set; }
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
     }

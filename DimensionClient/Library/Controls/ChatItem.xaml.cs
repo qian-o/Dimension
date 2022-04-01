@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Library.Converters;
 using DimensionClient.Library.CustomControls;
 using DimensionClient.Models;

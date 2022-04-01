@@ -2,6 +2,7 @@
 using Aliyun.Acs.Core.Exceptions;
 using Aliyun.Acs.Core.Http;
 using Aliyun.Acs.Core.Profile;
+using Dimension.Domain;
 using DimensionService.Models;
 using DimensionService.Models.ResultModels;
 using Microsoft.Extensions.Caching.Memory;
@@ -27,7 +28,7 @@ using TencentCloud.Trtc.V20190722.Models;
 
 namespace DimensionService.Common
 {
-    public static class ClassHelper
+    public static partial class ClassHelper
     {
         #region 常量
         public static readonly char[] constant = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -72,67 +73,8 @@ namespace DimensionService.Common
         public static List<VerifyModel> Verifies { get; set; } = new();
         // 一言集合缓存
         public static MemoryCache Cache { get; set; } = new(new MemoryCacheOptions());
-        #endregion
 
-        #region 枚举
-        // 使用设备
-        public enum UseDevice
-        {
-            Phone,
-            Web,
-            Client
-        }
-        // SignalR消息类别
-        public enum HubMessageType
-        {
-            // string title, string message
-            Notification,
-            // string friendID, bool online
-            FriendOnline,
-            // string friendID
-            NewFriend,
-            // string sort, string friendID, bool state ( true 添加 false 删除 )
-            FriendChanged,
-            // bool online
-            OnlineStatus,
-            // string friendID
-            RemarkInfoChanged,
-            // string friendID
-            ChatColumnChanged,
-            // string chatID
-            NewMessage,
-            // string userID, CallType callType, string roomID
-            CallInvite,
-            // string roomID
-            OtherDeviceProcessed,
-            // string userID, bool isAcceptCall
-            AcceptCall
-        }
-        // 新朋友类别
-        public enum NewFriendType
-        {
-            Add,
-            Verify
-        }
-        // 消息类别
-        public enum MessageType
-        {
-            Text,
-            RichText,
-            Voice,
-            File,
-            VoiceTalk,
-            VideoTalk
-        }
-        // 通话类别
-        public enum CallType
-        {
-            Voice,
-            Video,
-            ManyVoice,
-            ManyVideo
-        }
-        #endregion
+#endregion
 
         /// <summary>
         /// 随机数

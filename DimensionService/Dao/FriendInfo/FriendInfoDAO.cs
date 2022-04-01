@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.FriendInfoModels;
@@ -36,7 +37,7 @@ namespace DimensionService.Dao.FriendInfo
                     FriendInfoModel friendInfo = context.FriendInfo.Where(item => item.UserID == friendID).FirstOrDefault();
                     List<NewFriendModel> addFriends = JsonConvert.DeserializeObject<List<NewFriendModel>>(userInfo.NewFriends);
                     List<NewFriendModel> verifyFriends = JsonConvert.DeserializeObject<List<NewFriendModel>>(friendInfo.NewFriends);
-                    if (addFriends.Find(friend => friend.FriendType == ClassHelper.NewFriendType.Verify && friend.UserID == friendID && friend.Passed == null) != null)
+                    if (addFriends.Find(friend => friend.FriendType == NewFriendType.Verify && friend.UserID == friendID && friend.Passed == null) != null)
                     {
                         // 如果对方申请添加自己，自己再添加对方的话，直接确认好友关系
                         saved = VerifyFriend(userID, friendID, true);
@@ -44,7 +45,7 @@ namespace DimensionService.Dao.FriendInfo
                     else
                     {
                         #region 用户数据
-                        if (addFriends.Find(friend => friend.FriendType == ClassHelper.NewFriendType.Add && friend.UserID == friendID && friend.Passed == null) is NewFriendModel userInfoRequest)
+                        if (addFriends.Find(friend => friend.FriendType == NewFriendType.Add && friend.UserID == friendID && friend.Passed == null) is NewFriendModel userInfoRequest)
                         {
                             userInfoRequest.VerifyInfo = verifyInfo;
                         }
@@ -52,7 +53,7 @@ namespace DimensionService.Dao.FriendInfo
                         {
                             addFriends.Add(new NewFriendModel
                             {
-                                FriendType = ClassHelper.NewFriendType.Add,
+                                FriendType = NewFriendType.Add,
                                 UserID = friendID,
                                 VerifyInfo = verifyInfo
                             });
@@ -60,7 +61,7 @@ namespace DimensionService.Dao.FriendInfo
                         userInfo.NewFriends = JArray.FromObject(addFriends).ToString();
                         #endregion
                         #region 好友数据
-                        if (verifyFriends.Find(friend => friend.FriendType == ClassHelper.NewFriendType.Verify && friend.UserID == userID && friend.Passed == null) is NewFriendModel friendInfoRequest)
+                        if (verifyFriends.Find(friend => friend.FriendType == NewFriendType.Verify && friend.UserID == userID && friend.Passed == null) is NewFriendModel friendInfoRequest)
                         {
                             friendInfoRequest.VerifyInfo = verifyInfo;
                         }
@@ -68,7 +69,7 @@ namespace DimensionService.Dao.FriendInfo
                         {
                             verifyFriends.Add(new NewFriendModel
                             {
-                                FriendType = ClassHelper.NewFriendType.Verify,
+                                FriendType = NewFriendType.Verify,
                                 UserID = userID,
                                 VerifyInfo = verifyInfo
                             });
@@ -99,7 +100,7 @@ namespace DimensionService.Dao.FriendInfo
                     FriendInfoModel friendInfo = context.FriendInfo.Where(item => item.UserID == friendID).FirstOrDefault();
                     List<NewFriendModel> verifyFriends = JsonConvert.DeserializeObject<List<NewFriendModel>>(userInfo.NewFriends);
                     List<NewFriendModel> addFriends = JsonConvert.DeserializeObject<List<NewFriendModel>>(friendInfo.NewFriends);
-                    if (verifyFriends.Find(item => item.FriendType == ClassHelper.NewFriendType.Verify && item.UserID == friendID && item.Passed == null) is NewFriendModel userInfoRequest && addFriends.Find(item => item.FriendType == ClassHelper.NewFriendType.Add && item.UserID == userID && item.Passed == null) is NewFriendModel friendInfoRequest)
+                    if (verifyFriends.Find(item => item.FriendType == NewFriendType.Verify && item.UserID == friendID && item.Passed == null) is NewFriendModel userInfoRequest && addFriends.Find(item => item.FriendType == NewFriendType.Add && item.UserID == userID && item.Passed == null) is NewFriendModel friendInfoRequest)
                     {
                         userInfoRequest.Passed = passed;
                         friendInfoRequest.Passed = passed;

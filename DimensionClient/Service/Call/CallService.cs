@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +9,7 @@ namespace DimensionClient.Service.Call
 {
     public static class CallService
     {
-        public static bool CreateCall(List<string> member, ClassHelper.CallType callType, out string roomID)
+        public static bool CreateCall(List<string> member, CallType callType, out string roomID)
         {
             roomID = string.Empty;
             JObject requestObj = new()

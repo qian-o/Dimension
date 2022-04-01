@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels
@@ -14,7 +15,7 @@ namespace DimensionService.Models.RequestModels
 
         [Display(Name = "消息类型")]
         [Required(ErrorMessage = "消息类型不能为空")]
-        public ClassHelper.MessageType MessageType { get; set; }
+        public MessageType MessageType { get; set; }
 
         [Display(Name = "消息内容")]
         [Required(ErrorMessage = "消息内容不能为空")]
