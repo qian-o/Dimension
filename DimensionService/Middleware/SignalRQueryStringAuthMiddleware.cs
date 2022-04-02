@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.LoginInfo;
 using Microsoft.Extensions.Primitives;
 
@@ -19,7 +20,7 @@ namespace DimensionService.Middleware
             {
                 if (context.Request.Query.TryGetValue("UserID", out StringValues userID) && context.Request.Query.TryGetValue("Token", out StringValues token) && context.Request.Query.TryGetValue("Device", out StringValues useDevice))
                 {
-                    if (!LoginInfoDAO.CheckToken(userID, token, (ClassHelper.UseDevice)Enum.Parse(typeof(ClassHelper.UseDevice), useDevice)))
+                    if (!LoginInfoDAO.CheckToken(userID, token, (UseDevice)Enum.Parse(typeof(UseDevice), useDevice)))
                     {
                         context.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
                         return;

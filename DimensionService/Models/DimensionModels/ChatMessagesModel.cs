@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,7 +20,7 @@ namespace DimensionService.Models.DimensionModels
         [ConcurrencyCheck]
         public bool IsRead { get; set; }
         // 消息类型
-        public ClassHelper.MessageType MessageType { get; set; }
+        public MessageType MessageType { get; set; }
         // 消息内容
         public string MessageContent { get; set; }
         // 消息是否可见（ -1全部可不见, 0全部可见, 1发送方不可见, 2接收方不可见 ）

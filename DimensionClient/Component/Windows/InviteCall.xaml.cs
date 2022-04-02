@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Models.ViewModels;
@@ -30,7 +31,7 @@ namespace DimensionClient.Component.Windows
             InitializeComponent();
 
             mainData = viewModel;
-            if (viewModel.CallType == ClassHelper.CallType.Voice)
+            if (viewModel.CallType == CallType.Voice)
             {
                 txbCallType.Text = ClassHelper.FindResource<string>("IncomingVoiceCall");
                 stpAudio.Visibility = Visibility.Hidden;

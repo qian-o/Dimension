@@ -125,6 +125,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Dimension.Domain\Dimension.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="ManageLiteAV">
 		  <HintPath>Library\DynamicLibrary\TXLiteAV\ManageLiteAV.dll</HintPath>
 		</Reference>

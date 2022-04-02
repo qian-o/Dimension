@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
 
 namespace DimensionClient.Models.ViewModels
@@ -6,7 +7,7 @@ namespace DimensionClient.Models.ViewModels
     public class InviteCallViewModel : ModelBase
     {
         private FriendDetailsModel friendDetails;
-        private ClassHelper.CallType callType;
+        private CallType callType;
         private string roomID;
 
         public FriendDetailsModel FriendDetails
@@ -18,7 +19,7 @@ namespace DimensionClient.Models.ViewModels
                 OnPropertyChanged(nameof(FriendDetails));
             }
         }
-        public ClassHelper.CallType CallType
+        public CallType CallType
         {
             get => callType;
             set
@@ -40,7 +41,7 @@ namespace DimensionClient.Models.ViewModels
         public override void InitializeVariable()
         {
             friendDetails = null;
-            callType = ClassHelper.CallType.Voice;
+            callType = CallType.Voice;
             roomID = string.Empty;
         }
     }

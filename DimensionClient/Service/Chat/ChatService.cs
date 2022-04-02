@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -45,7 +46,7 @@ namespace DimensionClient.Service.Chat
             }
         }
 
-        public static bool SendMessage(string chatID, ClassHelper.MessageType messageType, string messageContent)
+        public static bool SendMessage(string chatID, MessageType messageType, string messageContent)
         {
             JObject requestObj = new()
             {

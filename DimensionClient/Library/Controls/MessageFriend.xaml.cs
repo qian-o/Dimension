@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using Newtonsoft.Json;
@@ -61,18 +62,18 @@ namespace DimensionClient.Library.Controls
                 txbTime.Text = chatMessages.CreateTime.ToString("t");
                 switch (chatMessages.MessageType)
                 {
-                    case ClassHelper.MessageType.Text:
+                    case MessageType.Text:
                         grdText.Visibility = Visibility.Visible;
                         conRichBox.TextContent = chatMessages.MessageContent;
                         break;
-                    case ClassHelper.MessageType.RichText:
+                    case MessageType.RichText:
                         RichMessageModel richMessage = JsonConvert.DeserializeObject<RichMessageModel>(chatMessages.MessageContent);
                         grdText.Visibility = Visibility.Visible;
                         conRichBox.SerializedContent = richMessage.SerializedMessage;
                         break;
-                    case ClassHelper.MessageType.Voice:
+                    case MessageType.Voice:
                         break;
-                    case ClassHelper.MessageType.File:
+                    case MessageType.File:
                         {
                             FileModel fileModel = JsonConvert.DeserializeObject<FileModel>(chatMessages.MessageContent);
                             switch (fileModel.FileType)
@@ -94,9 +95,9 @@ namespace DimensionClient.Library.Controls
                             }
                         }
                         break;
-                    case ClassHelper.MessageType.VoiceTalk:
+                    case MessageType.VoiceTalk:
                         break;
-                    case ClassHelper.MessageType.VideoTalk:
+                    case MessageType.VideoTalk:
                         break;
                     default:
                         break;

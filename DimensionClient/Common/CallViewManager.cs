@@ -1,4 +1,5 @@
-﻿using DimensionClient.Models;
+﻿using Dimension.Domain;
+using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Call;
 using ManageLiteAV;
@@ -9,13 +10,13 @@ namespace DimensionClient.Common
     {
         private readonly string _roomID;
         private readonly GetRoomKeyModel _roomKey;
-        private readonly ClassHelper.CallType _callType;
+        private readonly CallType _callType;
         private readonly bool _houseOwner;
 
         private ITRTCCloud cloud;
         public List<CallViewDataModel> CallViews { get; private set; } = new List<CallViewDataModel>();
 
-        public CallViewManager(string roomID, GetRoomKeyModel roomKey, ClassHelper.CallType callType, List<string> member, bool houseOwner = false)
+        public CallViewManager(string roomID, GetRoomKeyModel roomKey, CallType callType, List<string> member, bool houseOwner = false)
         {
             _roomID = roomID;
             _roomKey = roomKey;
@@ -52,7 +53,7 @@ namespace DimensionClient.Common
 
                 cloud.addCallback(this);
 
-                cloud.enterRoom(ref tRTCParams, _callType == ClassHelper.CallType.Video ? TRTCAppScene.TRTCAppSceneVideoCall : TRTCAppScene.TRTCAppSceneAudioCall);
+                cloud.enterRoom(ref tRTCParams, _callType == CallType.Video ? TRTCAppScene.TRTCAppSceneVideoCall : TRTCAppScene.TRTCAppSceneAudioCall);
             });
         }
 
@@ -173,7 +174,7 @@ namespace DimensionClient.Common
                     callVideoData.IsAudio = true;
                     cloud.startLocalAudio(TRTCAudioQuality.TRTCAudioQualityDefault);
 
-                    if (_callType == ClassHelper.CallType.Video)
+                    if (_callType == CallType.Video)
                     {
                         TRTCRenderParams renderParams = new()
                         {

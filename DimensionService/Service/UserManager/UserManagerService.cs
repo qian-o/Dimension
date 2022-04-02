@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Dao.UserInfo;
@@ -39,7 +40,7 @@ namespace DimensionService.Service.UserManager
                 message = string.Empty;
                 UserInfoModel userInfo = null;
                 // 手机号
-                if (Regex.IsMatch(data.LoginName, ClassHelper.phoneVerify))
+                if (Regex.IsMatch(data.LoginName, Constants.PHONE_VERIFY))
                 {
                     if (_userInfoDAO.UserInfoFindForPhoneNumber(data.LoginName, true) is UserInfoModel user)
                     {
@@ -51,7 +52,7 @@ namespace DimensionService.Service.UserManager
                     }
                 }
                 // 邮箱
-                else if (Regex.IsMatch(data.LoginName, ClassHelper.emailVerify))
+                else if (Regex.IsMatch(data.LoginName, Constants.EMAIL_VERIFY))
                 {
                     if (_userInfoDAO.UserInfoFindForEmail(data.LoginName, true) is UserInfoModel user)
                     {
@@ -82,7 +83,7 @@ namespace DimensionService.Service.UserManager
                     }
                     else
                     {
-                        string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(ClassHelper.cultureInfo);
+                        string aesKey = ClassHelper.GenerateSHA256(ClassHelper.TimeStamp(data.LoginTime)).Substring(4, 16).ToUpper(Constants.CurrentCultureInfo);
                         if (ClassHelper.AesDecrypt(data.Password, aesKey) != userInfo.Password)
                         {
                             message = "密码错误。";
@@ -244,7 +245,7 @@ namespace DimensionService.Service.UserManager
                     Personalized = item.Personalized,
                     OnLine = item.OnLine
                 }));
-                foreach (char item in ClassHelper.friendGroup)
+                foreach (char item in Constants.FRIEND_GROUP)
                 {
                     friendSorts.Add(new FriendSortModel
                     {
@@ -281,7 +282,7 @@ namespace DimensionService.Service.UserManager
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
                     {
                         string userID = item.UserID == data.UserID ? data.FriendID : data.UserID;
-                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.FriendChanged.ToString(),
+                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.FriendChanged.ToString(),
                                                                          arg1: ClassHelper.PinyinFirst(_userInfoDAO.UserInfoFindForUserID(userID).NickName[0]).ToString(),
                                                                          arg2: userID,
                                                                          arg3: true);
@@ -292,7 +293,7 @@ namespace DimensionService.Service.UserManager
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
                     {
                         string userID = item.UserID == data.UserID ? data.FriendID : data.UserID;
-                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.NewFriend.ToString(),
+                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.NewFriend.ToString(),
                                                                          arg1: userID);
                     }
                 }
@@ -318,7 +319,7 @@ namespace DimensionService.Service.UserManager
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(link => link.UserID == data.UserID || link.UserID == data.FriendID))
                     {
                         string userID = item.UserID == data.UserID ? data.FriendID : data.UserID;
-                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.FriendChanged.ToString(),
+                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.FriendChanged.ToString(),
                                                                          arg1: ClassHelper.PinyinFirst(_userInfoDAO.UserInfoFindForUserID(userID).NickName[0]).ToString(),
                                                                          arg2: userID,
                                                                          arg3: true);
@@ -424,7 +425,7 @@ namespace DimensionService.Service.UserManager
                         _friendInfoDAO.UpdateRemark(data.UserID, data.FriendID, data.RemarkName, data.RemarkInformation);
                         foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID))
                         {
-                            _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.RemarkInfoChanged.ToString(),
+                            _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.RemarkInfoChanged.ToString(),
                                                                              arg1: data.FriendID);
                         }
                     }

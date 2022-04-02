@@ -1,11 +1,12 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 
 namespace DimensionService.Models.ResultModels
 {
     public class NewFriendBriefModel
     {
         // 信息类型
-        public ClassHelper.NewFriendType FriendType { get; set; }
+        public NewFriendType FriendType { get; set; }
         // 好友ID
         public string UserID { get; set; }
         // 昵称

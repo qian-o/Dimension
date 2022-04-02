@@ -120,4 +120,8 @@
 		<PackageReference Include="TencentCloudSDK" Version="3.0.486" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Dimension.Domain\Dimension.Domain.csproj" />
+	</ItemGroup>
+
 </Project>

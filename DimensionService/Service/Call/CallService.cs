@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.CallRoom;
 using DimensionService.Hubs;
 using DimensionService.Models;
@@ -116,7 +117,7 @@ namespace DimensionService.Service.Call
             }
         }
 
-        public bool NotifyRoommate(string userID, ClassHelper.UseDevice useDevice, out string message)
+        public bool NotifyRoommate(string userID, UseDevice useDevice, out string message)
         {
             try
             {
@@ -132,7 +133,7 @@ namespace DimensionService.Service.Call
                         {
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == roommate.UserID))
                             {
-                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.CallInvite.ToString(),
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: HubMessageType.CallInvite.ToString(),
                                                                                      arg1: callRoom.HouseOwnerID,
                                                                                      arg2: callRoom.HouseCallType,
                                                                                      arg3: callRoom.RoomID);
@@ -168,12 +169,12 @@ namespace DimensionService.Service.Call
                         {
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID && item.Device != data.UseDevice.ToString()))
                             {
-                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.OtherDeviceProcessed.ToString(),
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: HubMessageType.OtherDeviceProcessed.ToString(),
                                                                                      arg1: data.RoomID);
                             }
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == callRoom.HouseOwnerID && item.Device == callRoom.HouseOwnerDevice.ToString()))
-                            {
-                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.AcceptCall.ToString(),
+                            { 
+                                _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: HubMessageType.AcceptCall.ToString(),
                                                                                      arg1: data.UserID,
                                                                                      arg2: data.IsAcceptCall);
                             }
@@ -193,7 +194,7 @@ namespace DimensionService.Service.Call
             }
         }
 
-        public bool DissolutionRoom(string userID, ClassHelper.UseDevice useDevice, out string message)
+        public bool DissolutionRoom(string userID, UseDevice useDevice, out string message)
         {
             try
             {

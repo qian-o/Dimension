@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 
 namespace DimensionClient.Models.ResultModels
 {
@@ -15,7 +16,7 @@ namespace DimensionClient.Models.ResultModels
         // 接收方是否已读
         public bool IsRead { get; set; }
         // 消息类型
-        public ClassHelper.MessageType MessageType { get; set; }
+        public MessageType MessageType { get; set; }
         // 消息内容
         public string MessageContent { get; set; }
         // 消息是否可见（ -1全部可不见, 0全部可见, 1发送方不可见, 2接收方不可见 ）

@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Models.ResultModels;
 using DimensionClient.Service.Call;
 using System.Windows;
@@ -73,7 +74,7 @@ namespace DimensionClient.Library.Controls
         {
             ClassHelper.ShowMask(true);
 
-            ClassHelper.CallType call = data.ToString() == "Voice" ? ClassHelper.CallType.Voice : ClassHelper.CallType.Video;
+            CallType call = data.ToString() == "Voice" ? CallType.Voice : CallType.Video;
             List<string> member = new()
             {
                 ClassHelper.UserID,

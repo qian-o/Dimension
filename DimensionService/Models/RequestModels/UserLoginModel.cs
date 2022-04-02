@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace DimensionService.Models.RequestModels
@@ -15,7 +16,7 @@ namespace DimensionService.Models.RequestModels
 
         [Display(Name = "登录设备")]
         [Required(ErrorMessage = "登录设备不能为空")]
-        public ClassHelper.UseDevice UseDevice { get; set; }
+        public UseDevice UseDevice { get; set; }
 
         [Display(Name = "登录时间")]
         [Required(ErrorMessage = "登录时间不能为空")]

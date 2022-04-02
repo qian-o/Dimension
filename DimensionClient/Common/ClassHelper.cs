@@ -1,4 +1,5 @@
-﻿using DimensionClient.Component.Pages;
+﻿using Dimension.Domain;
+using DimensionClient.Component.Pages;
 using DimensionClient.Component.Windows;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
@@ -22,9 +23,9 @@ namespace DimensionClient.Common
     public delegate void AccordingMaskEvent(bool show, bool loading);
     public delegate void RouteEvent(ClassHelper.PageType pageName);
     public delegate void DataPassing(ClassHelper.DataPassingType dataType, object data);
-    public delegate void CallEvent(ClassHelper.CallType callType, bool isEnter);
+    public delegate void CallEvent(CallType callType, bool isEnter);
 
-    public static class ClassHelper
+    public static partial class ClassHelper
     {
         #region 常量
         // 服务器地址 ( http://47.96.133.119, http://localhost:5000 )
@@ -78,14 +79,7 @@ namespace DimensionClient.Common
         #endregion
 
         #region 枚举
-        // 使用设备
-        public enum UseDevice
-        {
-            Phone,
-            Web,
-            Client
-        }
-        // MessageBox模式
+               // MessageBox模式
         public enum MessageBoxType
         {
             Inform,
@@ -98,53 +92,12 @@ namespace DimensionClient.Common
             Left,
             Right
         }
-        // SignalR消息类别
-        public enum HubMessageType
-        {
-            // string title, string message
-            Notification,
-            // string friendID, bool online
-            FriendOnline,
-            // string friendID
-            NewFriend,
-            // string sort, string friendID, bool state ( true 添加 false 删除 )
-            FriendChanged,
-            // bool online
-            OnlineStatus,
-            // string friendID
-            RemarkInfoChanged,
-            // string friendID
-            ChatColumnChanged,
-            // string chatID
-            NewMessage,
-            // string userID, CallType callType, string roomID
-            CallInvite,
-            // string roomID
-            OtherDeviceProcessed,
-            // string userID, bool isAcceptCall
-            AcceptCall
-        }
+        
         // Page类型
         public enum PageType
         {
             MessageCenterPage,
             ContactPersonPage
-        }
-        // 新朋友类别
-        public enum NewFriendType
-        {
-            Add,
-            Verify
-        }
-        // 消息类别
-        public enum MessageType
-        {
-            Text,
-            RichText,
-            Voice,
-            File,
-            VoiceTalk,
-            VideoTalk
         }
         // 富文本内容类别
         public enum RichMessageType
@@ -191,14 +144,6 @@ namespace DimensionClient.Common
             Paste,
             MessageFocus,
             SelectCall
-        }
-        // 通话类别
-        public enum CallType
-        {
-            Voice,
-            Video,
-            ManyVoice,
-            ManyVideo
         }
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.FriendInfo;
 using DimensionService.Dao.UserInfo;
 using DimensionService.Models;
@@ -44,10 +45,10 @@ namespace DimensionService.Hubs
                                            where friends.Find(friend => friend.UserID == item.UserID) != null
                                            select item.ConnectionId);
                     Clients.Client(Context.ConnectionId).SendAsync(
-                        method: ClassHelper.HubMessageType.OnlineStatus.ToString(),
+                        method: HubMessageType.OnlineStatus.ToString(),
                         arg1: true);
                     Clients.Clients(connectionIds).SendAsync(
-                        method: ClassHelper.HubMessageType.FriendOnline.ToString(),
+                        method: HubMessageType.FriendOnline.ToString(),
                         arg1: linkInfo.UserID,
                         arg2: true);
                 }
@@ -69,10 +70,10 @@ namespace DimensionService.Hubs
                                            where friends.Find(friend => friend.UserID == item.UserID) != null
                                            select item.ConnectionId);
                     Clients.Client(Context.ConnectionId).SendAsync(
-                        method: ClassHelper.HubMessageType.OnlineStatus.ToString(),
+                        method: HubMessageType.OnlineStatus.ToString(),
                         arg1: false);
                     Clients.Clients(connectionIds).SendAsync(
-                        method: ClassHelper.HubMessageType.FriendOnline.ToString(),
+                        method: HubMessageType.FriendOnline.ToString(),
                         arg1: linkInfo.UserID,
                         arg2: false);
                 }

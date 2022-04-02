@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Dao.ChatColumn;
 using DimensionService.Dao.ChatLink;
 using DimensionService.Dao.ChatMessages;
@@ -45,7 +46,7 @@ namespace DimensionService.Service.Chat
                     _chatColumnDAO.AddChatColumn(data.UserID, data.FriendID, chatID);
                     foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID))
                     {
-                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.ChatColumnChanged.ToString(),
+                        _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.ChatColumnChanged.ToString(),
                                                                              arg1: data.FriendID);
                     }
                     state = true;
@@ -137,13 +138,13 @@ namespace DimensionService.Service.Chat
                             _chatColumnDAO.AddChatColumn(receiverID, data.UserID, data.ChatID);
                             foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == receiverID))
                             {
-                                _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.ChatColumnChanged.ToString(),
+                                _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.ChatColumnChanged.ToString(),
                                                                                      arg1: data.UserID);
                             }
                         }
                         foreach (LinkInfoModel item in ClassHelper.LinkInfos.Values.Where(item => item.UserID == data.UserID || item.UserID == receiverID))
                         {
-                            _hub.Clients.Client(item.ConnectionId).SendAsync(method: ClassHelper.HubMessageType.NewMessage.ToString(),
+                            _hub.Clients.Client(item.ConnectionId).SendAsync(method: HubMessageType.NewMessage.ToString(),
                                                                                  arg1: data.ChatID);
                         }
                         state = true;

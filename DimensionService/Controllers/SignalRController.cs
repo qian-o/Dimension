@@ -1,4 +1,5 @@
-﻿using DimensionService.Common;
+﻿using Dimension.Domain;
+using DimensionService.Common;
 using DimensionService.Hubs;
 using DimensionService.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace DimensionService.Controllers
         [HttpPost]
         public WebResultModel OpenInform(string title, string message)
         {
-            _hub.Clients.All.SendAsync(ClassHelper.HubMessageType.Notification.ToString(), title, message);
+            _hub.Clients.All.SendAsync(HubMessageType.Notification.ToString(), title, message);
             WebResultModel webResult = new()
             {
                 State = true,

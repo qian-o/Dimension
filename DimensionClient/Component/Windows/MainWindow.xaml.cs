@@ -1,4 +1,5 @@
-﻿using DimensionClient.Common;
+﻿using Dimension.Domain;
+using DimensionClient.Common;
 using DimensionClient.Library.Controls;
 using DimensionClient.Models;
 using DimensionClient.Models.ResultModels;
@@ -209,33 +210,33 @@ namespace DimensionClient.Component.Windows
             }
         }
 
-        private void ClassHelper_CallChanged(ClassHelper.CallType callType, bool isEnter)
+        private void ClassHelper_CallChanged(CallType callType, bool isEnter)
         {
             switch (callType)
             {
-                case ClassHelper.CallType.Voice:
+                case CallType.Voice:
                     VoiceCall(isEnter);
                     break;
-                case ClassHelper.CallType.Video:
+                case CallType.Video:
                     VideoCall(isEnter);
                     break;
-                case ClassHelper.CallType.ManyVoice:
+                case CallType.ManyVoice:
                     break;
-                case ClassHelper.CallType.ManyVideo:
+                case CallType.ManyVideo:
                     break;
                 default:
                     break;
             }
         }
 
-        private void SignalRClientHelper_CallInviteSignalR(string userID, ClassHelper.CallType callType, string roomID)
+        private void SignalRClientHelper_CallInviteSignalR(string userID, CallType callType, string roomID)
         {
             if (UserManagerService.GetFriendInfo(out FriendDetailsModel friendDetails, friendID: userID))
             {
                 switch (callType)
                 {
-                    case ClassHelper.CallType.Voice:
-                    case ClassHelper.CallType.Video:
+                    case CallType.Voice:
+                    case CallType.Video:
                         InviteCallViewModel viewModel = new()
                         {
                             FriendDetails = friendDetails,
@@ -248,8 +249,8 @@ namespace DimensionClient.Component.Windows
                             inviteCall.Show();
                         });
                         break;
-                    case ClassHelper.CallType.ManyVoice:
-                    case ClassHelper.CallType.ManyVideo:
+                    case CallType.ManyVoice:
+                    case CallType.ManyVideo:
                         break;
                     default:
                         break;
