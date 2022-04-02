@@ -79,7 +79,7 @@ namespace DimensionClient.Common
         #endregion
 
         #region 枚举
-               // MessageBox模式
+        // MessageBox模式
         public enum MessageBoxType
         {
             Inform,
@@ -92,7 +92,7 @@ namespace DimensionClient.Common
             Left,
             Right
         }
-        
+
         // Page类型
         public enum PageType
         {

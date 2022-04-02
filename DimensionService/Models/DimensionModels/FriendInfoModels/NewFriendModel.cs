@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 
 namespace DimensionService.Models.DimensionModels.FriendInfoModels
 {

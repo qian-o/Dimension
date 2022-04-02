@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 using DimensionService.Context;
 using DimensionService.Models.DimensionModels;
 using DimensionService.Models.DimensionModels.CallRoomModels;

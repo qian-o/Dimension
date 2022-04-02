@@ -1,6 +1,4 @@
-﻿using Aliyun.Acs.Core;
-using Aliyun.Acs.Core.Profile;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace DimensionService.Common
 {

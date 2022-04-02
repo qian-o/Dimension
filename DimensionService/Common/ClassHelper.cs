@@ -14,7 +14,6 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Globalization;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -56,7 +55,7 @@ namespace DimensionService.Common
         // 一言集合缓存
         public static MemoryCache Cache { get; set; } = new(new MemoryCacheOptions());
 
-#endregion
+        #endregion
 
         /// <summary>
         /// 随机数

@@ -173,7 +173,7 @@ namespace DimensionService.Service.Call
                                                                                      arg1: data.RoomID);
                             }
                             foreach (LinkInfoModel linkInfo in ClassHelper.LinkInfos.Values.Where(item => item.UserID == callRoom.HouseOwnerID && item.Device == callRoom.HouseOwnerDevice.ToString()))
-                            { 
+                            {
                                 _hub.Clients.Client(linkInfo.ConnectionId).SendAsync(method: HubMessageType.AcceptCall.ToString(),
                                                                                      arg1: data.UserID,
                                                                                      arg2: data.IsAcceptCall);

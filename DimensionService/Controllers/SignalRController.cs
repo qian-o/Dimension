@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 using DimensionService.Hubs;
 using DimensionService.Models;
 using Microsoft.AspNetCore.Mvc;

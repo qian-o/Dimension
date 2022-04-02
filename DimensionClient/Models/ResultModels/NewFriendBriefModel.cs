@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionClient.Common;
 
 namespace DimensionClient.Models.ResultModels
 {

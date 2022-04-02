@@ -1,5 +1,6 @@
 ﻿using Dimension.Domain;
 using DimensionClient.Component.Windows;
+using DimensionClient.Models;
 using DimensionClient.Service.UserManager;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -51,6 +52,7 @@ namespace DimensionClient.Common
                     .Build();
                 connection.Closed += Connection_Closed;
                 connection.On<string, string>(HubMessageType.Notification.ToString(), Connection_Notification);
+                connection.On(HubMessageType.DeviceLoginConflict.ToString(), DeviceLoginConflict);
                 connection.On<string, bool>(HubMessageType.FriendOnline.ToString(), Connection_FriendOnline);
                 connection.On<string>(HubMessageType.NewFriend.ToString(), Connection_NewFriend);
                 connection.On<string, string, bool>(HubMessageType.FriendChanged.ToString(), Connection_FriendChanged);
@@ -78,6 +80,22 @@ namespace DimensionClient.Common
         private static void Connection_Notification(string title, string message)
         {
             ClassHelper.NotificationAlert(typeof(MainWindow), title, message);
+        }
+
+        private static void DeviceLoginConflict()
+        {
+            MessageBoxButtonModel messageBoxButton = new()
+            {
+                Hint = ClassHelper.FindResource<string>("Confirm"),
+                Action = () =>
+                {
+                    ClassHelper.Dispatcher.Invoke(() =>
+                    {
+                        ClassHelper.MainWindow.Close();
+                    });
+                }
+            };
+            ClassHelper.AlertMessageBox(ClassHelper.MainWindow, ClassHelper.MessageBoxType.Inform, ClassHelper.FindResource<string>("DeviceLoginConflict"), rightButton: messageBoxButton);
         }
 
         private static void Connection_FriendOnline(string friendID, bool online)

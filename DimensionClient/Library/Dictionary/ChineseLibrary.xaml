@@ -69,4 +69,5 @@
     <system:String x:Key="PleaseEndCall">请先结束当前通话。</system:String>
     <system:String x:Key="VoiceTalkBlank">语 音 通 话</system:String>
     <system:String x:Key="VideoTalkBlank">视 频 通 话</system:String>
+    <system:String x:Key="DeviceLoginConflict">您的帐号在别的设备上登录，您将被迫下线。</system:String>
 </ResourceDictionary>

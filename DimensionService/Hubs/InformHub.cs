@@ -34,6 +34,11 @@ namespace DimensionService.Hubs
                 Token = token,
                 Device = device
             };
+            // 存在相同登录设备
+            if (ClassHelper.LinkInfos.Values.FirstOrDefault(item => item.UserID == linkInfo.UserID && item.Device == linkInfo.Device) is LinkInfoModel linkInfoModel)
+            {
+                Clients.Client(linkInfoModel.ConnectionId).SendAsync(HubMessageType.DeviceLoginConflict.ToString());
+            }
             if (ClassHelper.LinkInfos.TryAdd(Context.ConnectionId, linkInfo))
             {
                 if (ClassHelper.LinkInfos.Values.Where(item => item.UserID == linkInfo.UserID).ToList() is List<LinkInfoModel> linkInfos && linkInfos.Count == 1)

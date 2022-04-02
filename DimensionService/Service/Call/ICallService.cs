@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 using DimensionService.Models.RequestModels;
 using DimensionService.Models.ResultModels;
 

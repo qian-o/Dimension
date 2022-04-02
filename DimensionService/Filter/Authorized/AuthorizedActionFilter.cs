@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 using DimensionService.Dao.LoginInfo;
 using DimensionService.Models;
 using Microsoft.AspNetCore.Mvc;

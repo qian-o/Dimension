@@ -1,5 +1,4 @@
 ﻿using Dimension.Domain;
-using DimensionService.Common;
 using DimensionService.Models.DimensionModels;
 
 namespace DimensionService.Dao.LoginInfo
