@@ -28,7 +28,7 @@
 该服务采用sqlserver2019数据库，并使用EF CORE作为主要的ORM框架，首次使用需要迁移数据库。  
 打开程序包管理控制台，输入Update-Database InitialCreate  
 ![image](https://user-images.githubusercontent.com/84434846/159859559-e69a1d8e-fe6a-42f6-841e-980b20533ad4.png)  
-该项目提供线上测试服务地址，http://47.96.133.119:5000  
+该项目提供线上测试服务地址，http://47.96.133.119:5000  由于种种原因，该服务器运行到2022.08.02为止。（这云服务器杀熟，贵的离谱）
 # WPF端  
 ![image](https://user-images.githubusercontent.com/84434846/159860811-31419d6d-97a0-4f40-9536-c555d6140fd4.png)  
 红框内容需与服务端保持一致  
